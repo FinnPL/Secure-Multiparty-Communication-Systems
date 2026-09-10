@@ -1,0 +1,32 @@
+{
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": ["%DOC%"],
+      "env": {}
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk",
+      "tools": ["latexmk"]
+    }
+  ],
+
+  "latex-workshop.latex.build.forceRecipeUsage": true,
+  "latex-workshop.latex.autoBuild.run": "onSave",
+
+  "latex-workshop.latex.outDir": "%DIR%",
+  "latex-workshop.latex.autoClean.run": "never",
+
+  "latex-workshop.linting.chktex.enabled": true,
+  "latex-workshop.linting.chktex.exec.args": ["-q", "-l", "../.chktexrc"],
+
+  "latex-workshop.view.pdf.viewer": "tab",
+
+  "files.associations": {
+    "*.latexmkrc": "perl",
+    "latexmkrc-common.pl": "perl"
+  }
+}

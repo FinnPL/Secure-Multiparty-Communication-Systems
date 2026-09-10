@@ -1,5 +1,4 @@
-$pdf_mode = 4;
-$lualatex = 'lualatex -synctex=1 -interaction=nonstopmode -file-line-error %O %S';
-$pdflatex = $lualatex;
+do '../latexmkrc-common.pl';
 
-ensure_path('BIBINPUTS', '..');
+$pdf_mode = 4;
+$pdflatex = $lualatex;
