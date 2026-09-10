@@ -1,0 +1,1219 @@
+%-------------------------------------------------------------------------------
+% Options
+%-------------------------------------------------------------------------------
+\newif\if@cs@totalframenumber
+\@cs@totalframenumberfalse
+\newif\if@cs@numberinfooter
+\@cs@numberinfooterfalse
+\DeclareOption{totalframenumber}{\@cs@totalframenumbertrue}
+\DeclareOption{numberinfooter}{\@cs@numberinfootertrue}
+\ProcessOptions
+
+
+\RequirePackage{eso-pic}
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{math}
+\usetikzlibrary{fit}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{svg.path}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins}
+\RequirePackage{xifthen}
+\RequirePackage{printlen}
+\RequirePackage{setspace}
+
+\mode<presentation>
+
+
+%-------------------------------------------------------------------------------
+% Sizes
+%-------------------------------------------------------------------------------
+\setbeamersize{text margin left=0.40cm}
+\setbeamersize{text margin right=0.40cm}
+
+\define@key{beamerframe}{t}[true]{% top
+  \beamer@frametopskip=0pt%.2cm plus .5\paperheight\relax%
+  \beamer@framebottomskip=0pt plus 1fill\relax%
+  \beamer@frametopskipautobreak=\beamer@frametopskip\relax%
+  \beamer@framebottomskipautobreak=\beamer@framebottomskip\relax%
+}
+
+
+%-------------------------------------------------------------------------------
+% setting nice fonts
+%-------------------------------------------------------------------------------
+\RequirePackage{tgheros}
+\RequirePackage{tgcursor}
+\RequirePackage{fontspec}
+\setsansfont{TeXGyre Heros}
+\setmonofont[Ligatures={NoCommon, NoRequired, NoContextual, NoHistoric, NoDiscretionary}]{TeXGyre Cursor}
+\setbeamerfont{frametitle}{size*={12}{12},series=\bf}
+\setbeamerfont{block body alerted}{size=\large}
+\setbeamerfont{supervisors}{size=\large}
+\setbeamerfont{author}{size*={10}{10},series=\bf}
+\setbeamerfont{authorextra}{size*={10}{10}}
+\setbeamerfont{short author}{size*={6}{9.6}}
+\setbeamerfont{date}{size*={6}{9.6}}
+\setbeamerfont{framenumber}{size*={6}{0},series=\normalfont}
+\setbeamerfont{title}{size*={16}{16},series=\bfseries}
+\defbeamertemplate*{itemize/enumerate body begin}{normal}{\bfseries}
+\defbeamertemplate{itemize/enumerate body begin}{inblock}{}
+\defbeamertemplate{itemize/enumerate body begin}{inblock gray}{\color{gray!50}}
+\defbeamertemplate{itemize/enumerate body begin}{inblock red}{\color{white}}
+\setbeamertemplate{itemize/enumerate body end}{}
+\defbeamertemplate*{itemize/enumerate subbody begin}{normal}{\normalfont}
+\defbeamertemplate{itemize/enumerate subbody begin}{inblock gray}{\normalfont\color{gray!50}}
+\defbeamertemplate{itemize/enumerate subbody begin}{inblock red}{\color{white}}
+\setbeamertemplate{itemize/enumerate subbody end}{}
+\defbeamertemplate*{itemize/enumerate subsubbody begin}{normal}{\scriptsize}
+\defbeamertemplate{itemize/enumerate subsubbody begin}{inblock gray}{\scriptsize\color{gray!50}}
+\defbeamertemplate{itemize/enumerate subsubbody begin}{inblock red}{\scriptsize\color{white}}
+\setbeamertemplate{itemize/enumerate subsubbody end}{}
+\newcommand{\singleitem}[2][]{%
+	\begin{itemize}%
+	\ifstrempty{#1}{%
+		\item #2%
+	}{%
+		\item[#1] #2%
+	}%
+	\end{itemize}%
+}
+\urlstyle{same}
+
+
+%-------------------------------------------------------------------------------
+% Colors
+%-------------------------------------------------------------------------------
+
+% TODO: check is the case to use it
+%\usecolortheme{whale}
+
+% define handy colors
+\definecolor{frametitle_left_gradient}{rgb}{.05,.15,.4}
+\definecolor{frametitle_right_gradient}{RGB}{168,184,216}
+\definecolor{frametitle_top_gradient}{rgb}{0.82,0.87,0.98}
+\definecolor{frametitle_bottom_gradient}{rgb}{0.82,0.83,0.85}
+\definecolor{framefoot_top_gradient}{rgb}{0.84,0.84,0.85}
+\definecolor{framefoot_bottom_gradient}{rgb}{1,1,1}
+\definecolor{maintitle}{RGB}{0,0,0}
+
+% RWTH colors
+%\definecolor{RWTHblau}{RGB}{0,84,159} % This would be the RGB code then RWTH
+                                       % claims to be RWTH blue. However, it is
+									   % quite obvious that this is not true.
+\definecolor{RWTHblau}{RGB}{27,92,170} % These are the colors
+\definecolor{RWTHhellblau}{RGB}{128,179,224} % used in the logo
+\definecolor{RWTHmagenta}{RGB}{227,0,102}
+\definecolor{RWTHgelb}{RGB}{255,237,0}
+\definecolor{RWTHpetrol}{RGB}{0,79,101}
+\definecolor{RWTHturkis}{RGB}{0,152,161}
+\definecolor{RWTHgrun}{RGB}{87,171,39}
+\definecolor{RWTHmaigrun}{RGB}{189,205,0}
+\definecolor{RWTHorange}{RGB}{246,168,0}
+\definecolor{RWTHrot}{RGB}{204,7,30}
+\definecolor{RWTHbordeaux}{RGB}{161,16,53}
+\definecolor{RWTHviolett}{RGB}{97,33,88}
+\definecolor{RWTHlila}{RGB}{122,111,172}
+
+\definecolor{comsysyellowlight}{RGB}{255,213,0}
+\definecolor{comsysyellow}{RGB}{255,207,0}
+\definecolor{comsysyellowdark}{RGB}{255,201,0}
+\definecolor{comsysorange}{RGB}{255,178,0}
+\definecolor{comsysalertbg}{RGB}{216,92,65}
+
+% setting colors to various elements
+\setbeamercolor{structure}{fg=RWTHblau}
+\setbeamercolor{author}{fg=black}
+\setbeamercolor{date}{fg=RWTHblau}
+\setbeamercolor{section in head/foot}{fg=red,bg=green}
+\setbeamercolor{subsection in head/foot}{fg=red,bg=green}
+\setbeamercolor{alerted text}{fg=red}
+
+\setbeamercolor{short author}{fg=RWTHblau}
+
+\setbeamercolor{title}{fg=RWTHblau}
+
+\setbeamercolor{frametitle}{fg=RWTHblau}
+\setbeamercolor{footer}{fg=RWTHblau}
+
+\setbeamercolor{comsyssplitframe}{fg=white,bg=RWTHblau}
+
+% TODO: not setting any color now
+\setbeamercolor*{titlegraphic}{fg=frametitle_left_gradient}
+
+
+%-------------------------------------------------------------------------------
+% Shades
+%-------------------------------------------------------------------------------
+
+\pgfdeclarehorizontalshading{beamer@titlepage_shade}{2.5cm}{%
+	color(0.0cm)=(frametitle_left_gradient);
+	color(2.5cm)=(frametitle_right_gradient)}
+\pgfdeclarehorizontalshading{beamer@sectionpage_shade}{2.5cm}{%
+	color(0.0cm)=(RWTHhellblau);
+	color(2.5cm)=(RWTHblau!50)}
+
+\definecolor{titlespacer_shade0}{RGB}{160,164,160}
+\definecolor{titlespacer_shade35}{RGB}{184,188,184}
+\definecolor{titlespacer_shade100}{RGB}{216,216,216}
+\pgfdeclareverticalshading{beamer@titlespacer}{\paperwidth}{%
+	color((0.64cm-2*0.75bp)/1.984375*0.00)=(titlespacer_shade0);
+	color((0.64cm-2*0.75bp)/1.984375*0.35)=(titlespacer_shade35);
+	color((0.64cm-2*0.75bp)/1.984375*1.00)=(titlespacer_shade100)}
+
+\pgfdeclarehorizontalshading{beamer@titlepage_lowershade}{1.8in}{%
+	color(0pt)=(frametitle_left_gradient);
+	color(\paperwidth)=(frametitle_right_gradient)}
+
+
+\pgfdeclarehorizontalshading[frametitle.bg,frametitle right.bg]%
+	{beamer@frametitle_shade}{0.73in/1.984375}{%
+	color(0pt)=(frametitle.bg);
+	color(\paperwidth)=(frametitle right.bg)}
+
+\pgfdeclarehorizontalshading{beamer@spacer}{0.75bp/1.984375}{%
+	color(0pt)=(gray);
+	color(\paperwidth)=(gray)}
+
+\definecolor{frametitle_vertical_shade0}{RGB}{240,240,240}
+\definecolor{frametitle_vertical_shade100}{RGB}{200,220,248}
+\pgfdeclareverticalshading{beamer@frametitle_vertical_shade}{\paperwidth}{%
+	color((0.23cm-2*0.75bp)/1.984375*0.00)=(frametitle_vertical_shade0);
+	color((0.23cm-2*0.75bp)/1.984375*1.00)=(frametitle_vertical_shade100)}
+
+\pgfdeclareverticalshading{beamer@framefoot_shade}{\paperwidth}{%
+	color(0pt)=(framefoot_bottom_gradient);
+	color(0.2670866in)=(framefoot_top_gradient)}
+
+
+%-------------------------------------------------------------------------------
+% Inner Theme
+%-------------------------------------------------------------------------------
+
+\useinnertheme[shadow=true]{rounded}
+\defbeamertemplate*{itemize item}{bcircle}{\textbullet}
+\defbeamertemplate*{itemize subitem}{bdash}{--}
+\defbeamertemplate{itemize item}{bcircle-splitframe}{\usebeamercolor[fg]{comsyssplitframe}\textbullet}
+\defbeamertemplate{itemize subitem}{bdash-splitframe}{\usebeamercolor[fg]{comsyssplitframe}--}
+\setbeamertemplate{itemize/enumerate body}{font=\bfseries}
+\setbeamertemplate{itemize subsubitem}[square]
+
+\defbeamertemplate{enumerate item}{comsys plain}
+{
+	\color{fg}\insertenumlabel\rlap{.}%
+}
+\setbeamertemplate{enumerate item}[comsys plain]
+\setlength{\labelsep}{\widthof{..}}
+\setlength{\leftmargini}{\labelsep+\widthof{8}+1mm+1.5bp}
+
+\defbeamertemplate*{section in toc}{comsys}
+{%
+	\tikz\node[
+		draw=RWTHblau,%
+		fill=white,%
+		text=RWTHblau,%
+		rounded corners=1mm,%
+		line width=0.5bp,%
+		inner sep=2mm,%
+		text width=\textwidth-4mm,%
+	]{%
+		\inserttocsectionnumber{}. \smash\inserttocsection{}%
+	};%
+	\vskip1mm%
+}
+
+\defbeamertemplate{subsection in toc}{comsys circle}
+{\leavevmode\leftskip=3em\inserttocsubsection\par}
+
+\defbeamertemplate{subsubsection in toc}{comsys circle}
+{\leavevmode\normalsize\usebeamerfont{subsection in
+    toc}\leftskip=4em\usebeamerfont{subsubsection in toc}%
+  \inserttocsubsubsection\par}
+\setbeamertemplate{sections/subsections in toc}[comsys circle]
+
+%-------------------------------------------------------------------------------
+% Blocks with Borders
+%-------------------------------------------------------------------------------
+
+\newcommand\cs@drawicontext[1]{\node[color=\pgfkeysvalueof{/tcb/comsys/icon color}] at ([xshift=\dimexpr\cs@tcb@leftrule / 2]frame.west) {\pgfkeysvalueof{/tcb/comsys/icon font}#1}}
+\def\cs@mkkvstore#1{\tcbset{#1/.prefix code={\expandafter\edef\csname cs@tcb@#1\endcsname{##1}}}}
+\cs@mkkvstore{arc}
+\cs@mkkvstore{colframe}
+\cs@mkkvstore{bottomrule}
+\cs@mkkvstore{toprule}
+\cs@mkkvstore{leftrule}
+\cs@mkkvstore{rightrule}
+\cs@mkkvstore{right}
+\cs@mkkvstore{left}
+\def\cs@tcb@width{\textwidth}
+\cs@mkkvstore{width}
+\cs@mkkvstore{after skip}
+\def\cs@tcb@afterskip{\csname cs@tcb@after skip\endcsname}
+\cs@mkkvstore{left skip}
+\def\cs@tcb@leftskip{\csname cs@tcb@after skip\endcsname}
+\cs@mkkvstore{right skip}
+\def\cs@tcb@rightskip{\csname cs@tcb@right skip\endcsname}
+\def\cs@iconcircleradius{0.75em}
+\tikzset{}
+\tcbuselibrary{hooks}
+\tcbset{
+	comsysboxbase/.style={
+		enhanced,%
+		halign=flush center,
+		boxrule=1.5bp,%
+		titlerule=-1pt,%
+		left skip=0cm,%.125cm,%space left of the box
+		right skip=0cm,%.125cm,%space right of the box
+		left=1.3mm,%space left of the body text
+		right=1.3mm,%space right of the body text
+		lefttitle=1.3mm,%space left of the title text
+		righttitle=1.3mm,%space right of the title text
+		toptitle=0.65mm,
+		bottomtitle=0.65mm,
+		boxsep=0mm,%extra space before and after all text
+		top=1.3mm+0.1em,%space above body text
+		bottom=1.3mm,%space under body text
+		arc=1mm,
+		beforeafter skip=\smallskipamount,
+	},
+	boxrule/.prefix code={\def\cs@tcb@leftrule{#1}\def\cs@tcb@rightrule{#1}\def\cs@tcb@bottomrule{#1}\def\cs@tcb@toprule{#1}},
+	comsys/.cd,
+	bottom cutout dx/.initial=5mm,
+	bottom cutout dy/.initial=1.5mm,
+	bottom cutout/.default=0.3,
+	bottom cutout/.style={after skip=\pgfkeysvalueof{/tcb/comsys/bottom cutout dy},/tcb/finish={
+		\coordinate (inner south east) at ([xshift=-\cs@tcb@rightrule,yshift=\cs@tcb@bottomrule]frame.south east);
+		\coordinate (inner south west) at ([xshift=\cs@tcb@leftrule,yshift=\cs@tcb@bottomrule]frame.south west);
+		\pgfkeysgetvalue{/tcb/comsys/bottom cutout dx}{\cs@cutout@dx}
+		\pgfkeysgetvalue{/tcb/comsys/bottom cutout dy}{\cs@cutout@dy}
+		\path (inner south west) -- (inner south east) coordinate[pos=#1] (mid);
+		\draw[tcbcolframe,tcb fill interior,line width=\cs@tcb@bottomrule] (mid) ++(-\cs@cutout@dx,0) coordinate (left) -- ++(0,-\dimexpr\cs@tcb@bottomrule/2) -- ++(\cs@tcb@bottomrule,0) -- ++(\cs@cutout@dx,-\cs@cutout@dy) -- ++(\cs@cutout@dx,\cs@cutout@dy) -- ++(\cs@tcb@bottomrule,0) -- ++(0,\dimexpr\cs@tcb@bottomrule/2) coordinate (right);
+		% We draw these lines to prevent a sliver of the border color shining through
+		% Unfortunately, we can't make them thin enough to be unnoticeable,
+		% so we need to make sure to not "overdraw" the border (or fix it after the fact)
+		\draw[line width=0pt,tcbcolback] (left) ++(\cs@tcb@bottomrule,0) -- (right);
+		\draw[line width=0pt,tcbcolframe] (right) -- ++(-\cs@tcb@bottomrule,0);
+	}},
+	left icon/.style={
+		leftrule=2em,
+		comsys/auto right,
+		underlay={
+			\draw[tcbcolback,line width=\cs@tcb@arc] 
+				([xshift=\dimexpr\cs@tcb@leftrule + (\cs@tcb@arc / 2),yshift=-\cs@tcb@toprule]frame.north west)
+				-- ([xshift=\dimexpr\cs@tcb@leftrule + (\cs@tcb@arc / 2),yshift=\cs@tcb@bottomrule]frame.south west);
+				\cs@drawicontext{#1};
+		},
+	},
+	right icon/.style={
+		rightrule=2em,
+		comsys/auto left,
+		underlay={
+			\draw[tcbcolback,line width=\cs@tcb@arc] 
+				([xshift=-\dimexpr\cs@tcb@rightrule + (\cs@tcb@arc / 2),yshift=-\cs@tcb@toprule]frame.north east)
+				-- ([xshift=-\dimexpr\cs@tcb@rightrule + (\cs@tcb@arc / 2),yshift=\cs@tcb@bottomrule]frame.south east);
+			\node[color=\pgfkeysvalueof{/tcb/comsys/icon color}] at ([xshift=-\dimexpr\cs@tcb@rightrule / 2]frame.east) {\pgfkeysvalueof{/tcb/comsys/icon font}#1};
+		},
+	},
+	auto left/.style={left={\cs@tcb@rightrule+\cs@tcb@right-\cs@tcb@leftrule}},
+	auto right/.style={right={\cs@tcb@leftrule+\cs@tcb@left-\cs@tcb@rightrule}},
+	icon circle radius/.estore in=\cs@iconcircleradius,
+	draw circled icon/.style n args={6}{
+		#1={\dimexpr\cs@iconcircleradius + 1.3mm\relax},
+		#6 skip=\cs@iconcircleradius,
+		underlay={
+			\coordinate (inner south east) at ([xshift=-\cs@tcb@rightrule / 2,yshift=\cs@tcb@bottomrule]frame.south east);
+			\coordinate (inner south west) at ([xshift=\cs@tcb@leftrule,yshift=\cs@tcb@bottomrule]frame.south west);
+			\coordinate (inner north east) at ([xshift=-\cs@tcb@rightrule,yshift=-\cs@tcb@bottomrule]frame.north east);
+			\coordinate (inner north west) at ([xshift=\cs@tcb@leftrule / 2,yshift=-\cs@tcb@bottomrule / 2]frame.north west);
+			\node[rectangle,fill=tcbcolframe,inner sep=0pt,outer sep=0pt,minimum height=\cs@tcb@arc,minimum width=\cs@tcb@arc,anchor=#3] at ([#5\csname cs@tcb@#1rule\endcsname / 2]frame.#3) {};
+			\node[draw,circle,text width=\dimexpr\cs@iconcircleradius * 2,inner sep=0,align=center,color=tcbcolframe,tcb fill interior,line width=\csname cs@tcb@#1rule\endcsname,anchor=#2] at ([#5\csname cs@tcb@#1rule\endcsname / 2]frame.#3) (x) {\pgfkeysvalueof{/tcb/comsys/icon font}#4};
+		},
+	},
+	nee circled icon/.style={
+		comsys/draw circled icon={right}{north}{north east}{#1}{xshift=-}{right},
+	},
+	nww circled icon/.style={
+		comsys/draw circled icon={left}{north}{north west}{#1}{xshift=}{left},
+	},
+	see circled icon/.style={
+		comsys/draw circled icon={right}{south}{south east}{#1}{xshift=-}{right},
+	},
+	sww circled icon/.style={
+		comsys/draw circled icon={left}{south}{south west}{#1}{xshift=}{left},
+	},
+	sse circled icon/.style={
+		comsys/draw circled icon={bottom}{east}{south east}{#1}{yshift=}{after},
+	},
+	ssw circled icon/.style={
+		comsys/draw circled icon={bottom}{west}{south west}{#1}{yshift=}{after},
+	},
+	nne circled icon/.style={
+		comsys/draw circled icon={top}{east}{north east}{#1}{yshift=-}{before},
+	},
+	nnw circled icon/.style={
+		comsys/draw circled icon={top}{west}{north west}{#1}{yshift=-}{before},
+	},
+	icon color/.initial=white,
+	icon font/.initial={\bf\huge},
+	colsub/.initial=black,
+	colsub/.default={\pgfkeysvalueof{/tcb/coltext}},
+	paperbox/.style={
+		comsysboxbase,
+		colframe=black,
+		boxrule=0.5bp,
+		boxsep=0mm,
+		top=.69mm,
+		bottom=.5mm,
+	},
+	bluebox/.style={
+		comsysboxbase,%
+		colframe=RWTHblau!100,%frame
+		colbacktitle=RWTHblau!100,%title background
+		coltitle=white!0,%title font color
+		colback=RWTHhellblau!50,%body background % comment KW (June 28, 2019): RWTHhellblau!100 too dark
+		comsys/colsub=white,
+	},%
+	greenbox/.style={
+		comsysboxbase,%
+		colframe=RWTHgrun!100,%frame
+		colbacktitle=RWTHgrun!100,%title background
+		coltitle=white!0,%title font color
+		colback=RWTHgrun!25,%body background
+	},%
+	yellowbox/.style={
+		comsysboxbase,%
+		colframe=RWTHgelb,%frame
+		colbacktitle=white!0,%title background
+		coltitle=RWTHblau!100,%title font color
+		colback=RWTHgelb!50,%body background
+		comsys/icon color=black,
+	},%
+	whitebox/.style={
+		comsysboxbase,%
+		colframe=RWTHblau!100,%frame
+		colbacktitle=white!0,%title background
+		coltitle=RWTHblau!100,%title font color
+		colback=white!0,%body background
+		comsys/icon color=white,
+	},%
+	graybox/.style={
+		comsysboxbase,%
+		colframe=gray!50,%frame
+		colbacktitle=white!0,%title background
+		coltitle=gray!50,%title font color
+		coltext=gray!50,%title font color
+		colback=white!0,%body background
+	},%
+	redbox/.style={
+		comsysboxbase,%
+		colframe=RWTHrot!100,%frame
+		coltext=white!0,%title font color
+		colback=comsysalertbg,%body background
+	},%
+	invertedbox/.style={
+		comsysboxbase,%
+		colframe=white,
+		colbacktitle=RWTHblau,
+		coltitle=white,%title font color
+		colback=RWTHblau,%body background
+		coltext=white,
+		comsys/icon color=white,
+		comsys/colsub=RWTHblau,
+	},%
+	subtitle/.style={
+		sharp corners=north,
+		top=0.7mm,
+	},
+	position subtitle/.style={
+		title={ls=\the\cs@tcb@leftskip},
+	},
+}
+
+\newcommand{\@cs@blockbegin}[3]{
+	\setlength{\leftmargini}{\labelsep+\widthof{8}}%
+	\setstretch{1}%
+	\setbeamercolor{item}{fg=#2}%
+	\@cs@storearea[-1.3mm-1.5bp]%
+	\def\cs@curboxtype{#1}%
+	\par%
+	\begingroup%
+	\tcolorbox[#1,#3]%
+	\setbeamertemplate{itemize/enumerate body begin}[inblock]%
+}
+\newcommand{\@cs@blockend}{
+	\endtcolorbox%
+	\endgroup%
+	%\vskip\smallskipamount%
+	\@cs@storearea%
+	\setbeamertemplate{itemize/enumerate body begin}[normal]%
+}
+\newcommand\comsysblocksubtitle[2][]{%
+	\xdef\cs@tcb@origafterskip{\dimexpr\cs@tcb@afterskip+1bp\relax}
+	\xdef\cs@tcb@origrightskip{\dimexpr\cs@tcb@rightskip\relax}
+	\xdef\cs@tcb@origleftskip{\dimexpr\cs@tcb@leftskip\relax}
+	\xdef\cs@tcb@origwidth{\dimexpr\cs@tcb@width\relax}
+	\endtcolorbox%
+	\endgroup%
+	\begingroup%
+	\pgfkeys{/cs@tmp/.cd,
+		left skip/.store in=\cs@tcb@myleftskip,
+		right skip/.store in=\cs@tcb@myrightskip,
+		.unknown/.code={},
+		left skip=\dimexpr(\cs@tcb@origwidth - #2\cs@tcb@origwidth) / 2\relax,
+		right skip=\dimexpr(\cs@tcb@origwidth - #2\cs@tcb@origwidth) / 2\relax,
+		#1}
+	\tcolorbox[\cs@curboxtype,
+	comsys/subtitle,
+	colback=\cs@tcb@colframe,
+	coltext={\pgfkeysvalueof{/tcb/comsys/colsub}},
+	before skip=-\cs@tcb@origafterskip,
+	width=\cs@tcb@origwidth,
+	#1,
+	left skip={\dimexpr \cs@tcb@origleftskip + \cs@tcb@myleftskip\relax},
+	right skip={\dimexpr \cs@tcb@origrightskip + \cs@tcb@myrightskip\relax},
+	]%
+}
+
+\newcommand\cs@deffullenv[4]{
+	\newenvironment{comsys#1block}[1][]{%
+			\@cs@blockbegin{comsys/#1box}{#2}{##1}%
+			#3}
+		{\par%
+			\@cs@blockend%
+			#4%
+		}
+}
+\newcommand\cs@defbasicenv[2]{\cs@deffullenv{#1}{#2}{}{}}
+\newcommand\cs@defcolenv[2]{\cs@deffullenv{#1}{#2}{%
+	\setbeamertemplate{itemize/enumerate body begin}[inblock #1]%
+	\setbeamertemplate{itemize/enumerate subbody begin}[inblock #1]%
+	\setbeamertemplate{itemize/enumerate subsubbody begin}[inblock #1]%
+}{
+	\setbeamertemplate{itemize/enumerate subbody begin}[normal]%
+	\setbeamertemplate{itemize/enumerate subsubbody begin}[normal]%
+}}
+
+\cs@defbasicenv{white}{RWTHblau}
+\cs@defbasicenv{green}{RWTHgrun}
+\cs@defbasicenv{yellow}{RWTHgelb}
+\cs@defbasicenv{blue}{RWTHblau}
+\cs@defcolenv{red}{RWTHrot}
+\cs@defcolenv{gray}{gray!50}
+\cs@defcolenv{inverted}{white}
+
+%-------------------------------------------------------------------------------
+% Default Footline
+%-------------------------------------------------------------------------------
+
+\defbeamertemplate*{footline}{comsys}
+{%
+	\hskip\Gm@lmargin%
+	\begin{minipage}[c][10mm][t]{\dimexpr\pagewidth-\Gm@lmargin-\Gm@rmargin}%
+		\rule{\dimexpr\pagewidth-\Gm@lmargin-\Gm@rmargin}{0.3pt}%
+		\vskip2mm%
+		\mbox{\begin{beamercolorbox}[wd=0.5\textwidth,ht=5mm]{short author}%
+		\if@cs@numberinfooter%
+		\usebeamerfont{framenumber}%
+		\raisebox{\dimexpr 2.5mm - 0.5ex}{\insertframenumber}%
+		\fi%
+		\usebeamerfont{short author}%
+		\hskip 0pt plus 5fill%
+		\raisebox{\dimexpr 2.5mm - 0.5ex}{\insertshortauthor}%
+			\hfill \hskip0pt%
+		\end{beamercolorbox}}
+\hfill
+			\begin{tikzpicture}[baseline=(logo.south)] \node[inner sep=0,anchor=south east] (logo) {\includegraphics[height=5mm]{\insertnormallogo}}; \end{tikzpicture}
+	\end{minipage}
+}
+
+\defbeamertemplate{footline}{title}
+{%
+	\hskip\Gm@lmargin%
+	\begin{minipage}[c][10mm][t]{\dimexpr\pagewidth-\Gm@lmargin-\Gm@rmargin}
+		\phantom{\rule{\dimexpr\pagewidth-\Gm@lmargin-\Gm@rmargin}{0.3pt}}
+		\vskip2mm
+		\mbox{
+			\begin{beamercolorbox}[wd=0.5\textwidth,ht=5mm]{date}
+				\usebeamercolor[fg]{date}\usebeamerfont{date}\linespread{0}\selectfont
+		\insertevent\insertdate \newline
+		\insertlocation
+				\vspace{\dimexpr (5mm - 2em) / 2}
+			\end{beamercolorbox}}
+	\hfill
+		\mbox{	\begin{tikzpicture}[baseline=(logo.south)] \node[inner sep=0,anchor=south east] (logo) {\includegraphics[height=5mm]{\insertnormallogo}}; \end{tikzpicture}}
+	\end{minipage}
+}
+
+\defbeamertemplate{footline}{comsyssplitframe}
+{
+	\hskip\Gm@lmargin
+	\begin{minipage}[c][10mm][t]{\dimexpr\pagewidth-\Gm@lmargin-\Gm@rmargin}%
+		{%
+			\rule{\dimexpr\textwidth - \cs@splitframe@width\textwidth}{0.3pt}%
+			\usebeamercolor{comsyssplitframe}%
+			\color{fg}%
+			\rule{\cs@splitframe@width\textwidth}{0.3pt}%
+		}%
+		\vskip2mm
+		\mbox{\begin{beamercolorbox}[wd=0.5\textwidth,ht=5mm]{footer}
+		\if@cs@numberinfooter%
+		\usebeamerfont{framenumber}%
+		\raisebox{\dimexpr 2.5mm - 0.5ex}{\insertframenumber}%
+		\fi%
+		\usebeamerfont{short author}%
+		\hskip 0pt plus 5fill%
+		\raisebox{\dimexpr 2.5mm - 0.5ex}{\insertshortauthor}%
+			\hfill \hskip0pt%
+		\end{beamercolorbox}}
+\hfill
+			\begin{tikzpicture}[baseline=(logo.south)] \node[inner sep=0,anchor=south east] (logo) {\includegraphics[height=5mm]{\insertinvertedlogo}}; \end{tikzpicture}
+	\end{minipage}
+}
+
+%-------------------------------------------------------------------------------
+% Frametitle
+%-------------------------------------------------------------------------------
+
+\defbeamertemplate*{frametitle}{comsys}
+{%
+	% We need the cols for split frames, and they add some spacing
+	\begin{cols}{1}%
+	\begin{beamercolorbox}[ht=9mm,dp=2mm]{frametitle}%
+		\insertframetitle
+		\insertframetitleextra
+		% \insertsectionhead
+		\hfill
+		\if@cs@numberinfooter\else
+		\usebeamercolor[fg]{framenumber}
+		\usebeamerfont{framenumber}
+		\insertframenumber
+		\fi
+	\end{beamercolorbox}%
+	\color{black}\hrule%
+	\end{cols}%
+}
+
+\defbeamertemplate{frametitle}{comsyssplitframe}
+{%
+	\cols[0pt]{auto,\cs@splitframe@width}%
+	\begin{beamercolorbox}[ht=9mm,dp=2mm,sep=0pt]{frametitle}
+		\insertframetitle
+		\insertframetitleextra
+		% \insertsectionhead
+		\hfill
+	\end{beamercolorbox}%
+	\color{black}\hrule%
+	\col%
+	\usebeamercolor{comsyssplitframe}%
+	\begin{tikzpicture}[overlay]
+		\path[fill=bg] (0,0) ++(0,9mm) rectangle ++(\dimexpr\textwidth + \Gm@rmargin\relax,-\pageheight-1bp);
+	\end{tikzpicture}%
+	\begin{beamercolorbox}[ht=9mm,dp=2mm,sep=0pt]{comsyssplitframe}
+		{} \hfill
+		\if@cs@numberinfooter\else
+		\usebeamerfont{framenumber}
+		\insertframenumber
+		\fi
+	\end{beamercolorbox}%
+	\color{fg}\hrule%
+	\endcols%
+}
+
+
+%-------------------------------------------------------------------------------
+% Title Page
+%-------------------------------------------------------------------------------
+
+\defbeamertemplate*{title page}{comsys}[1][]
+{
+	\pushdown%
+	\hskip-\Gm@lmargin
+	\begin{tikzpicture}[overlay] \inserttitletikz \end{tikzpicture} \vskip3pt
+
+	\begin{beamercolorbox}{title}%
+	\usebeamerfont{title}%
+	\inserttitle
+	\end{beamercolorbox}%
+	\begin{beamercolorbox}{author}%
+		\setstretch{1.25}%
+	{\usebeamerfont{author} \\ \insertauthor}%
+	{\usebeamerfont{authorextra} \\[5\lineskip] \insertauthorextra \hfill \inserttalktype}%
+		\vskip-2mm% compensate for the extra spacing the footer adds; we don't have a line on the title frame
+	\end{beamercolorbox}%
+}
+
+%-------------------------------------------------------------------------------
+% Split Frames
+%-------------------------------------------------------------------------------
+
+\newenvironment{comsyssplitframe}[3][]{
+	\setbeamertemplate{frametitle}[comsyssplitframe]
+	\setbeamertemplate{footline}[comsyssplitframe]
+	\def\cs@splitframe@width{#3}
+	\begin{frame}[environment=comsyssplitframe,#1]{#2}%
+	\cols{auto,\cs@splitframe@width}%
+	}{%
+	\endminipage%
+	\endcols%
+	\end{frame}
+	\setbeamertemplate{frametitle}[comsys]
+	\setbeamertemplate{footline}[comsys]
+	}
+
+\newcommand\comsysframesplit{%
+	\col%
+	\usebeamercolor*[fg]{comsyssplitframe}%
+	\setbeamertemplate{itemize item}[bcircle-splitframe]%
+	\setbeamertemplate{itemize subitem}[bdash-splitframe]%
+	\minipage[c][\dimexpr\pageheight - 25mm][t]{\textwidth}%
+}
+
+%-------------------------------------------------------------------------------
+% Section Page
+%-------------------------------------------------------------------------------
+
+\newcommand{\sectionhead}{
+	\vspace{1.29cm}
+	\hbox{\hskip-0.25cm\pgfuseshading{beamer@spacer}}
+	\nointerlineskip
+	\begin{minipage}[t]{\textwidth}%
+	\hspace{\dimexpr0.5\textwidth-0.5\paperwidth\relax}%
+	\begin{minipage}[t]{\paperwidth}%
+	\begin{tikzpicture}
+		\node[shading=beamer@sectionpage_shade,text width=\textwidth,outer sep=0,inner sep=0.25cm,align=left,minimum height=3.135cm/2] {%
+			\usebeamerfont{title}\color{maintitle}\shrinktotextwidth[\textwidth-0.5cm]{\vphantom{T}\smash\insertsection}%
+		};
+	\end{tikzpicture}%
+	\end{minipage}%
+	\end{minipage}%
+
+	\nointerlineskip
+	\hbox{\hskip-0.25cm\pgfuseshading{beamer@spacer}}
+	\nointerlineskip
+	\hbox{\hskip-0.25cm\pgfuseshading{beamer@titlespacer}}
+	\nointerlineskip
+	\hbox{\hskip-0.25cm\pgfuseshading{beamer@spacer}}
+	\vskip\bigskipamount
+}
+
+\defbeamertemplate*{section page}{comsys}[1][]{
+	\sectionhead
+
+	\nointerlineskip
+	\vspace{0.18cm}
+	\nointerlineskip
+
+	\vspace{1.27cm}
+	\vspace{-6.427519685039369cm}
+	\vspace{\textheight}
+}
+
+
+%-------------------------------------------------------------------------------
+% Part Page
+%-------------------------------------------------------------------------------
+
+\defbeamertemplate*{part page}{comsys}[1][]
+{
+	\begin{centering}
+		{\usebeamerfont{part name}\usebeamercolor[fg]{part 
+		name}\partname~\insertromanpartnumber}
+		\vskip1em\par
+		\begin{beamercolorbox}[sep=8pt,center,#1]{part title}
+			\usebeamerfont{part title}\insertpart\par
+		\end{beamercolorbox}
+	\end{centering}
+}
+
+
+%-------------------------------------------------------------------------------
+% Background with placeholder for picture in picture
+%-------------------------------------------------------------------------------
+\defbeamertemplate{background canvas}{video placeholder}{%
+	\begin{tikzpicture}[xshift=\pagewidth-\beamer@rightmargin,yshift=-\pageheight+448pt/11.00667*2+0.69cm+5mm,scale=2/-11.00667,overlay]
+		\draw[fill] svg{M 208,224 A 112,112 0 1 0 96,112 112,112 0 0 0 208,224 Z m 0,32 C 138.58,256 0,298.88 0,384 v 64 H 416 V 384 C 416,298.88 277.42,256 208,256 Z};
+	\end{tikzpicture}
+}
+\newlength{\@cs@videospace}
+\setlength{\@cs@videospace}{0pt}
+\newcommand{\activatevideospacing}{
+	\setlength{\@cs@videospace}{75.59052828875582pt+\beamer@rightmargin}
+	\pgfmathparse{(\@cs@videospace-\beamer@rightmargin)/(\textwidth-(2-1)*\beamer@rightmargin)}%
+	\let\videospacecoltwo\pgfmathresult%
+	\pgfmathparse{(\@cs@videospace-\beamer@rightmargin)/(\textwidth-(3-1)*\beamer@rightmargin)}%
+	\let\videospacecolthree\pgfmathresult%
+	\pgfmathparse{(\@cs@videospace-\beamer@rightmargin)/(\textwidth-(4-1)*\beamer@rightmargin)}%
+	\let\videospacecolfour\pgfmathresult%
+	\pgfmathparse{(\@cs@videospace-\beamer@rightmargin)/(\textwidth-(5-1)*\beamer@rightmargin)}%
+	\let\videospacecolfive\pgfmathresult%
+}
+\newenvironment{videospacing}{
+	\begin{list}{}{%
+	\setlength{\topsep}{0pt}%
+	\setlength{\leftmargin}{0pt}%
+	\setlength{\rightmargin}{\@cs@videospace}%
+	\setlength{\textwidth}{\textwidth-\@cs@videospace}%
+	\setlength{\beamer@rightmargin}{2\beamer@rightmargin+\@cs@videospace}
+	\setlength{\listparindent}{\parindent}%
+	\setlength{\itemindent}{\parindent}%
+	\setlength{\parsep}{\parskip}%
+	}%
+	\item[]
+}{\end{list}}
+
+
+%-------------------------------------------------------------------------------
+% Slide containing the titlepage
+%-------------------------------------------------------------------------------
+
+\newcommand{\titleframe}[0]{%
+	\setbeamertemplate{footline}[title]%
+	\begin{frame}%
+		\titlepage%
+	\end{frame}%
+	\setbeamertemplate{footline}[comsys]%
+}
+
+
+%-------------------------------------------------------------------------------
+% Slide containing only a single message
+%-------------------------------------------------------------------------------
+
+\newcommand{\singlemessageframe}[1]{%
+	\begin{frame}[c]%
+		\vspace{1cm}
+		\hspace{0.25em}%
+		\begin{minipage}{\textwidth-0.5em}%
+			\centering%
+			\color{RWTHblau}%
+			\bfseries%
+			\huge%
+			\shrinktotextwidth{#1}%
+		\end{minipage}
+	\end{frame}
+}
+
+
+%-------------------------------------------------------------------------------
+% Helpfull Commands
+%-------------------------------------------------------------------------------
+
+\newcommand{\@cs@storearea}[1][0pt]{%
+	\ifvmode%
+		\nointerlineskip%
+	\fi%
+	\vbox{%
+		\tikz[overlay,remember picture] \coordinate (@cs@textright) at (\textwidth+#1,0);%
+	}%
+	\ifvmode%
+		\nointerlineskip%
+	\fi%
+}
+
+
+% A Picture at the Right Border of the Slide
+\newsavebox{\cs@illustration}%
+\newenvironment{illustration}[1][top]{%
+	\ifthenelse{\equal{#1}{sameposition}}{%
+		\def\cs@ilpos{%
+			\@ifundefined{pgf@sh@ns@cs@ilhere}{%
+				\node[anchor=base,inner sep=0] (cs@ilhere) at (0,0) {\strut};%
+			}{}%
+		}%
+	}{%
+		\def\cs@ilpos{\node[anchor=base,inner sep=0] (cs@ilhere) at (0,0) {\strut};}%
+	}%
+	\def\cs@ilanchA{north east}%
+	\def\cs@ilanchB{north}%
+	\ifthenelse{\equal{#1}{below}}{%
+		\def\cs@ilanchB{south}%
+	}{}%
+	\ifthenelse{\equal{#1}{above}}{%
+		\def\cs@ilanchA{south east}%
+	}{}%
+	\ifthenelse{\equal{#1}{bottom}}{%
+		\def\cs@ilanchA{south east}%
+		\def\cs@ilanchB{base}%
+	}{}%
+	\ifthenelse{\equal{#1}{center}}{%
+		\def\cs@ilanchA{east}%
+		\def\cs@ilanchB{east}%
+	}{}%
+	\begin{lrbox}{\cs@illustration}%
+	\normalfont%
+	\usebeamercolor[fg]{normal text}%
+}{%
+	\end{lrbox}%
+	\begin{tikzpicture}[overlay,remember picture]
+		\cs@ilpos
+		%\@ifundefined{pgf@sh@ns@@cs@textright}{
+			\coordinate (@cs@textright) at ($(current page.east)-(\beamer@rightmargin,0)$);
+		%}{}
+		\node[anchor=\cs@ilanchA,outer sep=0,inner sep=0]
+		at (cs@ilhere.\cs@ilanchB-|@cs@textright)
+		{\usebox{\cs@illustration}};
+	\end{tikzpicture}%
+}
+
+% A graphics at the Right Border of the Slide
+\newcommand{\ilgraphics}[2][]{%
+	\begin{illustration}%
+		\includegraphics[#1]{#2}%
+	\end{illustration}%
+}
+\newcommand{\ilbgraphics}[2][]{%
+	\begin{illustration}[below]%
+		\includegraphics[#1]{#2}%
+	\end{illustration}%
+}
+\newcommand{\ilagraphics}[2][]{%
+	\begin{illustration}[above]%
+		\includegraphics[#1]{#2}%
+	\end{illustration}%
+}
+\newcommand{\ilcgraphics}[2][]{%
+	\begin{illustration}[center]%
+		\includegraphics[#1]{#2}%
+	\end{illustration}%
+}
+
+% Shrink content to text width
+\newcommand{\shrinktotextwidth}[2][\textwidth]{%
+  \newdimen{\maxwidth}%
+  \setlength{\maxwidth}{#1}%
+  \newdimen{\namewidth}%
+  \setlength{\namewidth}{\widthof{\tikz\node[align=left,outer sep=0,inner sep=0]{#2};}}%
+  \ifthenelse{\lengthtest{\namewidth < \maxwidth}}%
+  {#2}% do nothing if shorter than text width
+  {\tikz[baseline,anchor=base]\node[align=left,outer sep=0,inner sep=0,scale=\maxwidth/\namewidth,minimum height=0cm]{#2};}%
+}
+
+%-------------------------------------------------------------------------------
+% title picture
+%-------------------------------------------------------------------------------
+
+\newcommand\titleimage[1]{%
+	\def\inserttitletikz{\node[inner sep=0,anchor=south west]{\includegraphics[width=\pagewidth]{#1}};}%
+}
+\newcommand\titletikz[1]{%
+	\def\inserttitletikz{#1}%
+}
+
+
+%-------------------------------------------------------------------------------
+% similar to columns but with margins and relative sizes
+%-------------------------------------------------------------------------------
+
+\newcounter{cols}
+\newcounter{col}[cols]
+\newcounter{auto}[cols]
+
+\def\@cs@ifauto#1#2#3{%
+	\ifthenelse{\equal{#1}{auto}}{#2}{#3}%
+}
+
+\def\@cs@setncolw#1*#2+#3,{%
+	\tikzmath{\@cs@colrw=#1*#2;}
+	\expandafter\edef\csname @cs@colrw\thecols{}@\thecol\endcsname{\@cs@colrw}%
+	\expandafter\edef\csname @cs@colsrw\thecols\endcsname{\csname @cs@colsrw\thecols\endcsname+#1*#2}%
+	\expandafter\edef\csname @cs@colaw\thecols{}@\thecol\endcsname{\the\dimexpr#3-\csname @cs@colmargin\thecols\endcsname+\csname @cs@colmargin\thecols\endcsname*#1}%
+	\expandafter\addtolength\csname @cs@colsaw\thecols\endcsname{\the\dimexpr-#3-\csname @cs@colmargin\thecols\endcsname*#1\relax}%
+}
+\def\@cs@gobblepempty#1+\@empty{#1}%
+\def\@cs@gobblemempty#1*\@empty{#1}%
+\def\@cs@gobblempempty#1*\@empty+\@empty{#1}%
+\def\@cs@setpcolw#1*#2+#3,{%
+	\ifx#3\@empty%
+		\@cs@setncolw#1*#2+0cm,%
+	\else%
+		\@cs@setncolw#1*#2+\@cs@gobblepempty#3,%
+	\fi%
+}
+\newlength{\tempdimen}
+\def\@cs@setmpcolw#1*#2+#3,{%
+	\ifx#2\@empty%
+		\@cs@setpcolw1*#1+\@empty,%
+	\else%
+		\ifx#3\@empty%
+			\@cs@setncolw#1*\@cs@gobblemempty#2+0cm,%
+		\else%
+			\@cs@setncolw#1*#2+\@cs@gobblempempty#3,%
+		\fi%
+	\fi%
+}
+\def\@cs@setcolw#1,{%
+	\@cs@setmpcolw#1*\@empty+\@empty,%
+}
+
+\newenvironment{cols}[2][\beamer@leftmargin]{%
+	\stepcounter{cols}%
+	\@cs@ifauto{#2}{
+		\ifcsname @cs@colsspec\thecols\endcsname
+			\edef\@cs@colsspec{\csname @cs@colsspec\thecols\endcsname}
+		\else
+			\edef\@cs@colsspec{1,}
+		\fi
+	}{
+		\edef\@cs@colsspec{#2,}
+	}
+	\expandafter\edef\csname @cs@colsspec\thecols\endcsname{}%
+	\expandafter\newlength\csname @cs@colmargin\thecols\endcsname%
+	\expandafter\setlength\csname @cs@colmargin\thecols\endcsname{\dimexpr #1\relax}%
+	\def\@cs@colsi##1{\expandafter\@cs@colse##1\@eol}%
+	\def\@cs@colse##1,##2\@eol{%
+		\@cs@colsn{##1}%
+		\ifx\@eol##2\@eol\else\@cs@colse##2\@eol\fi}%
+	\expandafter\edef\csname @cs@colsrw\thecols\endcsname{0}
+	\expandafter\newlength\csname @cs@colsaw\thecols\endcsname%
+	\expandafter\setlength\csname @cs@colsaw\thecols\endcsname{\dimexpr\textwidth+\csname @cs@colmargin\thecols\endcsname}%
+	\setcounter{col}{0}%
+	\setcounter{auto}{0}%
+	\def\@cs@colsn##1{
+		\stepcounter{col}%
+		\@cs@ifauto{##1}{
+			\stepcounter{auto}%
+		}{
+			\@cs@setcolw##1,%
+		}
+	}
+	\@cs@colsi{\@cs@colsspec}%
+	\expandafter\edef\csname @cs@ncols\thecols\endcsname{\thecol}
+	\edef\@cs@ncol{\thecol}
+	\ifnum\theauto>0
+		\tikzmath{\@cs@colsautow=1-(\csname @cs@colsrw\thecols\endcsname);}%
+		\setcounter{col}{0}%
+		\def\@cs@colsn##1{
+			\stepcounter{col}%
+			\@cs@ifauto{##1}{
+				\@cs@setcolw\@cs@colsautow,%
+			}{
+			}
+		}
+		\@cs@colsi{\@cs@colsspec}%
+	\else
+	\fi
+	\tikzmath{\@cs@colsrwi=1/(\csname @cs@colsrw\thecols\endcsname);}%
+	\expandafter\newlength\csname @cs@colswidth\thecols\endcsname%
+	\expandafter\setlength\csname @cs@colswidth\thecols\endcsname{\@cs@colsrwi\csname @cs@colsaw\thecols\endcsname}%
+	\setcounter{col}{0}%
+	\hskip -\csname @cs@colmargin\thecols\endcsname%
+	\@cs@colbegin%
+	\ignorespacesafterend%
+}{%
+	\@cs@colend%
+	\let\@cs@ncol\relax
+	\immediate\write\@auxout{
+		\noexpand\@cs@colsinfo{\the\value{cols}}{\csname @cs@colsspec\thecols\endcsname}
+	}
+	\@cs@storearea%
+}
+
+\newcommand{\@cs@colbegin}[0]{%
+	\stepcounter{col}%
+	\ifcsname @cs@colrw\thecols{}@\thecol\endcsname%
+	\else
+			\expandafter\edef\csname @cs@colaw\thecols{}@\thecol\endcsname{0cm}%
+		\expandafter\edef\csname @cs@colrw\thecols{}@\thecol\endcsname{1}%
+	\fi
+	\expandafter\edef\csname @cs@colsspec\thecols\endcsname{\csname @cs@colsspec\thecols\endcsname\csname @cs@colrw\thecols{}@\thecol\endcsname+\csname @cs@colaw\thecols{}@\thecol\endcsname,}%
+	\hskip \csname @cs@colmargin\thecols\endcsname%
+	\begin{minipage}[t]{\csname @cs@colrw\thecols{}@\thecol\endcsname\csname @cs@colswidth\thecols\endcsname + \csname @cs@colaw\thecols{}@\thecol\endcsname}%
+	\def\@listi{\leftmargin\leftmargini
+		\topsep 0\p@
+		\parsep 0\p@
+		\itemsep3\p@ \@plus2\p@ \@minus3\p@}
+	\let\@listI\@listi
+	\@cs@storearea%
+	\leavevmode%
+	\vskip 0pt%
+	\vskip -\baselineskip%
+}
+\newcommand{\@cs@colend}[0]{%
+	\end{minipage}%
+}
+
+\newcommand{\col}[0]{
+	\@cs@colend%
+	\nolinebreak%
+	\@cs@colbegin%
+	\ignorespacesafterend%
+}
+
+\newcommand{\@cs@colsinfo}[2]{
+	\expandafter\gdef\csname @cs@colsspec#1\endcsname{#2}
+}
+
+
+%-------------------------------------------------------------------------------
+% Headings
+%-------------------------------------------------------------------------------
+
+\newcommand{\@cs@headingex}[3][]{%
+	\tikz[overlay,remember picture]\node[
+		fill=RWTHblau,
+		inner sep=0,%
+		outer sep=0,%
+		draw=none,%
+		fit={($(heading.north #2)+(#3,0)$) ($(heading.south #2)+(#3,0)$) (current page.#2|-heading.#2)},%
+		#1,%
+	] {};%
+}
+
+\newcommand{\heading}[2][]{%
+	\par
+	%\nointerlineskip%
+	\ifcsname @cs@ncol\endcsname%
+		\tikzset{@cs@hs/.style={minimum width=\textwidth}}%
+	\else%
+		\hskip-2.3mm%
+		\tikzset{@cs@hs/.style={}}%
+	\fi%
+	\tikz[remember picture]\node[%
+		@cs@hs,
+		fill=RWTHblau,
+		font=\color{white}\bfseries,%
+		rounded corners=2.3mm,%
+		inner sep=2.3mm,%
+		outer sep=0,%
+		draw=none,%
+		#1,%
+	] (heading) {%
+	%\usebeamerfont{frametitle}%
+		\par\smash{#2}\vphantom{T}\par%
+	};%
+	\ifcsname @cs@ncol\endcsname%
+		\ifnum\thecol=1%
+			\@cs@headingex[#1]{west}{2.3mm}%
+		\else%
+			\ifnum\thecol=\@cs@ncol%
+				\@cs@headingex[#1]{east}{-2.3mm}%
+			\fi%
+		\fi%
+	\else%
+		\@cs@headingex{west}{2.3mm}%
+		\tikz[overlay,remember picture]\node[
+			fill=RWTHblau,
+			inner sep=0,%
+			outer sep=0,%
+			draw=none,%
+			fit={($(heading.north east)-(2.3mm,0)$) ($(heading.south east)+(2.3mm,0)$)},%
+			#1,%
+		] {};%
+		\tikz[overlay,remember picture]\node[
+			fill=RWTHblau,
+			rounded corners=2.3mm,%
+			inner sep=0,%
+			outer sep=0,%
+			draw=none,%
+			fit={(heading.north east) ($(heading.south west)+({min(\textwidth+2.3mm, 0.85\pagewidth-1.7*0.25cm)},0)$)},%
+			#1,%
+		] {};%
+	\fi%
+	\par%
+	\ignorespacesafterend%
+}
+
+%-------------------------------------------------------------------------------
+% correct counting of frames before appendix
+%-------------------------------------------------------------------------------
+
+\def\insertpresentationendframe{\inserttotalframenumber}%
+\g@addto@macro{\appendix}{\immediate\write\@auxout{\string\@writefile{nav}{\noexpand\headcommand{\noexpand\def\noexpand\insertpresentationendframe{\the\c@framenumber}}}}}%
+
+
+%-------------------------------------------------------------------------------
+% misc
+%-------------------------------------------------------------------------------
+
+\newcommand{\pushdown}[0]{%
+	\vspace{\stretch{100}}%
+}
+
+\newcommand{\@location}[1]{%
+	\def\insertlocation{#1}%
+}%
+\ifx\location\undefined%
+	\let\location\@location
+\fi
+\def\insertlocation{%
+	\ifdefequal{\@location}{\location}{
+		Aachen%
+	}{%
+		\location%
+	}%
+}
+
+\newcommand{\paperref}[1]{%
+	\def\insertpaperref{#1}
+}
+\def\insertpaperref{}
+
+\newcommand{\frametitleextra}[1]{%
+	\def\insertframetitleextra{#1}
+}
+\def\insertframetitleextra{}
+
+\newcommand{\authorextra}[1]{%
+	\def\insertauthorextra{#1}
+}
+\def\insertauthorextra{}
+
+\newcommand\talktype[1]{\def\inserttalktype{#1}}
+\def\inserttalktype{}
+
+\newcommand\eventname[1]{\def\insertevent{#1, }}
+\def\insertevent{}
+
+\newcommand\normallogo[1]{\def\insertnotmallogo{#1}}
+\def\insertnormallogo{logos/rwth_comsys_bild_rgb_cropped.pdf}
+
+\newcommand\invertedlogo[1]{\def\insertinvertedlogo{#1}}
+\def\insertinvertedlogo{logos/rwth_comsys_bild_rgb_white_cropped.pdf}
+
+\newcommand\thefontsize[1]{{#1 \string#1 = \f@size pt}}
+\newcommand{\showfonts}[0]{
+	\thefontsize\tiny\par
+	\thefontsize\scriptsize\par
+	\thefontsize\small\par
+	\thefontsize\normalsize\par
+	\thefontsize\large\par
+	\thefontsize\Large\par
+	\thefontsize\LARGE\par
+	\thefontsize\huge\par
+	\thefontsize\Huge\par
+}
+\newcommand{\showsizes}[1][cm]{%
+	\par%
+	\uselengthunit{#1}%
+	\begin{tikzpicture}[overlay,remember picture]
+		\path[<->] (0,0) edge node[below,anchor=north east,pos=1] {\string\textwidth=\printlength\textwidth} (\textwidth,0);
+		\path[<->] (current page.west) edge node[below,anchor=north east,pos=1] {\string\pagewidth=\printlength\pagewidth} (current page.east);
+		\path[<->] (current page.north) edge node[right,anchor=west,pos=0.75] {\string\pageheight=\printlength\pageheight} (current page.south);
+	\end{tikzpicture}%
+}
+\newcommand{\showgrid}[1][1cm]{%
+	\begin{tikzpicture}[overlay,remember picture]
+		\draw[step=#1/10,black,ultra thin] (current page.south west) grid (current page.north east);
+		\draw[step=#1,red,very thin] (current page.south west) grid (current page.north east);
+	\end{tikzpicture}%
+}
+
+\newcommand{\showcolor}[2][HTML]{%
+	\textcolor{#2}{
+	$\blacksquare$
+	\texttt{\#\convertcolorspec{named}{#2}{#1}\tmp\tmp}
+	#2
+	}
+}
+
+
+\usebackgroundtemplate{}
+
+% order with which things are defined is also important
+\beamertemplatenavigationsymbolsempty
+
+
+% nothing done for the not presentation mode
+\mode<all>

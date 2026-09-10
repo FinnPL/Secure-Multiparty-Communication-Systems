@@ -1,0 +1,448 @@
+%! TeX Program = lualatex
+\documentclass[english,aspectratio=169,t,9pt]{beamer}
+% useful options:
+%   aspectratio=169
+
+\usepackage[utf8]{inputenc}
+\usepackage{babel}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+%\usepackage{wrapfig}
+\usepackage{tikz}
+\usetikzlibrary{shapes.symbols,positioning}
+\usepackage{xfrac}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{fontawesome}
+\tolerance=1000
+\usepackage{listings}
+\usepackage[iso]{isodate}
+
+% select theme before using any of its features
+\usetheme{Comsys}
+
+\setstretch{1.3}
+
+\title{The Template}
+\author[Name of presenter]{First Author, Co-Author}
+\authorextra{Advisor(s): Name(s)}
+\talktype{Bachelor's/Master's Initial/Final / Seminar Talk}
+\eventname{PURPOSE/EVENT}
+\date{January 1\textsuperscript{st} 2025}
+
+% Use one of these. Images are automatically scaled to match \pagewidth and cropped at the top
+% TikZ code is executed in an [overlay] tikzpicture just above the title
+\titletikz{
+	\node[anchor=west] at (0,0) {the bottom-left corner};
+	\node[anchor=east] at (\pagewidth,0) {the bottom-right corner};
+	\node at (0.5\pagewidth,3cm) {more-or-less the middle};
+}
+\titleimage{figures/default-title-page.jpeg}
+
+\begin{document}
+
+\titleframe
+
+\begin{frame}{\st{Agenda}}
+	\vfill
+	\singleitem{
+		\alert{When giving a presentation at COMSYS, you do not need an agenda slide; \\
+your presentation should flow naturally and feature reasonable transitions}
+		\begin{itemize}
+			\item Only for talks $>$45 min you can consider adding such a slide
+			\item If in doubt, talk to you advisor
+		\end{itemize}
+	}
+	\vfill
+	\vfill
+\end{frame}
+
+\begin{frame}{Rules for COMSYS Slides}
+	\begin{itemize}
+		\item Use only plain, un-animated slide transitions.
+		\item Do not use special animation effects
+			\begin{itemize}
+				\item Things should pop up ``hard''
+				\item Things should not fly around, glitter, sparkle, beep, blink, etc.
+				\item (Dis-)Appear effects are fine to support the flow of the presentation.
+			\end{itemize}
+		\item Don't overload your slides with text.
+		\item Use graphs and figures.
+		\item Don't leave slides half empty -- balance the content.
+			\singleitem{Use paragraph spacing settings if necessary and appropriate. Don't simply hit enter multiple times.}
+		\item Try to get a consistent look. Re-use colors, shapes, etc.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Blocks}
+	\begin{cols}[1mm]{1,1,1}
+		\begin{comsyswhiteblock}[sharp corners,equal height group=mygroup]
+			White Block \\
+			Just a blue frame around the text
+		\end{comsyswhiteblock}
+		\begin{comsyswhiteblock}[equal height group=mygroup]
+			White Block \\
+			Just a blue frame around the text
+		\end{comsyswhiteblock}
+		\col
+		\begin{comsysredblock}[sharpish corners,equal height group=mygroup]
+			This is a Alert Block \\
+			Alert block
+		\end{comsysredblock}
+		\begin{comsysredblock}[equal height group=mygroup]
+			This is a Alert Block \\
+			Alert block
+		\end{comsysredblock}
+		\col
+		\begin{comsysgreenblock}[sharp corners,equal height group=mygroup]
+			This is a example block \\
+			example block
+		\end{comsysgreenblock}
+		\begin{comsysgreenblock}[equal height group=mygroup]
+			This is a example block \\
+			example block
+		\end{comsysgreenblock}
+	\end{cols}
+	\begin{cols}[2mm]{0.25,0.5}
+		\begin{actionenv}<2-> % Because of reasons, you can't use action specifiers directly on the blocks :(
+		\begin{comsysredblock}[hbox,comsys/bottom cutout]%
+			important remarks
+		\end{comsysredblock}
+		\end{actionenv}
+		\begin{comsysyellowblock}[before skip=0pt]
+			may use a cutout
+		\end{comsysyellowblock}
+		\col
+		\begin{comsysredblock}[colback=RWTHblau,comsys/bottom cutout=0.7,comsys/bottom cutout dx=5mm,comsys/bottom cutout dy=3mm]
+			The blocks accept \texttt{tcolorbox} options.
+		\end{comsysredblock}
+		\begin{comsysblueblock}[before skip=0pt]
+			Cutouts have options too!
+		\end{comsysblueblock}
+		\begin{tcolorbox}[comsysboxbase,adjusted title=A Title,colframe=RWTHpetrol,coltitle=white]
+			The boxes use the \texttt{tcolorbox} package, \\ feel free to create your own
+		\end{tcolorbox}
+	\end{cols}
+\end{frame}
+
+\begin{frame}{Itemize}
+	\begin{cols}{1,1,1}
+		\begin{itemize}
+		\item item
+		\item item
+		\item []
+		\item item
+			\begin{itemize}
+			\item subitem
+				\begin{itemize}
+				\item subsubitem
+				\end{itemize}
+			\end{itemize}
+		\end{itemize}
+	\col
+		\begin{enumerate}
+		\item Enumerated item
+		\item Enumerated item
+		\item[]
+		\item Enumerated item
+		\item Enumerated item
+		\end{enumerate}
+	\col
+		\setlength{\leftmargini}{\labelsep+\widthof{Item:}+1mm+1.5bp}
+		\begin{itemize}
+		\item[Item:] \textcolor{black}{\normalfont{custom list}}
+		\item[Item:] \textcolor{black}{\normalfont{custom list}}
+		\item[Item:] \textcolor{black}{\normalfont{custom list}}
+		\end{itemize}
+	\end{cols}
+
+	\vskip\bigskipamount
+
+	\begin{cols}{auto}
+		\begin{comsysblueblock}
+			\begin{itemize}
+			\item item
+				\begin{itemize}
+				\item subitem
+					\begin{itemize}
+					\item subsubitem
+					\end{itemize}
+				\end{itemize}
+			\end{itemize}
+		\end{comsysblueblock}
+		\begin{comsysblueblock}
+			\begin{enumerate}
+			\item item
+			\item item
+			\end{enumerate}
+		\end{comsysblueblock}
+	\col
+		\begin{comsysgreenblock}
+			\begin{itemize}
+			\item item
+				\begin{itemize}
+				\item subitem
+					\begin{itemize}
+					\item subsubitem
+					\end{itemize}
+				\end{itemize}
+			\end{itemize}
+		\end{comsysgreenblock}
+		\begin{comsysredblock}
+			\begin{itemize}
+			\item item
+				\begin{itemize}
+				\item subitem
+					\begin{itemize}
+					\item subsubitem
+					\end{itemize}
+				\end{itemize}
+			\end{itemize}
+		\end{comsysredblock}
+	\col
+		\begin{comsyswhiteblock}{}
+			\begin{itemize}
+			\item item
+				\begin{itemize}
+				\item subitem
+					\begin{itemize}
+					\item subsubitem
+					\end{itemize}
+				\end{itemize}
+			\end{itemize}
+		\end{comsyswhiteblock}
+		\begin{comsysgrayblock}{}
+			\begin{itemize}
+			\item item
+				\begin{itemize}
+				\item subitem
+					\begin{itemize}
+					\item subsubitem
+					\end{itemize}
+				\end{itemize}
+			\end{itemize}
+		\end{comsysgrayblock}
+	\end{cols}
+\end{frame}
+
+\begin{frame}{Further Bars}
+	\begin{comsysyellowblock}
+		This is a takeaway
+		\comsysblocksubtitle{0.8}
+		With a subtitle
+	\end{comsysyellowblock}
+	\begin{comsysyellowblock}[comsys/left icon=?]
+		Is this a test question?
+	\end{comsysyellowblock}
+	\begin{comsysredblock}[comsys/right icon=\faThumbsDown]
+		Everything is bad
+	\end{comsysredblock}\vspace{-0.75ex}
+	\begin{comsysredblock}[comsys/right icon=!]
+		We need to warn
+	\end{comsysredblock}
+	\begin{comsysgreenblock}[comsys/right icon=\faThumbsUp]
+		Everything is good
+	\end{comsysgreenblock}
+	\begin{comsysblueblock}[comsys/left icon=\faLightbulbO]
+		Because we know how to do it \\ (we're very good)
+		\comsysblocksubtitle{0.5}
+		sub
+	\end{comsysblueblock}
+\end{frame}
+
+\begin{frame}{Headings}
+	\heading{Title}
+	\begin{itemize}
+	\item A
+	\item B
+	\end{itemize}
+
+	\vspace{\bigskipamount}
+
+	\begin{cols}{0.5,auto}
+		\heading{Title on the left}
+		\begin{itemize}
+		\item A
+		\item B
+		\end{itemize}
+	\col
+		\heading{Title on the right}
+		\begin{itemize}
+		\item A
+		\item B
+		\end{itemize}
+	\end{cols}
+
+	\vspace{\bigskipamount}
+
+	\begin{cols}{1,1,1}
+		\heading[fill=RWTHgrun]{Title on the left}
+		\begin{itemize}
+		\item A
+		\item B
+		\end{itemize}
+	\col
+		\heading[fill=RWTHturkis]{Title in the middle}
+		\begin{itemize}
+		\item A
+		\item B
+		\end{itemize}
+	\col
+		\heading[fill=RWTHmagenta]{Title on the right}
+		\begin{itemize}
+		\item A
+		\item B
+		\end{itemize}
+	\end{cols}
+\end{frame}
+
+\begin{frame}{Illustrative Pictures right of Main Text}
+	\begin{itemize}
+	\item A picture can be inserted which is right aligned
+		\begin{itemize}
+		\item It is vertically aligned with the position\ilgraphics[height=2em]{logos/rwth}
+		\\it was inserted in the source
+		\end{itemize}
+	\item There are two variants
+		\begin{itemize}
+		\item A variant based on \textit{{\textbackslash}includegraphics} which takes the same arguments as \textit{{\textbackslash}includegraphics}
+		\item An environment for any content
+		\begin{illustration}
+			\begin{tikzpicture}
+				\draw[draw=red] (0,0) circle (1em);
+				\draw[draw=blue] (0,0) rectangle(2em,2em);
+			\end{tikzpicture}
+		\end{illustration}
+		\end{itemize}
+	\end{itemize}
+
+	\vskip3\bigskipamount
+
+	\begin{cols}{2,1,1,1}
+		\begin{comsysblueblock}
+			Inside a Block\ilgraphics[height=1em]{logos/rwth}
+		\end{comsysblueblock}
+		\begin{comsysblueblock}[adjusted title={Block Title\ilgraphics[height=1em]{logos/rwth}}]
+			Block Body\ilgraphics[height=1em]{logos/rwth}
+		\end{comsysblueblock}
+	\col
+		Top\ilgraphics[height=1em]{logos/rwth}
+	\col
+		Above\ilagraphics[height=1em]{logos/rwth}
+	\col
+		Below\ilbgraphics[height=1em]{logos/rwth}
+	\end{cols}
+\end{frame}
+
+\section{}
+
+\singlemessageframe{This Frame contains\\only a single Message!}
+
+\begin{frame}{Colors}%
+	\setstretch{1.3}
+	\begin{cols}{auto}
+		\showcolor[HTML]{RWTHblau}\\
+		\showcolor[HTML]{RWTHhellblau}\\
+		\showcolor[HTML]{RWTHmagenta}\\
+		\showcolor[HTML]{RWTHgelb}\\
+		\showcolor[HTML]{RWTHpetrol}\\
+		\showcolor[HTML]{RWTHturkis}\\
+		\showcolor[HTML]{RWTHgrun}\\
+		\showcolor[HTML]{RWTHmaigrun}\\
+		\showcolor[HTML]{RWTHorange}\\
+		\showcolor[HTML]{RWTHrot}\\
+		\showcolor[HTML]{RWTHbordeaux}\\
+		\showcolor[HTML]{RWTHviolett}\\
+		\showcolor[HTML]{RWTHlila}
+	\col
+		\showcolor[HTML]{RWTHblau!50}\\
+		\showcolor[HTML]{RWTHhellblau!50}\\
+		\showcolor[HTML]{RWTHmagenta!50}\\
+		\showcolor[HTML]{RWTHgelb!50}\\
+		\showcolor[HTML]{RWTHpetrol!50}\\
+		\showcolor[HTML]{RWTHturkis!50}\\
+		\showcolor[HTML]{RWTHgrun!50}\\
+		\showcolor[HTML]{RWTHmaigrun!50}\\
+		\showcolor[HTML]{RWTHorange!50}\\
+		\showcolor[HTML]{RWTHrot!50}\\
+		\showcolor[HTML]{RWTHbordeaux!50}\\
+		\showcolor[HTML]{RWTHviolett!50}\\
+		\showcolor[HTML]{RWTHlila!50}
+	\end{cols}
+\end{frame}
+
+\begin{frame}{Sizes}%
+	\showsizes[cm]%
+	\showfonts
+\end{frame}
+
+\begin{comsyssplitframe}{Emphasize Something on the Side}{0.45}%
+	\begin{itemize}
+		\item You can use icons from iconmonstr.com
+		\item The \texttt{fontawesome} package also has icons
+	\end{itemize}
+	\comsysframesplit%
+	% we have nee, nww, see, sww, sse, ssw, nne, nnw
+	\begin{comsysinvertedblock}[halign=flush left,width=0.8\textwidth,comsys/icon circle radius=1.25em,comsys/nww circled icon={\includegraphics[width=1em]{figures/certificate-white.png}}]
+		Using certificates is always a good idea.
+	\end{comsysinvertedblock}
+	\vfill
+	\begin{comsysinvertedblock}[halign=flush right,left skip=0.2\textwidth,comsys/icon circle radius=1.25em,comsys/nee circled icon=\faCloud]
+		Ever thought about using them in the cloud? \\ You really should.
+	\end{comsysinvertedblock}
+	\vfill
+	\begin{comsysinvertedblock}[halign=flush left,width=0.8\textwidth,comsys/icon circle radius=1.25em,comsys/nww circled icon={\normalsize\hfuzz=5pt\makebox[0.5em]{\includegraphics[width=1.25em]{figures/computer-white.png}}\raisebox{1ex}{\makebox[0.5em]{\includegraphics[width=1.25em]{figures/certificate-white.png}}}},sharp corners=southeast]
+		But you should not use them on too many computers. Even not when...
+		% We do dark magic with right/left skip, but it should work intuitively
+		\comsysblocksubtitle[right skip=0pt,halign=flush left]{0.65}
+		...we want to use a subbox! \\ This is really important!
+	\end{comsysinvertedblock}
+\end{comsyssplitframe}
+
+\begin{frame}{Conclusion: ``The Template'' comes to an end}
+	\singleitem[\hspace{0pt}]{Your talk should feature a dedicated conclusion slide that wraps up the presentation.
+	\begin{itemize}
+		\item Avoid having a final slide with just your contact information on
+		\item Instead add a box ``Thank you for your attention'' to signal the end of your talk (as shown here) \\
+			while staying on the conclusion slide with all your awesome findings and takeaways
+	\end{itemize}
+	}
+	\pushdown
+	\pause
+	\begin{center}
+	\begin{comsysinvertedblock}[hbox]
+		Thank you for your attention!
+	\end{comsysinvertedblock}%
+	\end{center}
+\end{frame}
+
+\activatevideospacing
+\setbeamertemplate{background canvas}[video placeholder]
+
+\begin{frame}{Recording a Video with Picture in Picture}
+	\begin{itemize}
+	\item You can reserve some space for where your video will appear
+		\singleitem{Use {\color{black}\texttt{\textbackslash{}activatevideospacing}} before the title slide}
+	\item You can (optionally) insert a placeholder of yourself
+	\end{itemize}
+
+	\pushdown
+
+	\begin{videospacing}
+	\begin{block}{}
+		\medskip
+		\centering
+		This block does not overlap your video.
+		\medskip
+	\end{block}
+	\end{videospacing}
+\end{frame}
+
+\end{document}
