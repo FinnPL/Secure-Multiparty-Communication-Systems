@@ -69,7 +69,7 @@ Secure Multiparty Communication
     \item Forward Secrecy
     \item Backward Secrecy
     \item Post-Compromise Security
-    \item \textit{Note:} Clear up definition of Member join / leaving FS/BS vs messaging FS/PCS.
+    \item \textit{Note:} Clear up definition of Member join / leaving FS/BS vs messaging FS/PCS \cite{prantlSurveySecureGroup2022}.
     \item Consistency
     \item Out of Scope(?): Group membership privacy, metadata.
 \end{itemize}
@@ -94,12 +94,12 @@ Secure but no shared group state and $\mathcal{O}(n)$ encryptions per message.
     \item Symmetric key sent to each member over 1:1 channel
     \item Used by Signal, WhatsApp
     \item Similar: Megolm (Matrix)
+    \item No PCS \cite{balbasWhatsUppSenderKeys2023}
 \end{itemize}
 
 \subsection{Continuous Group-Key Agreement}
 \subsubsection{Definitions}
 Epochs, commits, Operations
-
 \subsubsection{Tree Based}
 \begin{itemize}
     \item Predecessors (Not Strictly CGKA)
@@ -107,20 +107,20 @@ Epochs, commits, Operations
         \item LKH: Server holds all keys
         \item TGDH: not asynchronous
     \end{itemize}
-    \item ART
-    \item TreeKEM/MLS (used by RCS, Discord)
+    \item ART \cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018}
+    \item TreeKEM/MLS \cite{barnesMessagingLayerSecurity2023} (used by RCS, Discord VC)
     \begin{itemize}
         \item Improved variants:
         \begin{itemize}
-            \item RTreeKEM: updates private keys (UPKE)
-            \item Tainted TreeKEM: avoids blanks
+            \item RTreeKEM: updates private keys (UPKE) \cite{alwenSecurityAnalysisImprovements2020}
+            \item Tainted TreeKEM: avoids blanks \cite{kleinKeepDirtTainted2021}
         \end{itemize}
     \end{itemize}
 \end{itemize}
 \subsubsection{Other Approaches}
 \begin{itemize}
-    \item Chained CmPKE
-    \item DCGKA: decentralized (no ordering server)
+    \item Chained CmPKE \cite{hashimotoConcreteTreatmentEfficient2021}
+    \item DCGKA: decentralized (no ordering server) \cite{weidnerKeyAgreementDecentralized2021}
 \end{itemize}
 
 \begin{table*}[htbp]
@@ -155,7 +155,7 @@ Epochs, commits, Operations
 \begin{itemize}
     \item see \Cref{tab:comparison}
     \item Best vs.\ worst case
-    \item Bandwidth asymmetry
+    \item Bandwidth asymmetry \cite{hashimotoConcreteTreatmentEfficient2021}
 \end{itemize}
 
 \subsection{Other Challenges}
@@ -171,7 +171,7 @@ Epochs, commits, Operations
 \begin{itemize}
     \item What insiders can not be prevented from doing
     \item Inconsistent commits $\rightarrow$ split group. (prevent with Zero-Knowledge Proofs \cite{alwenContinuousGroupKey2020})
-    \item Insider DoS: abort vs guaranteed output delivery
+    \item Insider DoS: abort vs guaranteed output delivery \cite{dalskovFastFullySecure2022}
     \item Cheater identification
 \end{itemize}
 

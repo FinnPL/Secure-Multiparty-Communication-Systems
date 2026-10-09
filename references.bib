@@ -205,6 +205,22 @@
   langid = {english}
 }
 
+@inproceedings{hashimotoConcreteTreatmentEfficient2021,
+  title = {A {{Concrete Treatment}} of {{Efficient Continuous Group Key Agreement}} via {{Multi-Recipient PKEs}}},
+  booktitle = {Proceedings of the 2021 {{ACM SIGSAC Conference}} on {{Computer}} and {{Communications Security}}},
+  author = {Hashimoto, Keitaro and Katsumata, Shuichi and Postlethwaite, Eamonn and Prest, Thomas and Westerbaan, Bas},
+  year = 2021,
+  month = nov,
+  pages = {1441--1462},
+  publisher = {ACM},
+  address = {Virtual Event Republic of Korea},
+  doi = {10.1145/3460120.3484817},
+  urldate = {2026-10-09},
+  abstract = {Continuous group key agreements (CGKAs) are a class of protocols that can provide strong security guarantees to secure group messaging protocols such as Signal and MLS. Protection against device compromise is provided by commit messages: at a regular rate, each group member may refresh their key material by uploading a commit message, which is then downloaded and processed by all the other members. In practice, propagating commit messages dominates the bandwidth consumption of existing CGKAs.},
+  isbn = {978-1-4503-8454-4},
+  langid = {english}
+}
+
 @article{kimTreebasedGroupKey2004,
   title = {Tree-Based Group Key Agreement},
   author = {Kim, Yongdae and Perrig, Adrian and Tsudik, Gene},
@@ -218,6 +234,24 @@
   doi = {10.1145/984334.984337},
   urldate = {2026-10-08},
   abstract = {Secure and reliable group communication is an active area of research. Its popularity is fueled by the growing importance of group-oriented and collaborative applications. The central research challenge is secure and efficient group key management. While centralized methods are often appropriate for key distribution in large multicast-style groups, many collaborative group settings require distributed key agreement techniques. This work investigates a novel group key agreement approach which blends key trees with Diffie--Hellman key exchange. It yields a secure protocol suite called Tree-based Group Diffie--Hellman (TGDH) that is both simple and fault-tolerant. Moreover, the efficiency of TGDH appreciably surpasses that of prior art.},
+  langid = {english}
+}
+
+@inproceedings{kleinKeepDirtTainted2021,
+  title = {Keep the {{Dirt}}: {{Tainted TreeKEM}}, {{Adaptively}} and {{Actively Secure Continuous Group Key Agreement}}},
+  shorttitle = {Keep the {{Dirt}}},
+  booktitle = {2021 {{IEEE Symposium}} on {{Security}} and {{Privacy}} ({{SP}})},
+  author = {Klein, Karen and {Pascual-Perez}, Guillermo and Walter, Michael and Kamath, Chethan and Capretto, Margarita and Cueto, Miguel and Markov, Ilia and Yeo, Michelle and Alwen, Jo{\"e}l and Pietrzak, Krzysztof},
+  year = 2021,
+  month = may,
+  pages = {268--284},
+  publisher = {IEEE},
+  address = {San Francisco, CA, USA},
+  doi = {10.1109/SP40001.2021.00035},
+  urldate = {2026-10-09},
+  abstract = {While messaging systems with strong security guarantees are widely used in practice, designing a protocol that scales efficiently to large groups and enjoys similar security guarantees remains largely open. The two existing proposals to date are ART (Cohn-Gordon et al., CCS18) and TreeKEM (IETF, The Messaging Layer Security Protocol, draft). TreeKEM is the currently considered candidate by the IETF MLS working group, but dynamic group operations (i.e. adding and removing users) can cause efficiency issues. In this paper we formalize and analyze a variant of TreeKEM which we term Tainted TreeKEM (TTKEM for short). The basic idea underlying TTKEM was suggested by Millican (MLS mailing list, February 2018). This version is more efficient than TreeKEM for some natural distributions of group operations, we quantify this through simulations.},
+  copyright = {https://doi.org/10.15223/policy-009},
+  isbn = {978-1-7281-8934-5},
   langid = {english}
 }
 
