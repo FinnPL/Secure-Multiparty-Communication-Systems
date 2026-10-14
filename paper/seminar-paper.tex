@@ -14,6 +14,8 @@
 \usepackage{balance}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{microtype}
 
 
 
@@ -127,26 +129,19 @@ Epochs, commits, Operations
     \centering
     \caption{Comparison}
     \label{tab:comparison}
-    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|}
-        \hline
+    \begin{tabular}{lccccccccc}
+        \toprule
         Scheme & FS & PCS & Asynchronous & Ordering requirement & Add & Remove & Send & Receive & Update \\
-        \hline
+        \midrule
         Fanout & & & & & & & & & \\
-        \hline
         Sender Keys & & & & & & & & & \\
-        \hline
         ART & & & & & & & & & \\
-        \hline
         TreeKEM & & & & & & & & & \\
-        \hline
         RTreeKEM & & & & & & & & & \\
-        \hline
         Tainted TreeKEM & & & & & & & & & \\
-        \hline
         CmPKE & & & & & & & & & \\
-        \hline
         DCGKA & & & & & & & & & \\
-        \hline
+        \bottomrule
     \end{tabular}
 \end{table*}
 
