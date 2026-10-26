@@ -54,6 +54,7 @@ Secure Multiparty Communication
 \end{IEEEkeywords}
 
 \section{Introduction}
+
 \begin{itemize}
     \item Motivation: groups are harder than pairs.
     \item Which techniques and protocols are most relevant in current systems? $\rightarrow$ \Cref{sec:techniques}
@@ -63,9 +64,15 @@ Secure Multiparty Communication
 
 \section{Background}\label{sec:background}
 \subsection{Security Goals}
+We consider
+
+\subsubsection{Confidentiality}
+Sent group messages should only be x for current members of the group.
+
+\subsubsection{Group Membership Authentication}
+We assume a trusted third party provides authentication for all individuals.
+
 \begin{itemize}
-    \item Confidentiality
-    \item Group Membership Authentication
     \item Sender Authentication
     \item Availability
     \item Forward Secrecy
@@ -84,11 +91,18 @@ Secure Multiparty Communication
 \end{itemize}
 
 \subsection{2-Party E2EE}
-Double Ratchet (Symmetric and DH)
+The most prominent and currently well-established protocol for pairwise communication is often called the Signal Protocol.
+It uses the Double Ratchet system to achieve both FS and BS in chat messages.
+
+(Symmetric and DH)
 
 \subsection{Client-side fanout}
-Message delivery over Pairwise Double Ratchet channels.
-Secure but no shared group state and $\mathcal{O}(n)$ encryptions per message.
+The naive approach to scale this existing protocol for group chats would be client-side fanout.
+By creating pairwise channels between all group members, a de facto group chat is created.
+For a group of size $n$, each individual is required to create $n-1$ channels and every sent message needs to be encrypted $n-1$ times.
+Because of this, malicious group members could send completely different messages to different members of the group without being caught.
+
+
 \section{Techniques in Current Systems}\label{sec:techniques}
 
 \subsection{Sender Keys}
@@ -164,9 +178,9 @@ Epochs, commits, Operations
 
 \section{Protecting Against Misbehaving Peers}\label{sec:misbehavior}
 \begin{itemize}
-    \item What insiders can not be prevented from doing
+    \item What insiders cannot be prevented from doing
     \item Inconsistent commits $\rightarrow$ split group. (prevent with Zero-Knowledge Proofs \cite{alwenContinuousGroupKey2020})
-    \item Insider DoS: abort vs guaranteed output delivery \cite{dalskovFastFullySecure2022}
+    \item Insider DoS: abort vs.\ guaranteed output delivery \cite{dalskovFastFullySecure2022}
     \item Cheater identification
 \end{itemize}
 
