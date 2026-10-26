@@ -67,14 +67,17 @@ Secure Multiparty Communication
 We consider
 
 \subsubsection{Confidentiality}
-Sent group messages should only be x for current members of the group.
+Sent group messages should only be decryptable by current members of the group.
 
 \subsubsection{Group Membership Authentication}
 We assume a trusted third party provides authentication for all individuals.
 
+\subsubsection{Availability}
+A third party should not be able to disrupt message delivery or key agreement.
+Group members should not be able to unilaterally split the group or disrupt the functionality of other group members.
+
 \begin{itemize}
     \item Sender Authentication
-    \item Availability
     \item Forward Secrecy
     \item Backward Secrecy
     \item Post-Compromise Security
@@ -92,8 +95,7 @@ We assume a trusted third party provides authentication for all individuals.
 
 \subsection{2-Party E2EE}
 The most prominent and currently well-established protocol for pairwise communication is often called the Signal Protocol.
-It uses the Double Ratchet system to achieve both FS and BS in chat messages.
-
+It uses the Double Ratchet system to achieve both FS and BS in chat messages~\cite{perrinDoubleRatchetAlgorithm}.
 (Symmetric and DH)
 
 \subsection{Client-side fanout}
