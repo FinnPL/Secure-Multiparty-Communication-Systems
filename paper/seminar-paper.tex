@@ -94,9 +94,22 @@ Group members should not be able to unilaterally split the group or disrupt the 
 \end{itemize}
 
 \subsection{2-Party E2EE}
-The most prominent and currently well-established protocol for pairwise communication is often called the Signal Protocol.
-It uses the Double Ratchet system to achieve both FS and BS in chat messages~\cite{perrinDoubleRatchetAlgorithm}.
-(Symmetric and DH)
+The most prominent and currently well-established protocol for pairwise communication is the Double Ratchet Algorithm (often also called the Signal Protocol).
+In the following, we will outline how the protocol works and how it provides FS and PCS (called break-in recovery in the specification~\cite{perrinDoubleRatchetAlgorithm}).
+\subsubsection{Setup}
+We assume Alice wants to initiate a conversation with Bob while Bob is offline.
+Bob has previously published a prekey to a server, which contains Bob's public key. Alice can fetch it and use the PQXDH key agreement protocol to derive a root key.
+Alice includes her public key for PQXDH in the first message, so Bob is also able to derive the same root key.
+\subsubsection{Symmetric-key ratchet}
+
+Because the KDF is one-way and all old keys are always deleted, an attacker that compromises the state of both clients? cannot calculate backwards and thus cannot derive the keys used to encrypt old messages.
+This provides Forward Secrecy. PCS, on the other hand, is not provided because an attacker could simply step through the ratchet forward like Alice and Bob and thus derive all future keys.
+
+
+\subsubsection{Diffie-Hellman ratchet}
+In order to also provide PCS, new randomness needs to be introduced into the keys. This is achieved by the DH ratchet.
+On every speaker change in a chat, the new speaker includes a new DH value / PK in their first message.
+From that, a new shared key can be derived and used as a root key for this epoch.
 
 \subsection{Client-side fanout}
 The naive approach to scale this existing protocol for group chats would be client-side fanout.
@@ -116,6 +129,7 @@ Because of this, malicious group members could send completely different message
 \end{itemize}
 
 \subsection{Continuous Group-Key Agreement}
+Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring keys to be shared \ldots
 \subsubsection{Definitions}
 Epochs, commits, Operations
 \subsubsection{Tree Based}
