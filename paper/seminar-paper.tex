@@ -70,7 +70,6 @@ We consider
 Sent group messages should only be decryptable by current members of the group.
 
 \subsubsection{Group Membership Authentication}
-We assume a trusted third party provides authentication for all individuals.
 
 \subsubsection{Availability}
 A third party should not be able to disrupt message delivery or key agreement.
@@ -94,30 +93,28 @@ Group members should not be able to unilaterally split the group or disrupt the 
 \end{itemize}
 
 \subsection{Two-Party End-to-End Encryption}
-The de facto standard protocol for two-party messaging is the Signal Protocol, which uses PQXDH for initial key agreement and the Double Ratchet Algorithm~\cite{perrinDoubleRatchetAlgorithm}.
+The most widely deployed protocol for two-party messaging is the Signal Protocol, which uses PQXDH for initial key agreement and the Double Ratchet Algorithm~\cite{perrinDoubleRatchetAlgorithm}.
 In the following, we outline how the protocol works and how it provides FS and PCS (called break-in recovery in the specification~\cite{perrinDoubleRatchetAlgorithm}).
-For simplicity we omit key authentication and the recently added post-quantum ratchet.
+For simplicity, we omit key authentication and the recently added post-quantum ratchet~\cite{perrinDoubleRatchetAlgorithm}.
 \subsubsection{Setup}
 We assume Alice wants to initiate a conversation with Bob while Bob is offline.
-Bob has previously published a prekey bundle to a server, which contains Bob's public key. Alice fetches it and use the PQXDH key agreement protocol to derive a root key.
-Alice includes the values Bob needs to derive the same root key in the first message.
+Bob has previously published a prekey bundle to a server, which contains Bob's public key. Alice fetches it and uses the PQXDH key agreement protocol to derive a root key.
+In the first message, Alice includes the values Bob needs to derive the same root key.
 \subsubsection{Symmetric-key ratchet}
 Alice and Bob use a KDF to further derive sending and receiving chain keys. For each message they send or receive, they derive a one-time message key, used to encrypt or decrypt the message, and a new sending or receiving chain key, respectively.
 Because the KDF is one-way and all old keys are deleted after use, an attacker that compromises the state of either or both parties cannot compute previous chain keys and thus cannot derive the keys used to encrypt old messages.
-This provides Forward Secrecy. PCS, on the other hand, is not provided because an attacker can advance the chain exactly as the legitimate parties do and thus derive all future keys.
-
-
+This provides FS. PCS, on the other hand, is not provided because an attacker can advance the chain exactly as the legitimate parties do and thus derive all future keys.
 \subsubsection{Diffie--Hellman ratchet}
-In order to provide PCS, new randomness needs to be mixed into the keys. This is achieved by the DH ratchet.
+To provide PCS, new randomness needs to be mixed into the keys. This is achieved by the DH ratchet.
 Whenever the sending direction changes, the new sender includes a new ratchet public key in their first message.
-From that and the current root key, a new shared root key can be derived for the following messages.
+From that and the current root key, a new shared root key and chain keys can be derived for the following messages.
 
 \subsection{Client-Side Fanout}
-The naive approach to scale the existing Signal protocol for group chats would be client-side fanout.
+The naive approach to scale the existing Signal Protocol to group chats would be client-side fanout.
 By creating pairwise channels between all group members, a de facto group chat is created.
 For a group of size $n$, each individual is required to create $n-1$ channels and every sent message needs to be encrypted $n-1$ times.
-Because every message is encrypted independetly, malicious group members could send completely different messages to different members of the group without being caught.
-On the other hand Client-Side Fanout enherits FS, PCS for the same reason.
+Because every message is encrypted independently, malicious group members could send completely different messages to different members of the group without being caught.
+On the other hand, client-side fanout inherits FS and PCS for the same reason.
 
 
 \section{Techniques in Current Systems}\label{sec:techniques}
