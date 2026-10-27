@@ -93,12 +93,12 @@ Group members should not be able to unilaterally split the group or disrupt the 
 \end{itemize}
 
 \subsection{Two-Party End-to-End Encryption}
-The most widely deployed protocol for two-party messaging is the Signal Protocol, which uses PQXDH for initial key agreement and the Double Ratchet Algorithm~\cite{perrinDoubleRatchetAlgorithm}.
+The most widely deployed protocol for two-party messaging is the Signal Protocol, which uses PQXDH~\cite{kretPQXDHKeyAgreement} for initial key agreement and the Double Ratchet Algorithm~\cite{perrinDoubleRatchetAlgorithm}.
 In the following, we outline how the protocol works and how it provides FS and PCS (called break-in recovery in the specification~\cite{perrinDoubleRatchetAlgorithm}).
 For simplicity, we omit key authentication and the recently added post-quantum ratchet~\cite{perrinDoubleRatchetAlgorithm}.
 \subsubsection{Setup}
 We assume Alice wants to initiate a conversation with Bob while Bob is offline.
-Bob has previously published a prekey bundle to a server, which contains Bob's public key. Alice fetches it and uses the PQXDH key agreement protocol to derive a root key.
+Bob has previously published a prekey bundle to a server, which contains Bob's public key. Alice fetches it and uses the PQXDH key agreement protocol~\cite{kretPQXDHKeyAgreement} to derive a root key.
 In the first message, Alice includes the values Bob needs to derive the same root key.
 \subsubsection{Symmetric-key ratchet}
 Alice and Bob use a KDF to further derive sending and receiving chain keys. For each message they send or receive, they derive a one-time message key, used to encrypt or decrypt the message, and a new sending or receiving chain key, respectively.
