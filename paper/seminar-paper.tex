@@ -94,7 +94,7 @@ Group members should not be able to unilaterally split the group or disrupt the 
 \end{itemize}
 
 \subsection{2-Party E2EE}
-The most prominent and currently well-established protocol for pairwise communication is the Double Ratchet Algorithm (often also called the Signal Protocol).
+The most prominent and currently well-established protocol for pairwise communication is the the Signal Protocol, which uses PQXDH for initial key agreement and the Double Rathced Algorithm~\cite{perrinDoubleRatchetAlgorithm}.
 In the following, we will outline how the protocol works and how it provides FS and PCS (called break-in recovery in the specification~\cite{perrinDoubleRatchetAlgorithm}).
 \subsubsection{Setup}
 We assume Alice wants to initiate a conversation with Bob while Bob is offline.
