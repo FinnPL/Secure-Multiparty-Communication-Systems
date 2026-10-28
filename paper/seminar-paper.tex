@@ -129,10 +129,13 @@ Such a sender key consists of a symmetric chain key $\mathsf{ck}_i$ used to deri
 When sending a message, it is encrypted with a message key derived from the current $\mathsf{ck}_i$ and signed with $\mathsf{sk}_i$.
 All group members receive the same ciphertext, verify its signature using $\mathsf{pk}_i$ and decrypt it by also deriving the same current message key using their copy of $\mathsf{ck}_i$.
 After sending and receiving, respectively, each party performs one ratchet step on $\mathsf{ck}_i$ (using an HMAC-based KDF).
+
+Because Sender Keys only use a symmetric chain $\mathsf{ck}_i$ and no second ratchet, PCS can only be achieved by redistributing new sender keys and thus new chain keys.
+Because this is implementation-dependent and often only done after a group member leaves, PCS is only provided over long periods of time.
+If an attacker also compromises the state of the pairwise channels and the new keys are distributed before these channels have fully healed, the newly distributed sender keys could also leak.
 \begin{itemize}
     \item Similar: Megolm (Matrix)
     \item complexity
-    \item No PCS \cite{balbasWhatsUppSenderKeys2023}
 \end{itemize}
 
 \subsection{Continuous Group-Key Agreement}
