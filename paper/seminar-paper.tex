@@ -123,14 +123,13 @@ We will first discuss the currently most widely adopted approach, Sender Keys, a
 \subsection{Sender Keys}
 Sender Keys are currently adopted by many group messaging platforms, most notably WhatsApp and Signal~\cite{balbasWhatsUppSenderKeys2023}.
 We will first discuss their functionality as formally described by Balb\'as et al.~\cite{balbasWhatsUppSenderKeys2023} and then \ldots
-Like client-side fanout, sender keys rely on pairwise channels between group members, but unlike client-side fanout, they do not exchange messages over these channels directly.
-Instead, a group member who wants to send a message must have previously sent their sender key to every other group member over such a two-party channel.
-Such a sender key consists of a symmetric chain key ck for en- and decryption and a signing pk, while the corresponding signing sk remains secret to the corresponding member.
-When sending a message, it is encrypted with a message key derived from the current chain key and signed with the sender's SK.
-All group members receive the same ciphertext, decrypt it by also deriving the same current message key using the known chain key, and verify the signature using the PK.
-After sending and receiving, respectively, each party performs one ratchet step on the chain key (using a KDF like HMAC).
+Like client-side fanout, Sender Keys rely on pairwise channels between group members, but unlike client-side fanout, they do not exchange messages over these channels directly.
+Instead, a group member $i$ who wants to send a message must have previously sent their sender key to every other group member over such a two-party channel.
+Such a sender key consists of a symmetric chain key $\mathsf{ck}_i$ used to derive message keys and a signing $\mathsf{pk}_i$, while the corresponding signing $\mathsf{sk}_i$ remains secret to member $i$.
+When sending a message, it is encrypted with a message key derived from the current $\mathsf{ck}_i$ and signed with $\mathsf{sk}_i$.
+All group members receive the same ciphertext, verify its signature using $\mathsf{pk}_i$ and decrypt it by also deriving the same current message key using their copy of $\mathsf{ck}_i$.
+After sending and receiving, respectively, each party performs one ratchet step on $\mathsf{ck}_i$ (using an HMAC-based KDF).
 \begin{itemize}
-    \item Symmetric key sent to each member over 1:1 channel
     \item Similar: Megolm (Matrix)
     \item complexity
     \item No PCS \cite{balbasWhatsUppSenderKeys2023}
