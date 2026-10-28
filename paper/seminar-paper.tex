@@ -122,18 +122,22 @@ In this section, we will discuss protocols used in current systems, their curren
 We will first discuss the currently most widely adopted approach, Sender Keys, and then go into more detail on the current research direction of Continuous Group-Key Agreement (CGKA), with a focus on tree-based approaches, while also briefly discussing other approaches.
 \subsection{Sender Keys}
 Sender Keys are currently adopted by many group messaging platforms, most notably WhatsApp and Signal~\cite{balbasWhatsUppSenderKeys2023}.
-Like client-side fanout, they rely on pairwise channels between group members, but unlike client-side fanout, they do not exchange messages over these channels directly.
+We will first discuss their functionality as formally described by Balb\'as et al.~\cite{balbasWhatsUppSenderKeys2023} and then \ldots
+Like client-side fanout, sender keys rely on pairwise channels between group members, but unlike client-side fanout, they do not exchange messages over these channels directly.
 Instead, a group member who wants to send a message must have previously sent their sender key to every other group member over such a two-party channel.
-A sender key includes
+Such a sender key consists of a symmetric chain key ck for en- and decryption and a signing pk, while the corresponding signing sk remains secret to the corresponding member.
+When sending a message, it is encrypted with a message key derived from the current chain key and signed with the sender's SK.
+All group members receive the same ciphertext, decrypt it by also deriving the same current message key using the known chain key, and verify the signature using the PK.
+After sending and receiving, respectively, each party performs one ratchet step on the chain key (using a KDF like HMAC).
 \begin{itemize}
     \item Symmetric key sent to each member over 1:1 channel
-    \item Used by Signal, WhatsApp
     \item Similar: Megolm (Matrix)
+    \item complexity
     \item No PCS \cite{balbasWhatsUppSenderKeys2023}
 \end{itemize}
 
 \subsection{Continuous Group-Key Agreement}
-Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring keys to be shared \ldots
+Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring keys to be shared \ldots with every group member \ldots
 \subsubsection{Definitions}
 Epochs, commits, Operations
 \subsubsection{Tree Based}
