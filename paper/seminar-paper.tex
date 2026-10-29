@@ -113,9 +113,9 @@ From that and the current root key, a new shared root key and chain keys can be 
 The naive approach to scale the existing Signal Protocol to group chats would be client-side fanout.
 By creating pairwise channels between all group members, a de facto group chat is created.
 For a group of size $n$, each individual is required to create $n-1$ channels and every sent message needs to be encrypted $n-1$ times~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018}.
-Because every message is encrypted independently, malicious group members could send completely different messages to different members of the group without being caught~\cite{goldbergMultipartyOfftherecordMessaging2009}.
+Because every message is sent over such pairwise channels, client-side fanout inherits their FS and PCS properties~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018,roslerMoreLessEndtoEnd2018}.
+On the other hand, because every message is encrypted independently, malicious group members could send completely different messages to different members of the group without being caught~\cite{goldbergMultipartyOfftherecordMessaging2009}.
 Detecting such misbehaving peers would require additions to the protocol, like making all parties share the hash of their transcripts with each other to catch any discrepancies, as described by Goldberg et al.~\cite{goldbergMultipartyOfftherecordMessaging2009}.
-On the other hand, client-side fanout inherits FS and PCS for the same reason~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018,roslerMoreLessEndtoEnd2018}.
 
 
 \section{Techniques in Current Systems}\label{sec:techniques}
