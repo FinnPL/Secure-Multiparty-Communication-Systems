@@ -64,7 +64,8 @@ Secure Multiparty Communication
 
 \section{Background}\label{sec:background}
 \subsection{Security Goals}
-We consider
+In this section, provide clear definitions for the security notions used in this paper.
+We do not consider group membership or metadata privacy in this paper.
 
 \subsubsection{Confidentiality}
 Sent group messages should only be decryptable by current members of the group.
@@ -72,24 +73,21 @@ In particular, this means that new group members cannot decrypt messages sent be
 In the group key management literature, these two properties have been called Backward and Forward Secrecy, respectively~\cite{kimTreebasedGroupKey2004,prantlSurveySecureGroup2022}.
 We instead use Forward Secrecy in the sense of the secure-messaging literature~\cite{barnesMessagingLayerSecurity2023,weidnerKeyAgreementDecentralized2021} (see \Cref{sec:fs}).
 
-\subsubsection{Group Membership Authentication}
-
-\subsubsection{Availability}
-A third party should not be able to disrupt message delivery or key agreement.
-Group members should not be able to unilaterally split the group or disrupt the functionality of other group members.
-
 \subsubsection{Forward Secrecy}\label{sec:fs}
 Forward Secrecy (FS) is met if after a members state is compromised all old already decrypted messages stay secure.
 
 \subsubsection{Post-Compromise Security}
 Post-Compromise Security (PCS) is met if after a members state is compromised by an passive attacker all messages send in the future are scure.
 
+\subsubsection{Group Membership Authentication}
 
-\begin{itemize}
-    \item Sender Authentication
-    \item Consistency
-    \item Out of Scope(?): Group membership privacy, metadata.
-\end{itemize}
+\subsubsection{Availability}
+A third party should not be able to disrupt message delivery or key agreement.
+Group members should not be able to unilaterally split the group or disrupt the functionality of other group members.
+
+\subsubsection{Sender Authentication}
+
+\subsubsection{Consistency}
 
 \subsection{Threat Model}
 \begin{itemize}
