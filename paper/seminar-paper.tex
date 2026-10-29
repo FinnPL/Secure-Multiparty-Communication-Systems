@@ -64,8 +64,8 @@ Secure Multiparty Communication
 
 \section{Background}\label{sec:background}
 \subsection{Security Goals}
-In this section, provide clear definitions for the security notions used in this paper.
-We do not consider group membership or metadata privacy in this paper.
+In this section, we provide clear definitions for the security notions used in this paper.
+Group membership and metadata privacy are out of scope.
 
 \subsubsection{Confidentiality}
 Sent group messages should only be decryptable by current members of the group.
@@ -81,13 +81,16 @@ Post-Compromise Security (PCS) is met if after a members state is compromised by
 
 \subsubsection{Group Membership Authentication}
 
-\subsubsection{Availability}
-A third party should not be able to disrupt message delivery or key agreement.
-Group members should not be able to unilaterally split the group or disrupt the functionality of other group members.
-
 \subsubsection{Sender Authentication}
 
 \subsubsection{Consistency}
+Group members should agree on the group's state.
+Thus, it should not be possible for a single member to unilaterally split the group.
+
+\subsubsection{Availability}
+We will disregard active network adversaries, as availability cannot be guaranteed against such an attacker model.
+A misbehaving insider should not be able to disrupt honest group members' message delivery or key agreement.
+
 
 \subsection{Threat Model}
 \begin{itemize}
