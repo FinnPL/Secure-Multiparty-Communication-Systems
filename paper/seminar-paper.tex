@@ -82,22 +82,22 @@ In the group key management literature, these two properties have been called Ba
 We instead use Forward Secrecy in the sense of the secure-messaging literature~\cite{barnesMessagingLayerSecurity2023,weidnerKeyAgreementDecentralized2021} (see \Cref{sec:fs}).
 
 \subsubsection{Forward Secrecy}\label{sec:fs}
-Forward Secrecy (FS) is met if, after a member's state is compromised, all old, already decrypted messages stay secure.
+Forward Secrecy (FS) is met if, after a member's state is compromised, all old, already decrypted messages stay secure~\cite{barnesMessagingLayerSecurity2023,weidnerKeyAgreementDecentralized2021}.
 
 \subsubsection{Post-Compromise Security}
-Post-Compromise Security (PCS) is met if, after a member's state is compromised by a passive attacker, all messages sent in the future are secure.
+Post-Compromise Security (PCS) is met if, after a member's state is compromised by a passive attacker, all messages sent in the future are secure~\cite{weidnerKeyAgreementDecentralized2021,beurdoucheMessagingLayerSecurity2025}.
 
 \subsubsection{Group Membership Authentication}
 
 \subsubsection{Sender Authentication}
 
 \subsubsection{Consistency}
-Group members should eventually agree on the group membership and group key, regardless of the order in which messages arrive.
-Thus, it should not be possible for a single member or the DS to permanently split the group.
+Group members should eventually agree on the group membership and group key, regardless of the order in which messages arrive~\cite{weidnerKeyAgreementDecentralized2021}.
+Thus, it should not be possible for a single member or the DS to permanently split the group~\cite{barnesMessagingLayerSecurity2023,beurdoucheMessagingLayerSecurity2025}.
 
 \subsubsection{Availability}
-We assume that all messages are eventually delivered, because an active network adversary or a DS can always drop them.
-Neither a misbehaving insider nor the DS should be able to disrupt honest group members' message processing or key agreement.
+We assume that all messages are eventually delivered, because an active network adversary or a DS can always drop them~\cite{beurdoucheMessagingLayerSecurity2025}.
+Neither a misbehaving insider nor the DS should be able to disrupt honest group members' message processing or key agreement~\cite{alwenContinuousGroupKey2020,devigneMLSGroupMessaging2021}.
 
 
 \subsection{Two-Party End-to-End Encryption}
