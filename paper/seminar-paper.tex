@@ -68,6 +68,9 @@ We consider
 
 \subsubsection{Confidentiality}
 Sent group messages should only be decryptable by current members of the group.
+In particular, this means that new group members cannot decrypt messages sent before they joined and can no longer decrypt messages sent after they left.
+In the group key management literature, these two properties have been called Backward and Forward Secrecy, respectively~\cite{kimTreebasedGroupKey2004,prantlSurveySecureGroup2022}.
+We instead use Forward Secrecy in the sense of the secure-messaging literature~\cite{barnesMessagingLayerSecurity2023,weidnerKeyAgreementDecentralized2021} (see \Cref{sec:fs}).
 
 \subsubsection{Group Membership Authentication}
 
@@ -75,12 +78,13 @@ Sent group messages should only be decryptable by current members of the group.
 A third party should not be able to disrupt message delivery or key agreement.
 Group members should not be able to unilaterally split the group or disrupt the functionality of other group members.
 
+\subsubsection{Forward Secrecy}\label{sec:fs}
+Forward Secrecy (FS) is after a members state is compromised all old already decrypted messages stay secure.
+
+\subsubsection{Post-Compromise Security}
+
 \begin{itemize}
     \item Sender Authentication
-    \item Forward Secrecy
-    \item Backward Secrecy
-    \item Post-Compromise Security
-    \item \textit{Note:} Clear up definition of Member join / leaving FS/BS vs messaging FS/PCS \cite{prantlSurveySecureGroup2022}.
     \item Consistency
     \item Out of Scope(?): Group membership privacy, metadata.
 \end{itemize}
