@@ -88,13 +88,9 @@ Forward Secrecy (FS) is met if, after a member's state is compromised, all old, 
 Post-Compromise Security (PCS) is met if, after a member's state is compromised by a passive attacker, all messages sent in the future are secure~\cite{weidnerKeyAgreementDecentralized2021,beurdoucheMessagingLayerSecurity2025}.
 
 \subsubsection{Authentication}
-Group members should be able to verify the genuineness of a message and its sender, meaning it should not be possible for other group members, the DS, or other identities to impersonate a group member.
-It should also only be possible for current group members to send messages that are accepted by the DS and other group members.
-
-\subsubsection{Group Membership Authentication}
-
-\subsubsection{Sender Authentication}
-
+Group members should be able to verify the genuineness of a message and its sender~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}, meaning it should not be possible for other group members, the DS, or other identities to impersonate a group member~\cite{roslerMoreLessEndtoEnd2018,weidnerKeyAgreementDecentralized2021,alwenInsiderSecurityMLS2022}.
+It should also only be possible for current group members to send messages that are accepted by other group members~\cite{roslerMoreLessEndtoEnd2018,weidnerKeyAgreementDecentralized2021}.
+Ideally, the DS should also reject messages from non group members.
 \subsubsection{Consistency}
 Group members should eventually agree on the group membership and group key, regardless of the order in which messages arrive~\cite{weidnerKeyAgreementDecentralized2021}.
 Thus, it should not be possible for a single member or the DS to permanently split the group~\cite{barnesMessagingLayerSecurity2023,beurdoucheMessagingLayerSecurity2025}.
