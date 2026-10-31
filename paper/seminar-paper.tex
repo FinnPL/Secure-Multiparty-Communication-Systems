@@ -66,15 +66,15 @@ Secure Multiparty Communication
 
 \subsection{Threat Model}
 
-\subsubsection{Network adversary and Distribution Server}
-Both network adversaries and a compromised Distribution Server can read, modify, drop or replay all packages passed through the network.
-A passive adversary only reads exchanged messages, whereas an active adversary can also tamper with packages.
+\subsubsection{Network Adversary and Delivery Server}
+Both network adversaries and a compromised Delivery Server (DS) can read, modify, drop or replay all messages passed through the network.
+A passive adversary only reads exchanged messages, whereas an active adversary can also tamper with messages.
 
-\subsubsection{Compromised Insider}
+\subsubsection{Compromised and Malicious Insider}
 We differentiate between group members whose state has been compromised and group members who act maliciously and can deviate from the protocol.
 
-\subsubsection{Authentication Server}
-We assume the presence of a trusted third-party Authentication Server that provides key authentication for all members.
+\subsubsection{Authentication Service}
+We assume the presence of a trusted third-party Authentication Service (AS) that provides key authentication for all members.
 
 \subsection{Security Goals}
 In this section, we provide clear definitions for the security notions used in this paper.
