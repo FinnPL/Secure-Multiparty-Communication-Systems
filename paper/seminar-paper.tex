@@ -134,11 +134,11 @@ Detecting such misbehaving peers would require additions to the protocol, like m
 
 
 \section{Techniques in Current Systems}\label{sec:techniques}
-In this section, we will discuss protocols used in current systems, their current shortcomings, and proposed improved variants.
-We will first discuss the currently most widely adopted approach, Sender Keys, and then go into more detail on the current research direction of Continuous Group-Key Agreement (CGKA), with a focus on tree-based approaches, while also briefly discussing other approaches.
+In this section, we discuss protocols used in current systems, their current shortcomings, and proposed improved variants.
+We first discuss the currently most widely adopted approach, Sender Keys, and then go into more detail on the current research direction of Continuous Group-Key Agreement (CGKA), with a focus on tree-based approaches, while also briefly discussing other approaches.
 \subsection{Sender Keys}
 Sender Keys are currently adopted by many group messaging platforms, most notably WhatsApp and Signal~\cite{balbasWhatsUppSenderKeys2023}.
-We will first discuss their functionality as formally described by Balb\'as et al.~\cite{balbasWhatsUppSenderKeys2023} and then \ldots
+We first discuss their functionality as formally described by Balb\'as et al.~\cite{balbasWhatsUppSenderKeys2023} and then \ldots
 Like client-side fanout, Sender Keys rely on pairwise channels between group members, but unlike client-side fanout, they do not exchange messages over these channels directly~\cite{balbasWhatsUppSenderKeys2023}.
 Instead, a group member $i$ who wants to send a message must have previously sent their sender key to every other group member over such a two-party channel.
 Such a sender key consists of a symmetric chain key $\mathsf{ck}_i$ used to derive message keys and a signing public key $\mathsf{pk}_i$, while the corresponding signing $\mathsf{sk}_i$ remains secret to member $i$.
