@@ -67,15 +67,15 @@ Secure Multiparty Communication
 \subsection{Threat Model}
 
 \subsubsection{Network Adversary and Delivery Service}
-Both active network adversaries and a compromised Delivery Service (DS) can read, modify, drop or replay all messages passed through the network, whereas a passive adversary can only read exchanged messages.
-The DS is only trusted for delivering messages, some protocols require it to accurately order messages.
+Both active network adversaries and a compromised Delivery Service (DS) can read, modify, drop or replay all messages passed through the network, whereas a passive adversary can only read exchanged messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021,alwenContinuousGroupKey2020}.
+The DS is only trusted for delivering messages, even though some protocols require it to accurately order messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
 \subsubsection{Compromised and Malicious Insiders}
 We differentiate between active and passive adversaries who have compromised a group member's state at one point in time.
-An active adversary can use the compromised secrets by participating in the protocol, e.g.\ impersonating the compromised member, while a passive adversary can only use the compromised state to try to decrypt messages or try to derive future keys.
-We also consider legitimate group members who act maliciously and can deviate from the protocol (see \Cref{sec:misbehavior}).
+An active adversary can use the compromised secrets by participating in the protocol, e.g., impersonating the compromised member, while a passive adversary can only use the compromised state to try to decrypt messages or try to derive future keys~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
+We also consider legitimate group members who act maliciously and can deviate from the protocol~\cite{alwenInsiderSecurityMLS2022,weidnerKeyAgreementDecentralized2021} (see \Cref{sec:misbehavior}).
 
 \subsubsection{Authentication Service}
-We assume the presence of a trusted third-party Authentication Service (AS) that provides key authentication for all members.
+We assume the presence of a trusted third-party Authentication Service (AS) that provides key authentication for all members~\cite{beurdoucheMessagingLayerSecurity2025}.
 A compromised AS is out of scope for this paper.
 
 \subsection{Security Goals}
