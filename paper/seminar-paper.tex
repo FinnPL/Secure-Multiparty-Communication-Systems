@@ -55,12 +55,13 @@ Secure Multiparty Communication
 
 \section{Introduction}
 Group messaging apps such as WhatsApp and Signal are used by more than 2 billion users.
-While there already exist secure two-party communication protocols with strong security guarantees achieving the same for groups remains challenging~\cite{barnesMessagingLayerSecurity2023}.
+While there already exist secure two-party communication protocols with strong security guarantees, achieving the same for groups remains challenging~\cite{barnesMessagingLayerSecurity2023}.
 Their requirements such as changing membership and asynchronous key agreement with multiple parties make meeting security goals more difficult.
 
-Besides the already established protocols like Sender Keys used by Signal and WhatsApp, newer standardized protocols like MLS aim to improve the security of group chats.
-We seek to give a clear understanding of the functionality of these protocols and give an overview of their current security guarantees as well as their shortcomings. Then, we lay out current research that proposes to address these.
-This paper focuses on the practicality of deploying them and considers how they protect against misbehaving peers.
+Besides the already established protocols like Sender Keys used by these apps, newer standardized protocols like MLS aim to improve the security of group chats.
+However, even these standards still suffer from security gaps. To address these gaps, researcher have proposed improved protocols.
+We seek to give a clear understanding of the functionality of these protocols and give an overview of their current security guarantees as well as their shortcomings.
+This paper focuses on the practicality of deploying them and explores how they protect against misbehaving peers.
 
 
 \begin{itemize}
