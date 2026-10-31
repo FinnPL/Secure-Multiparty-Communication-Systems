@@ -65,11 +65,16 @@ Secure Multiparty Communication
 \section{Background}\label{sec:background}
 
 \subsection{Threat Model}
-\begin{itemize}
-    \item Network adversary: passive, active
-    \item Malicious server, semi-trusted server, DS
-    \item Member: state compromise, malicious insider.
-\end{itemize}
+
+\subsubsection{Network adversary and Distribution Server}
+Both Network Adversaries and a compromised Distribution Server can read, modify, drop or replay all packages passed through the network.
+To specify a passive adversary does only reads exchanged messages, an Active might actively adversary on the other hand can tamper with packages.
+
+\subsubsection{Compromised Insider}
+We differentiate between a group members whose state has been compromised and group members who act maliciously and can deviate from protocol.
+
+\subsubsection{Authentication Server}
+We assume the presence of a trusted 3rd party Authentication Server that provides Key authentication for all members.
 
 \subsection{Security Goals}
 In this section, we provide clear definitions for the security notions used in this paper.
