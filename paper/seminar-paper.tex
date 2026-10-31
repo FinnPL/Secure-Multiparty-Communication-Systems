@@ -65,7 +65,7 @@ Secure Multiparty Communication
 \section{Background}\label{sec:background}
 
 \subsection{Threat Model}
-
+We consider group messaging protocol setting consiting of group members, a Authentication Service and Delivery Service.
 \subsubsection{Network Adversary and Delivery Service}
 Both active network adversaries and a compromised Delivery Service (DS) can read, modify, drop or replay all messages passed through the network, whereas a passive adversary can only read exchanged messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021,alwenContinuousGroupKey2020}.
 The DS is only trusted for delivering messages, even though some protocols require it to accurately order messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
