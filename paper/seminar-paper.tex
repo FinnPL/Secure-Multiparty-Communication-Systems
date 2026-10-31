@@ -68,11 +68,11 @@ Secure Multiparty Communication
 
 \subsubsection{Network Adversary and Delivery Service}
 Both active network adversaries and a compromised Delivery Service (DS) can read, modify, drop or replay all messages passed through the network, whereas a passive adversary can only read exchanged messages.
-
+The DS is only trusted for delivering messages, some protocols require it to accurately order messages.
 \subsubsection{Compromised and Malicious Insiders}
-We differentiate between active and passive adversaries who have compromised a group member's state.
+We differentiate between active and passive adversaries who have compromised a group member's state at one point in time.
 An active adversary can use the compromised secrets by participating in the protocol, e.g.\ impersonating the compromised member, while a passive adversary can only use the compromised state to try to decrypt messages or try to derive future keys.
-We also consider legitimate group members who act maliciously and can deviate from the protocol.
+We also consider legitimate group members who act maliciously and can deviate from the protocol (see \Cref{sec:misbehavior}).
 
 \subsubsection{Authentication Service}
 We assume the presence of a trusted third-party Authentication Service (AS) that provides key authentication for all members.
