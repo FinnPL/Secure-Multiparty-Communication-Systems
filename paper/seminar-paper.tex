@@ -65,6 +65,8 @@ We seek to give a clear understanding of the functionality of both deployed and 
 This paper focuses on the practicality of deploying them (\Cref{sec:practicality}) and explores how they protect against misbehaving peers (\Cref{sec:misbehavior}).
 
 \section{Background}\label{sec:background}
+To accurately compare protocols, we require a well-defined threat model and shared security goals.
+Because many group messaging protocols are built on the foundation of two-party end-to-end encryption, we briefly introduce its fundamental functionality and the naive approach of applying it to groups.
 
 \subsection{Threat Model}
 We consider a group messaging setting consisting of group members, a Delivery Service, and an Authentication Service~\cite{beurdoucheMessagingLayerSecurity2025}.
