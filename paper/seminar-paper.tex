@@ -54,12 +54,13 @@ Secure Multiparty Communication
 \end{IEEEkeywords}
 
 \section{Introduction}
-Group messaging apps such as WhatsApp and Signal are used by more than 2 billion users.
-While there already exist secure two-party communication protocols with strong security guarantees, achieving the same for groups remains challenging~\cite{barnesMessagingLayerSecurity2023}.
-Their requirements such as changing membership and asynchronous key agreement with multiple parties make meeting security goals more difficult.
+Group messaging apps such as WhatsApp and Signal are used by more than 2 billion users~\cite{alwenContinuousGroupKey2020}.
+While there already exist secure two-party communication protocols with strong security guarantees~\cite{perrinDoubleRatchetAlgorithm,kretPQXDHKeyAgreement}, achieving the same for groups remains challenging~\cite{barnesMessagingLayerSecurity2023}.
+Their requirements such as changing membership and asynchronous key agreement with multiple parties make meeting security goals more difficult~\cite{barnesMessagingLayerSecurity2023}.
 
-Besides the already established protocols like Sender Keys used by these apps, newer standardized protocols like MLS aim to improve the security of group chats.
-However, even these standards still suffer from security gaps. To address these gaps, researchers have proposed improved protocols.
+Besides the already established protocols like Sender Keys used by these apps~\cite{balbasWhatsUppSenderKeys2023}, newer standardized protocols like MLS~\cite{barnesMessagingLayerSecurity2023} aim to improve the security of group chats.
+However, even these standards still suffer from security gaps~\cite{barnesMessagingLayerSecurity2023}.
+To address these gaps, researchers have proposed improved protocols~\cite{alwenSecurityAnalysisImprovements2020,kleinKeepDirtTainted2021,weidnerKeyAgreementDecentralized2021}.
 
 We seek to give a clear understanding of the functionality of both deployed and proposed protocols and give an overview of their current security guarantees as well as their shortcomings (\Cref{sec:techniques}).
 This paper focuses on the practicality of deploying them (\Cref{sec:practicality}) and explores how they protect against misbehaving peers (\Cref{sec:misbehavior}).
