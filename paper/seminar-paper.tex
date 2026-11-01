@@ -98,8 +98,9 @@ Forward Secrecy (FS) is met if, after a member's state is compromised, all old, 
 
 \subsubsection{Post-Compromise Security}
 Post-Compromise Security (PCS) is met if, after a member's state is compromised by a passive attacker, all messages sent in the future are secure~\cite{weidnerKeyAgreementDecentralized2021,beurdoucheMessagingLayerSecurity2025}.
-In most protcolls PCS is not achived on a per message level.
-We descibe a channel heald after
+In most protocols, PCS is only achieved after a specific protocol step or event (e.g., a DH ratchet step, see \Cref{sec:dh-ratchet}), as PCS needs fresh randomness introduced into the keying material that is unknown to such an attacker.
+Otherwise, an attacker could always follow the same calculation steps on the compromised state to derive the same future keys.
+We describe a member's state as healed after such a protocol step that guarantees a passive attacker can no longer derive the newly established keys.
 
 \subsubsection{Authentication}
 Group members should be able to verify the genuineness of a message and its sender~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}, meaning it should not be possible for other group members, the DS, or other identities to impersonate a group member~\cite{roslerMoreLessEndtoEnd2018,weidnerKeyAgreementDecentralized2021,alwenInsiderSecurityMLS2022}.
@@ -126,7 +127,7 @@ In the first message, Alice includes the values Bob needs to derive the same roo
 Alice and Bob use a KDF to further derive sending and receiving chain keys. For each message they send or receive, they derive a one-time message key, used to encrypt or decrypt the message, and a new sending or receiving chain key, respectively.
 Because the KDF is one-way and all old keys are deleted after use, an attacker that compromises the state of either or both parties cannot compute previous chain keys and thus cannot derive the keys used to encrypt old messages.
 This provides FS. PCS, on the other hand, is not provided because an attacker can advance the chain exactly as the legitimate parties do and thus derive all future keys~\cite{perrinDoubleRatchetAlgorithm}.
-\subsubsection{Diffie--Hellman Ratchet}
+\subsubsection{Diffie--Hellman Ratchet}\label{sec:dh-ratchet}
 To provide PCS, new randomness needs to be mixed into the keys. This is achieved by the DH ratchet.
 Whenever the sending direction changes, the new sender includes a new ratchet public key in their first message.
 From that and the current root key, a new shared root key and chain keys can be derived for the following messages~\cite{perrinDoubleRatchetAlgorithm}.
@@ -167,13 +168,13 @@ Because this is implementation-dependent and often only done after a group membe
 Adding a new member requires every member to share their sender keys with the new member.
 This complies with our notion of Confidentiality: because of the described FS, the new member cannot decrypt old messages.
 Removing, on the other hand, requires a complete rekey, meaning every member needs to create new sender keys and distribute them to every other member; this takes $O(n)$ per member.
+Sender Keys' weak PCS can only be fixed by the most complex cryptographical event.
 
 Furthermore, another weakness of relying on pairwise channels is that they also require multiple messages to be exchanged to fully heal.
 Because we assume that a full state compromise also includes keys of these two-party channels, fresh keys could also leak when exchanged over pairwise channels before they have healed.
 
 \begin{itemize}
     \item Similar: Megolm (Matrix)~\cite{balbasWhatsUppSenderKeys2023}
-    \item complexity
 \end{itemize}
 
 \subsection{Continuous Group-Key Agreement}
