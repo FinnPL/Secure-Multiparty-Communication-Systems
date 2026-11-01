@@ -15,6 +15,8 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{booktabs}
+\usepackage[nointegrals]{wasysym}
+\usepackage[table]{xcolor}
 \usepackage{microtype}
 
 
@@ -171,13 +173,9 @@ Removing, on the other hand, requires a complete rekey, meaning every member nee
 This takes $O(n)$ messages per member, which is $O(n^2)$ in total.
 
 Sender Keys' weakest guarantee, PCS, can therefore only be fixed by a complete rekey, its most expensive operation.
-Because this is implementation-dependent and often only done after a group member leaves or joins, only a very weak form of PCS is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
-Furthermore, another weakness of relying on pairwise channels is that they also require multiple messages to be exchanged to fully heal.
+Because this is implementation-dependent and often only done after a group member leaves, only a very weak form of PCS is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
+Another weakness of relying on pairwise channels is that they also require multiple messages to be exchanged to fully heal.
 Because we assume that a state compromise also includes keys of these two-party channels, fresh keys could also leak when exchanged over pairwise channels before they have healed.
-
-\begin{itemize}
-    \item Similar: Megolm (Matrix)~\cite{balbasWhatsUppSenderKeys2023}
-\end{itemize}
 
 \subsection{Continuous Group-Key Agreement}
 Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring keys to be shared \ldots with every group member \ldots
@@ -209,20 +207,32 @@ Epochs, commits, Operations
 
 \begin{table*}[htbp]
     \centering
-    \caption{Comparison}
+    \caption{Comparison of group messaging protocols. Costs are given in messages: Add, Remove, and Update count the messages sent by all members together, Send and Receive the cost per message. \CIRCLE: provided, \LEFTcircle: only weakly provided, \Circle: not provided, --: not applicable.}
     \label{tab:comparison}
     \begin{tabular}{lccccccccc}
         \toprule
-        Scheme & FS & PCS & Asynchronous & Ordering requirement & Add & Remove & Send & Receive & Update \\
+        & \multicolumn{3}{c}{Security} & & \multicolumn{5}{c}{Cost} \\
+        \cmidrule(lr){2-4} \cmidrule(lr){6-10}
+        Scheme & FS & PCS & Consistency & Ordering requirement & Add & Remove & Send & Receive & Update \\
         \midrule
-        Fanout & & & & & & & & & \\
-        Sender Keys & & & & & & & & & \\
+        \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Pairwise channels}} \\
+        Client-Side Fanout & \CIRCLE & \CIRCLE & \Circle & None & $O(n)$ & $0$ & $O(n)$ & $O(1)$ & -- \\
+        Sender Keys & \CIRCLE & \LEFTcircle & \Circle & Group changes & $O(n)$ & $O(n^2)$ & $O(1)$ & $O(1)$ & $O(n)$ \\
+        \midrule
+        \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Tree-based predecessors}} \\
+        LKH & & & & & & & & & \\
+        TGDH & & & & & & & & & \\
+        \midrule
+        \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Tree-based CGKA}} \\
         ART & & & & & & & & & \\
-        TreeKEM & & & & & & & & & \\
+        TreeKEM (MLS) & & & & Group changes & & & & & \\
         RTreeKEM & & & & & & & & & \\
-        Tainted TreeKEM & & & & & & & & & \\
-        CmPKE & & & & & & & & & \\
-        DCGKA & & & & & & & & & \\
+        Tainted TreeKEM & \CIRCLE & \CIRCLE & & & & & & & \\
+        \midrule
+        \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Other CGKA}} \\
+        Chained CmPKE & \CIRCLE & \CIRCLE & & & & $O(n)$ & & & $O(n)$ \\
+        DCGKA & \CIRCLE & \CIRCLE & & None & & & & & \\
+        DeCAF & & \CIRCLE & & & & & & & \\
         \bottomrule
     \end{tabular}
 \end{table*}
