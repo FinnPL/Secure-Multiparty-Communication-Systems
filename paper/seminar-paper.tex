@@ -155,24 +155,25 @@ Sender Keys are currently adopted by many group messaging platforms, most notabl
 We first discuss their functionality as formally described by Balb\'as et al.~\cite{balbasWhatsUppSenderKeys2023} and then \ldots
 
 Like client-side fanout, Sender Keys rely on pairwise channels between group members, but unlike client-side fanout, they do not exchange messages over these channels directly~\cite{balbasWhatsUppSenderKeys2023}.
-Instead, a group member $i$ who wants to send a message must have previously sent their sender key to every other group member over such a two-party channel.
+Instead, a group member $i$ who wants to send a message must have previously sent their sender key to every other group member over such a pairwise channel.
 Such a sender key consists of a symmetric chain key $\mathsf{ck}_i$ used to derive message keys and a signing public key $\mathsf{pk}_i$, while the corresponding signing key $\mathsf{sk}_i$ remains secret to member $i$.
 When sending a message, it is encrypted with a message key derived from the current $\mathsf{ck}_i$ and signed with $\mathsf{sk}_i$.
 All group members receive the same ciphertext, verify its signature using $\mathsf{pk}_i$ and decrypt it by also deriving the same current message key using their copy of $\mathsf{ck}_i$.
 This improves complexity compared to client-side fanout by only requiring one encryption per message.
 
-After sending and receiving, respectively, each party performs one ratchet step on $\mathsf{ck}_i$ using a KDF.
-This ratchet step on the symmetric chain key $\mathsf{ck}_i$ provides FS as in the Double Ratchet Algorithm, but unlike it, Sender Keys are missing the second ratchet.
+After sending and receiving, each party performs one ratchet step on the corresponding chain key $\mathsf{ck}_i$ using a KDF.
+This ratchet step on the symmetric chain key $\mathsf{ck}_i$ provides FS as in the Double Ratchet Algorithm, but unlike it, Sender Keys are missing a second ratchet (\Cref{sec:dh-ratchet}) that introduces new randomness.
 This means PCS can only be achieved by each member creating new sender keys and redistributing them to every other member.
-Because this is implementation-dependent and often only done after a group member leaves or joins, only a very weak form of PCS is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
 
-Adding a new member requires every member to share their sender keys with the new member.
+Adding a new member requires every member to share their sender keys with the new member, requiring one message per member to be exchanged for $O(n)$ messages in total.
 This complies with our notion of Confidentiality: because of the described FS, the new member cannot decrypt old messages.
-Removing, on the other hand, requires a complete rekey, meaning every member needs to create new sender keys and distribute them to every other member; this takes $O(n)$ per member.
-Sender Keys' weak PCS can only be fixed by the most complex cryptographical event.
+Removing, on the other hand, requires a complete rekey, meaning every member needs to create new sender keys and distribute them to every other member.
+This takes $O(n)$ messages per member, which is $O(n^2)$ in total.
 
+Sender Keys' weakest guarantee, PCS, can therefore only be fixed by a complete rekey, its most expensive operation.
+Because this is implementation-dependent and often only done after a group member leaves or joins, only a very weak form of PCS is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
 Furthermore, another weakness of relying on pairwise channels is that they also require multiple messages to be exchanged to fully heal.
-Because we assume that a full state compromise also includes keys of these two-party channels, fresh keys could also leak when exchanged over pairwise channels before they have healed.
+Because we assume that a state compromise also includes keys of these two-party channels, fresh keys could also leak when exchanged over pairwise channels before they have healed.
 
 \begin{itemize}
     \item Similar: Megolm (Matrix)~\cite{balbasWhatsUppSenderKeys2023}
