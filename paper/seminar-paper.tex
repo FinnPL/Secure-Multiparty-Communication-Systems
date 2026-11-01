@@ -96,7 +96,7 @@ We instead use Forward Secrecy in the sense of the secure-messaging literature~\
 \subsubsection{Forward Secrecy}\label{sec:fs}
 Forward Secrecy (FS) is met if, after a member's state is compromised, all old, already decrypted messages stay secure~\cite{barnesMessagingLayerSecurity2023,weidnerKeyAgreementDecentralized2021}.
 
-\subsubsection{Post-Compromise Security}
+\subsubsection{Post-Compromise Security}\label{sec:pcs}
 Post-Compromise Security (PCS) is met if, after a member's state is compromised by a passive attacker, all messages sent in the future are secure~\cite{weidnerKeyAgreementDecentralized2021,beurdoucheMessagingLayerSecurity2025}.
 In most protocols, PCS is only achieved after a specific protocol step or event (e.g., a DH ratchet step, see \Cref{sec:dh-ratchet}), as PCS needs fresh randomness introduced into the keying material that is unknown to such an attacker~\cite{cohn-gordonPostcompromiseSecurity2016}.
 Otherwise, an attacker could always follow the same calculation steps on the compromised state to derive the same future keys.
@@ -116,7 +116,7 @@ Neither a misbehaving insider nor the DS should be able to disrupt honest group 
 
 
 \subsection{Two-Party End-to-End Encryption}
-The most widely deployed protocol for two-party messaging is the Signal Protocol~\cite{balbasWhatsUppSenderKeys2023}, which uses PQXDH~\cite{kretPQXDHKeyAgreement} for initial key agreement and the Double Ratchet Algorithm~\cite{perrinDoubleRatchetAlgorithm}.
+The most widely deployed protocol for two-party messaging is the Signal Protocol~\cite{balbasWhatsUppSenderKeys2023}, which uses PQXDH~\cite{kretPQXDHKeyAgreement} for initial key agreement and the Double Ratchet Algorithm~\cite{perrinDoubleRatchetAlgorithm} for message encryption.
 In the following, we outline how the protocol works and how it provides FS and PCS (called break-in recovery in the specification~\cite{perrinDoubleRatchetAlgorithm}).
 For simplicity, we omit key authentication and the recently added post-quantum ratchet~\cite{perrinDoubleRatchetAlgorithm}.
 \subsubsection{Setup}
@@ -128,17 +128,16 @@ Alice and Bob use a KDF to further derive sending and receiving chain keys. For 
 Because the KDF is one-way and all old keys are deleted after use, an attacker that compromises the state of either or both parties cannot compute previous chain keys and thus cannot derive the keys used to encrypt old messages.
 This provides FS. PCS, on the other hand, is not provided because an attacker can advance the chain exactly as the legitimate parties do and thus derive all future keys~\cite{perrinDoubleRatchetAlgorithm,cohn-gordonPostcompromiseSecurity2016}.
 \subsubsection{Diffie--Hellman Ratchet}\label{sec:dh-ratchet}
-To provide PCS, new randomness needs to be mixed into the keys. This is achieved by the DH ratchet.
-Whenever the sending direction changes, the new sender includes a new ratchet public key in their first message.
+Whenever the sending direction changes, the new sender includes a new ratchet public key in their message.
 From that and the current root key, a new shared root key and chain keys can be derived for the following messages~\cite{perrinDoubleRatchetAlgorithm}.
+The corresponding DH private key remains unknown to an attacker, thus providing the required freshness for PCS (see \Cref{sec:pcs}).
 
 \subsection{Client-Side Fanout}
-The naive approach to scaling the existing Signal Protocol to group chats would be client-side fanout.
-By creating pairwise channels between all group members, a de facto group chat is created.
+The naive approach to scaling the existing Signal Protocol to group chats is client-side fanout.
+By creating pairwise channels between all group members, from a de facto group chat.
 For a group of size $n$, each individual is required to create $n-1$ channels and every sent message needs to be encrypted $n-1$ times~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018}.
-Adding a member just requires every member to establish such a channel with the new member, requiring $O(n)$ for the new member and $O(1)$ for every existing member.
-Removing, on the other hand, requires no extra cryptographic steps, as just no longer sending messages over the corresponding pairwise channels suffices.
-No rekeying is necessary because all pairwise channels are independent.
+Adding a member just requires every member to establish such a channel with the new member, which costs the new member $O(n)$ and $O(1)$ for every existing member.
+Because all pairwise channels are independent, removing, on the other hand, requires no extra cryptographic steps, as just no longer sending messages over the corresponding pairwise channels suffices.
 
 Because every message is sent over such pairwise channels, client-side fanout inherits their FS and PCS properties~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018,roslerMoreLessEndtoEnd2018}.
 On the other hand, because every message is encrypted independently, malicious group members could send completely different messages to different members of the group without being caught~\cite{goldbergMultipartyOfftherecordMessaging2009}.
