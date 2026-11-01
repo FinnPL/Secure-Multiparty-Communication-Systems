@@ -139,7 +139,7 @@ The channel has healed after the compromised party has generated a new DH key pa
 The naive approach to scaling the existing Signal Protocol to group chats is client-side fanout.
 By creating pairwise channels between all group members, a de facto group chat is formed.
 For a group of size $n$, each individual is required to create $n-1$ channels and every sent message needs to be encrypted $n-1$ times~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018}.
-Adding a member just requires every member to establish such a channel with the new member, which costs the new member $O(n)$ and every existing member $O(1)$ channel creations.
+Adding a member just requires every member to establish such a channel with the new member, which costs the new member $\mathcal{O}(n)$ and every existing member $\mathcal{O}(1)$ channel creations.
 Because all pairwise channels are independent, removing, on the other hand, requires no extra cryptographic steps, as just no longer sending messages over the corresponding pairwise channels suffices.
 
 Because every message is sent over such pairwise channels, client-side fanout inherits their FS and PCS properties~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018,roslerMoreLessEndtoEnd2018}, including the healing requirement of the compromised party sending a message to distribute a new public key, which is a notably stronger requirement in a group chat where some party might not send messages in a long time~\cite{weidnerKeyAgreementDecentralized2021}.
@@ -167,10 +167,10 @@ After sending and receiving, each party performs one ratchet step on the corresp
 This ratchet step on the symmetric chain key $\mathsf{ck}_i$ provides FS as in the Double Ratchet Algorithm, but unlike it, Sender Keys are missing a second ratchet (\Cref{sec:dh-ratchet}) that introduces new randomness.
 This means PCS can only be achieved by each member creating new sender keys and redistributing them to every other member.
 
-Adding a new member requires every member to share their sender keys with the new member, requiring one message per member to be exchanged for $O(n)$ messages in total.
+Adding a new member requires every member to share their sender keys with the new member, requiring one message per member to be exchanged for $\mathcal{O}(n)$ messages in total.
 This complies with our notion of Confidentiality: because of the described FS, the new member cannot decrypt old messages.
 Removing, on the other hand, requires a complete rekey, meaning every member needs to create new sender keys and distribute them to every other member.
-This takes $O(n)$ messages per member, which is $O(n^2)$ in total.
+This takes $\mathcal{O}(n)$ messages per member, which is $\mathcal{O}(n^2)$ in total.
 
 Sender Keys' weakest guarantee, PCS, can therefore only be fixed by a complete rekey, its most expensive operation.
 Because this is implementation-dependent and often only done after a group member leaves, only a very weak form of PCS is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
@@ -216,8 +216,8 @@ Epochs, commits, Operations
         Scheme & FS & PCS & Consistency & Ordering requirement & Add & Remove & Send & Receive & Update \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Pairwise channels}} \\
-        Client-Side Fanout & \CIRCLE & \CIRCLE & \Circle & None & $O(n)$ & $0$ & $O(n)$ & $O(1)$ & -- \\
-        Sender Keys & \CIRCLE & \LEFTcircle & \Circle & Group changes & $O(n)$ & $O(n^2)$ & $O(1)$ & $O(1)$ & $O(n)$ \\
+        Client-Side Fanout & \CIRCLE & \CIRCLE & \Circle & None & $\mathcal{O}(n)$ & $0$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & -- \\
+        Sender Keys & \CIRCLE & \LEFTcircle & \Circle & Group changes & $\mathcal{O}(n)$ & $\mathcal{O}(n^2)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Tree-based predecessors}} \\
         LKH & & & & & & & & & \\
@@ -230,7 +230,7 @@ Epochs, commits, Operations
         Tainted TreeKEM & \CIRCLE & \CIRCLE & & & & & & & \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Other CGKA}} \\
-        Chained CmPKE & \CIRCLE & \CIRCLE & & & & $O(n)$ & & & $O(n)$ \\
+        Chained CmPKE & \CIRCLE & \CIRCLE & & & & $\mathcal{O}(n)$ & & & $\mathcal{O}(n)$ \\
         DCGKA & \CIRCLE & \CIRCLE & & None & & & & & \\
         DeCAF & & \CIRCLE & & & & & & & \\
         \bottomrule
