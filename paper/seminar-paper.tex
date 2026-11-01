@@ -154,7 +154,7 @@ We first discuss the currently most widely adopted approach, Sender Keys, and th
 
 \subsection{Sender Keys}
 Sender Keys are currently adopted by many group messaging platforms, most notably WhatsApp and Signal~\cite{balbasWhatsUppSenderKeys2023}.
-We first discuss their functionality as formally described by Balb\'as et al.~\cite{balbasWhatsUppSenderKeys2023} and then \ldots
+We first discuss their functionality as formally described by Balb\'as et al.~\cite{balbasWhatsUppSenderKeys2023} and then discuss its weaknesses.
 
 Like client-side fanout, Sender Keys rely on pairwise channels between group members, but unlike client-side fanout, they do not exchange messages over these channels directly~\cite{balbasWhatsUppSenderKeys2023}.
 Instead, a group member $i$ who wants to send a message must have previously sent their sender key to every other group member over such a pairwise channel.
@@ -176,6 +176,8 @@ Sender Keys' weakest guarantee, PCS, can therefore only be fixed by a complete r
 Because this is implementation-dependent and often only done after a group member leaves, only a very weak form of PCS is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
 Another weakness of relying on pairwise channels is that they also require multiple messages to be exchanged to fully heal.
 Because we assume that a state compromise also includes keys of these two-party channels, fresh keys could also leak when exchanged over pairwise channels before they have healed.
+
+Sender Keys also do not uphold Consistency as the DS can forge membership changes~\cite{albrechtFormalAnalysisMultidevice2025} and only deliver them to part of the group, effectively splitting the group~\cite{balbasWhatsUppSenderKeys2023}.
 
 \subsection{Continuous Group-Key Agreement}
 Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring keys to be shared \ldots with every group member \ldots
@@ -207,7 +209,7 @@ Epochs, commits, Operations
 
 \begin{table*}[htbp]
     \centering
-    \caption{Comparison of group messaging protocols. Costs are given in messages: Add, Remove, and Update count the messages sent by all members together, Send and Receive the cost per message. \CIRCLE: provided, \LEFTcircle: only weakly provided, \Circle: not provided, --: not applicable.}
+    \caption{Comparison of group messaging protocols. Costs are given in messages: Add, Remove, and Update count the messages sent by all members together, Send and Receive the cost per message. Consistency assumes the ordering requirement is met.  {\upshape\Circle}: the DS can split the group, {\upshape\LEFTcircle}: only a malicious member can, {\upshape\CIRCLE}: neither can. For FS and PCS: {\upshape\CIRCLE}: provided, {\upshape\LEFTcircle}: only weakly provided, {\upshape\Circle}: not provided, --: not applicable.}
     \label{tab:comparison}
     \begin{tabular}{lccccccccc}
         \toprule
@@ -218,6 +220,7 @@ Epochs, commits, Operations
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Pairwise channels}} \\
         Client-Side Fanout & \CIRCLE & \CIRCLE & \Circle & None & $\mathcal{O}(n)$ & $0$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & -- \\
         Sender Keys & \CIRCLE & \LEFTcircle & \Circle & Group changes & $\mathcal{O}(n)$ & $\mathcal{O}(n^2)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
+        Sender Keys+ & & & & Group changes & & & & & $\mathcal{O}(n)$ \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Tree-based predecessors}} \\
         LKH & & & & & & & & & \\
@@ -228,6 +231,9 @@ Epochs, commits, Operations
         TreeKEM (MLS) & & & & Group changes & & & & & \\
         RTreeKEM & & & & & & & & & \\
         Tainted TreeKEM & \CIRCLE & \CIRCLE & & & & & & & \\
+        P-Pas & & & & & & & & & \\
+        P-Act & & & & & & & & & \\
+        P-Act-Rob & & & & & & & & & \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Other CGKA}} \\
         Chained CmPKE & \CIRCLE & \CIRCLE & & & & $\mathcal{O}(n)$ & & & $\mathcal{O}(n)$ \\

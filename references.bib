@@ -16,6 +16,24 @@
   langid = {english}
 }
 
+@incollection{albrechtFormalAnalysisMultidevice2025a,
+  title = {Formal {{Analysis}} of {{Multi}}-Device {{Group Messaging}} in {{WhatsApp}}},
+  booktitle = {Advances in {{Cryptology}} -- {{EUROCRYPT}} 2025},
+  author = {Albrecht, Martin R. and Dowling, Benjamin and Jones, Daniel},
+  editor = {Fehr, Serge and Fouque, Pierre-Alain},
+  year = 2025,
+  series = {Lecture {{Notes}} in {{Computer Science}}},
+  volume = {15608},
+  pages = {242--271},
+  publisher = {Springer Nature Switzerland},
+  address = {Cham},
+  doi = {10.1007/978-3-031-91101-9_9},
+  urldate = {2026-11-01},
+  abstract = {WhatsApp provides end-to-end encrypted messaging to over two billion users. However, due to a lack of public documentation and source code, the specific security guarantees it provides are unclear. Seeking to rectify this situation, we combine the limited public documentation with information we gather through reverse-engineering its implementation to provide a formal description of the subset of WhatsApp that provides multi-device group messaging. We utilise this description to state and prove the security guarantees that this subset of WhatsApp provides. Our analysis is performed within a variant of the Device-Oriented Group Messaging model, which we extend to support device revocation. We discuss how to interpret these results, including the security WhatsApp provides as well as its limitations.},
+  isbn = {978-3-031-91100-2 978-3-031-91101-9},
+  langid = {english}
+}
+
 @incollection{alwenContinuousGroupKey2020,
   title = {Continuous {{Group Key Agreement}} with {{Active Security}}},
   booktitle = {Theory of {{Cryptography}}},
@@ -85,6 +103,25 @@
   langid = {english}
 }
 
+@incollection{auerbachContinuousGroupKeyAgreement2025,
+  title = {Continuous {{Group-Key Agreement}}: {{Concurrent Updates Without Pruning}}},
+  shorttitle = {Continuous {{Group-Key Agreement}}},
+  booktitle = {Advances in {{Cryptology}} -- {{CRYPTO}} 2025},
+  author = {Auerbach, Benedikt and Cueto Noval, Miguel and Erol, Boran and Pietrzak, Krzysztof},
+  editor = {Tauman Kalai, Yael and Kamara, Seny F.},
+  year = 2025,
+  series = {Lecture {{Notes}} in {{Computer Science}}},
+  volume = {16007},
+  pages = {141--172},
+  publisher = {Springer Nature Switzerland},
+  address = {Cham},
+  doi = {10.1007/978-3-032-01913-4_5},
+  urldate = {2026-11-01},
+  abstract = {Continuous Group Key Agreement (CGKA) is the primitive underlying secure group messaging. It allows a large group of N users to maintain a shared secret key that is frequently rotated by the group members in order to achieve forward secrecy and post compromise security. The group messaging scheme Messaging Layer Security (MLS) standardized by the IETF makes use of a CGKA called TreeKEM which arranges the N group members in a binary tree. Here, each node is associated with a public-key, each user is assigned one of the leaves, and a user knows the corresponding secret keys from their leaf to the root. To update the key material known to them, a user must just replace keys at log(N ) nodes, which requires them to create and upload log(N ) ciphertexts. Such updates must be processed sequentially by all users, which for large groups is impractical. To allow for concurrent updates, TreeKEM uses the ``propose and commit'' paradigm, where multiple users can concurrently propose to update (by just sampling a fresh leaf key), and a single user can then commit to all proposals at once.},
+  isbn = {978-3-032-01912-7 978-3-032-01913-4},
+  langid = {english}
+}
+
 @incollection{balbasWhatsUppSenderKeys2023,
   title = {{{WhatsUpp}} with {{Sender Keys}}? {{Analysis}}, {{Improvements}} and {{Security Proofs}}},
   shorttitle = {{{WhatsUpp}} with {{Sender Keys}}?},
@@ -113,6 +150,25 @@
   institution = {RFC Editor},
   doi = {10.17487/RFC9420},
   urldate = {2026-10-08},
+  langid = {english}
+}
+
+@incollection{bartusekFairWeatherNoMore2026,
+  title = {Fair-{{Weather No More}}: {{Guaranteed Efficiency}} in {{Secure Group Messaging}}},
+  shorttitle = {Fair-{{Weather No More}}},
+  booktitle = {Advances in {{Cryptology}} -- {{CRYPTO}} 2026},
+  author = {Bartusek, James and Bitansky, Nir and Dodis, Yevgeniy and Garg, Rachit and Wu, David J.},
+  editor = {Heninger, Nadia and Rosulek, Mike},
+  year = 2026,
+  series = {Lecture {{Notes}} in {{Computer Science}}},
+  volume = {16809},
+  pages = {200--232},
+  publisher = {Springer Nature Switzerland},
+  address = {Cham},
+  doi = {10.1007/978-3-032-35428-0_7},
+  urldate = {2026-11-01},
+  abstract = {Secure group messaging (SGM) protocols, now standardized by the IETF as Messaging Layer Security (MLS), provide end-to-end encryption for billions of users. The cryptographic core of these protocols is continuous group key agreement (CGKA), a primitive designed to maintain a shared secret among a dynamic group while providing security guarantees like forward secrecy (FS) and post-compromise security (PCS). A critical challenge for CGKA is achieving efficiency, particularly sub-linear complexity (in the size of the group), for group operations. While practical tree-based protocols like TreeKEM offer logarithmic complexity in ideal (so called ``fair-weather'') scenarios, their performance degrades to linear in the worst-case, and even realistic average-case, scenarios. This performance collapse raises the fundamental question of whether any CGKA protocol can achieve provably sub-linear worst-case complexity.},
+  isbn = {978-3-032-35427-3 978-3-032-35428-0},
   langid = {english}
 }
 
@@ -373,5 +429,12 @@
   urldate = {2026-10-08},
   abstract = {Secure group messaging protocols, providing end-to-end encryption for group communication, need to handle mobile devices frequently being offline, group members being added or removed, and the possibility of device compromises during long-lived chat sessions. Existing work targets a centralized network model in which all messages are routed through a single server, which is trusted to provide a consistent total order on updates to the group state. In this paper we adapt secure group messaging for decentralized networks that have no central authority. Servers may still optionally be used, but they are trusted less. We define decentralized continuous group key agreement (DCGKA), a new cryptographic primitive encompassing the core of a decentralized secure group messaging protocol; we give a practical construction of a DCGKA protocol and prove its security; and we describe how to construct a full messaging protocol from DCGKA. In the face of device compromise our protocol achieves forward secrecy and post-compromise security. We evaluate the performance of a prototype implementation, and demonstrate that our protocol has practical efficiency.},
   isbn = {978-1-4503-8454-4},
+  langid = {english}
+}
+
+@article{yenBeeKEMDecentralizedSecure,
+  title = {{{BeeKEM}}: {{Decentralized}}, {{Secure}} and {{Efficient Group Key Agreement}}},
+  author = {Yen, Derek and Fabrega, Andres and Da, Liangrun and Kleppmann, Martin and Mumm, John and Park, Sunoo and Zelenka, Brooklyn},
+  abstract = {Group key agreement protocols are essential for modern secure messaging. Most existing group key agreement protocols assume a centralized model with a semi-trusted service that mediates the communication. This is efficient, but problematic for some important applications, since a central service can be a choke point for surveillance and censorship. There is a nascent literature ondecentralizedgroup key agreement that avoids such reliance, but existing proposals either do not scale, with update costs linear or quadratic in the group size, or lack proofs of security. Centralized protocols can offer much lower (logarithmic) cost.},
   langid = {english}
 }
