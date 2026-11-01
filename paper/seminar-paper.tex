@@ -137,10 +137,10 @@ The channel has healed after the compromised party has generated a new DH key pa
 The naive approach to scaling the existing Signal Protocol to group chats is client-side fanout.
 By creating pairwise channels between all group members, a de facto group chat is formed.
 For a group of size $n$, each individual is required to create $n-1$ channels and every sent message needs to be encrypted $n-1$ times~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018}.
-Adding a member just requires every member to establish such a channel with the new member, which costs the new member $O(n)$ and every existing member $O(1)$.
+Adding a member just requires every member to establish such a channel with the new member, which costs the new member $O(n)$ and every existing member $O(1)$ channel creations.
 Because all pairwise channels are independent, removing, on the other hand, requires no extra cryptographic steps, as just no longer sending messages over the corresponding pairwise channels suffices.
 
-Because every message is sent over such pairwise channels, client-side fanout inherits their FS and PCS properties~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018,roslerMoreLessEndtoEnd2018}.
+Because every message is sent over such pairwise channels, client-side fanout inherits their FS and PCS properties~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018,roslerMoreLessEndtoEnd2018}, including the healing requirement of the compromised party sending a message to distribute a new public key, which is a notably stronger requirement in a group chat where some party might not send messages in a long time~\cite{weidnerKeyAgreementDecentralized2021}.
 On the other hand, because every message is encrypted and sent independently, there is no shared group state and members can disagree on who is currently in the group, violating our notion of Consistency.
 Furthermore, malicious group members could send completely different messages to different members of the group without being caught~\cite{goldbergMultipartyOfftherecordMessaging2009}.
 Detecting such misbehaving peers would require additions to the protocol, like making all parties share the hash of their transcripts with each other to catch any discrepancies, as described by Goldberg et al.~\cite{goldbergMultipartyOfftherecordMessaging2009}.
