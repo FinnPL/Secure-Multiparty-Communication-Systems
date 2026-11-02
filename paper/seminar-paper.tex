@@ -202,9 +202,12 @@ The Ratchet Tree is comprised of key pairs with the group key being derived from
 All public keys are known by all members.
 Private keys, on the other hand, can only be known by members descending from their respective intermediate node~\cite{barnesMessagingLayerSecurity2023}.
 
-In order to refresh a key, a member replaces all keys on the path from their leaf node to the root.
-The new public keys can be broadcast in plaintext while the private keys need to be encrypted such that only their respective children can decrypt them.
-That requires the member to simply encrypt the new private keys of the node with the public keys of its children.
+In order to rotate a key, a member replaces all keys on the path starting from their leaf node to the root.
+The member creates a fresh leaf key pair and then starting from a random value derives the other keys upwards along the path.
+The new public keys can be broadcast in plaintext while the private keys need to be encrypted such that only the descendant leaves can decrypt them.
+That only requires the member to encrypt the new private keys of the node with the public keys of its other child that is not part of the path.
+This works because nodes that can decrypt one of these public keys can on their own derive all others upwards until the root.
+As a result, only one encryption per layer is required, thus the complexity is $\mathcal{O}(\log(n))$ for group size $n$.
 
 
 \begin{itemize}
