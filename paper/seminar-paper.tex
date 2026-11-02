@@ -180,16 +180,18 @@ Because we assume that a state compromise also includes keys of these two-party 
 Sender Keys also do not uphold Consistency as the DS can forge membership changes~\cite{albrechtFormalAnalysisMultidevice2025} and only deliver them to part of the group, effectively splitting the group~\cite{balbasWhatsUppSenderKeys2023}.
 
 \subsection{Continuous Group-Key Agreement}
+Continuous Group-Key Agreement (CGKA) protocols goal is to efficiently and securely derive a shared Group Key.
 Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring keys to be shared over pair wise channels with every group member \ldots
 \subsubsection{Definitions}
 
 \paragraph{Epochs}
 
 \begin{description}
-    \item[Epoch] Group state comprising current group membership and shared group keys, ordered linearly.
+    \item[Group Key] Shared Secret key only known to all current members of the group.
+    \item[Epoch] Group state comprising current group membership and current group key, ordered linearly.
+    \item[Operations]
     \item[Proposal]
     \item[Commit]
-
 \end{description}
 
 \subsubsection{Tree Based}
