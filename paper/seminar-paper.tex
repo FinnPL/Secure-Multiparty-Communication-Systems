@@ -202,7 +202,7 @@ The Ratchet Tree is comprised of key pairs with the group key being derived from
 All public keys are known by all members.
 Private keys, on the other hand, can only be known by members descending from their respective intermediate node~\cite{barnesMessagingLayerSecurity2023}.
 
-In order to rotate a key, a member replaces all keys on the path starting from their leaf node to the root.
+In order to rotate a key as part of a commit, a member replaces all keys on the path starting from their leaf node to the root.
 The member creates a fresh leaf key pair and then, starting from a random value, derives secrets upwards along the path.
 From each secret the respective node's key pair can be derived and the secret of the parent node~\cite{barnesMessagingLayerSecurity2023}.
 The new public keys can be broadcast in plaintext while the secrets need to be encrypted such that only the descendant leaves can decrypt them.
@@ -210,15 +210,13 @@ That only requires the member to encrypt the new secret of each node with the pu
 This works because members that can decrypt one of these secrets can on their own derive all others upwards until the root.
 As a result, only one encryption per layer is required, thus the complexity is $\mathcal{O}(\log(n))$ for group size $n$~\cite{barnesMessagingLayerSecurity2023}.
 
+In order to add a member, a new leaf node is created.
+To allow members to be added while they are not reachable, they must have previously published a KeyPackage containing their public key (like in Sender Keys), that is then used to create the leaf node.
+The new member is then sent the current group key, encrypted by its personal public key.
+Note that at this point the new member is considered unmerged as it does not know any other keys on its path.
+Until it has learned every key on its path, any update encrypted with the public key of an unmerged ancestor also needs to be separately encrypted for the new member.
 
-\begin{itemize}
-    \item Predecessors (Not Strictly CGKA)
-    \begin{itemize}
-        \item LKH: Server holds all keys
-        \item TGDH: not asynchronous
-    \end{itemize}
-    \item ART \cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018}
-    \item TreeKEM/MLS \cite{barnesMessagingLayerSecurity2023} (used by RCS, Discord VC)
+
     \begin{itemize}
         \item Improved variants:
         \begin{itemize}
@@ -226,7 +224,7 @@ As a result, only one encryption per layer is required, thus the complexity is $
             \item Tainted TreeKEM: avoids blanks \cite{kleinKeepDirtTainted2021}
         \end{itemize}
     \end{itemize}
-\end{itemize}
+
 \subsubsection{Other Approaches}
 \begin{itemize}
     \item Chained CmPKE \cite{hashimotoConcreteTreatmentEfficient2021}
