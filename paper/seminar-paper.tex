@@ -181,13 +181,13 @@ Sender Keys also do not uphold Consistency as the DS can forge membership change
 
 \subsection{Continuous Group-Key Agreement}
 Continuous Group-Key Agreement (CGKA) protocols' goal is to efficiently and securely derive a shared Group Key continuously through group changes.
-Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring keys to be shared over pairwise channels with every group member \ldots
+Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring a full rekey to achieve PCS, allowing for cheaper Healing.
 \subsubsection{Definitions}
 
 \begin{description}
     \item[Group Key] is a shared secret key only known to all current members of the group.
     \item[Epoch] is the group state comprising current group membership and current group key. Notably, epochs are ordered linearly, but all members might not be in the same epoch at a given time.
-    \item[Operations] change the group state, e.g., adding or removing a member and updating a member's own key. We do not discuss other operations such as ones required to create a group.
+    \item[Operations] change the group state, e.g., adding or removing a member and updating a member's own key to provide PCS. We do not discuss other operations such as ones required to create a group.
     \item[Proposal] is a message containing a suggested operation.
     \item[Commit] applies ordered proposals thus changing the group state and starting a new epoch.
 \end{description}
