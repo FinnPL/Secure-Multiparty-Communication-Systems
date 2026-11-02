@@ -230,6 +230,7 @@ Second, because the root node cannot remain blank, as every epoch needs a group 
         \begin{itemize}
             \item RTreeKEM: updates private keys (UPKE) \cite{alwenSecurityAnalysisImprovements2020}
             \item Tainted TreeKEM: avoids blanks \cite{kleinKeepDirtTainted2021}
+            \item DeCAF \cite{alwenDeCAFDecentralizableCGKA2024}
         \end{itemize}
     \end{itemize}
 
@@ -237,12 +238,11 @@ Second, because the root node cannot remain blank, as every epoch needs a group 
 \begin{itemize}
     \item Chained CmPKE \cite{hashimotoConcreteTreatmentEfficient2021}
     \item DCGKA: decentralized (no ordering server) \cite{weidnerKeyAgreementDecentralized2021}
-    \item DeCAF \cite{alwenDeCAFDecentralizableCGKA2024}
 \end{itemize}
 
 \begin{table*}[htbp]
     \centering
-    \caption{Comparison of group messaging protocols. Costs are given in messages: Add, Remove, and Update count the messages sent by all members together, Send and Receive the cost per message. Consistency assumes the ordering requirement is met.  {\upshape\Circle}: the DS can split the group, {\upshape\LEFTcircle}: only a malicious member can, {\upshape\CIRCLE}: neither can. For FS and PCS: {\upshape\CIRCLE}: provided, {\upshape\LEFTcircle}: only weakly provided, {\upshape\Circle}: not provided, --: not applicable.}
+    \caption{Comparison of group messaging protocols. Costs are given as the total number of ciphertexts required to perform an operation. Where two costs are given, they denote the best and worst case. Consistency assumes the ordering requirement is met.  {\upshape\Circle}: the DS can split the group, {\upshape\LEFTcircle}: only a malicious member can, {\upshape\CIRCLE}: neither can. For FS and PCS: {\upshape\CIRCLE}: provided, {\upshape\LEFTcircle}: only weakly provided, {\upshape\Circle}: not provided, --: not applicable.}
     \label{tab:comparison}
     \begin{tabular}{lccccccccc}
         \toprule
@@ -253,25 +253,19 @@ Second, because the root node cannot remain blank, as every epoch needs a group 
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Pairwise channels}} \\
         Client-Side Fanout & \CIRCLE & \CIRCLE & \Circle & None & $\mathcal{O}(n)$ & $0$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & -- \\
         Sender Keys & \CIRCLE & \LEFTcircle & \Circle & Group changes & $\mathcal{O}(n)$ & $\mathcal{O}(n^2)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
-        Sender Keys+ & & & & Group changes & & & & & $\mathcal{O}(n)$ \\
-        \midrule
-        \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Tree-based predecessors}} \\
-        LKH & & & & & & & & & \\
-        TGDH & & & & & & & & & \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Tree-based CGKA}} \\
-        ART & & & & & & & & & \\
-        TreeKEM (MLS) & & & & Group changes & & & & & \\
+        TreeKEM (MLS) & \LEFTcircle & \CIRCLE & & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         RTreeKEM & & & & & & & & & \\
         Tainted TreeKEM & \CIRCLE & \CIRCLE & & & & & & & \\
         P-Pas & & & & & & & & & \\
         P-Act & & & & & & & & & \\
         P-Act-Rob & & & & & & & & & \\
+        DeCAF & & \CIRCLE & & & & & & & \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Other CGKA}} \\
         Chained CmPKE & \CIRCLE & \CIRCLE & & & & $\mathcal{O}(n)$ & & & $\mathcal{O}(n)$ \\
         DCGKA & \CIRCLE & \CIRCLE & & None & & & & & \\
-        DeCAF & & \CIRCLE & & & & & & & \\
         \bottomrule
     \end{tabular}
 \end{table*}
