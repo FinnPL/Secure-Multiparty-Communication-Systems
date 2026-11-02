@@ -219,6 +219,11 @@ The new member is then sent the current group key, encrypted with their KeyPacka
 Note that at this point the new member is considered unmerged, as they do not know any other keys on their path.
 Until they have learned every key on their path, any update encrypted with the public key of an unmerged ancestor also needs to be separately encrypted for the new member~\cite{barnesMessagingLayerSecurity2023}.
 
+Removing a member requires every secret known to the removed member to be rotated in order to adhere to our notion of Confidentiality.
+This is implemented in two steps. First, every node on the removed member's path is blanked, essentially invalidating the key pair without generating a new one.
+In TreeKEM, blanks cannot be avoided, because the remover cannot replace those keys, because he is not supposed to know them if he is not their descendant.
+Second, because the root node cannot remain blank, as every epoch needs a group key, the removee needs to issue an update as described above.
+
 
     \begin{itemize}
         \item Improved variants:
