@@ -198,11 +198,13 @@ To describe CGKA, we use definitions closely following the MLS specification~\ci
 TreeKEM is the most popular deployed tree-based CGKA protocol~\cite{solerAnalysisEfficiencyMessaging2025}, being implemented by MLS, which in turn is used by both Discord's voice and video chats~\cite{discord2024dave_spec} and the SMS successor RCS~\cite{gsma2025rcs_e2ee}.
 
 As the name implies, TreeKEM employs a tree structure called the Ratchet Tree to derive the group key.
-The Ratchet Tree is comprised of keypairs with the group key being derived from the root node and group members' individual keypairs as the leaf nodes.
+The Ratchet Tree is comprised of key pairs with the group key being derived from the root node and group members' individual key pairs as the leaf nodes.
 All public keys are known by all members.
-Private keys, on the other hand, can only be known by members descending from its respective intermediate node~\cite{barnesMessagingLayerSecurity2023}.
+Private keys, on the other hand, can only be known by members descending from their respective intermediate node~\cite{barnesMessagingLayerSecurity2023}.
 
-In order to refresh a key, a member only
+In order to refresh a key, a member replaces all keys on the path from their leaf node to the root.
+The new public keys can be broadcast in plaintext while the private keys need to be encrypted such that only their respective children can decrypt them.
+That requires the member to simply encrypt the new private keys of the node with the public keys of its children.
 
 
 \begin{itemize}
