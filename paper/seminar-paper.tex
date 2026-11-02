@@ -195,26 +195,29 @@ To describe CGKA, we use definitions closely following the MLS specification~\ci
 \subsubsection{Tree Based}
 
 \paragraph{TreeKEM / MLS}
-TreeKEM~\cite{bhargavanTreeKEMAsynchronousDecentralizeda} is the most popular deployed tree-based CGKA protocol~\cite{solerAnalysisEfficiencyMessaging2025}, being implemented by MLS, which in turn is used by both Discord's voice and video chats~\cite{discord2024dave_spec} and the SMS successor RCS~\cite{gsma2025rcs_e2ee}.
+Messaging Layer Security (MLS)~\cite{barnesMessagingLayerSecurity2023} is an IETF standard, which is deployed in Discord's voice and video chats~\cite{discord2024dave_spec} and the SMS successor RCS~\cite{gsma2025rcs_e2ee}.
+It uses a variant of TreeKEM~\cite{bhargavanTreeKEMAsynchronousDecentralizeda,solerAnalysisEfficiencyMessaging2025} as its CGKA protocol.
+In the following, TreeKEM refers to this variant.
 
 As the name implies, TreeKEM employs a tree structure called the Ratchet Tree to derive the group key.
 The Ratchet Tree is comprised of key pairs with the group key being derived from the root node and group members' individual key pairs as the leaf nodes.
 All public keys are known by all members.
 Private keys, on the other hand, can only be known by members descending from their respective intermediate node~\cite{barnesMessagingLayerSecurity2023}.
 
-In order to rotate a key as part of a commit, a member replaces all keys on the path starting from their leaf node to the root.
+To achieve PCS members need to rotate their key as part of a commit.
+In order to do so a member replaces all keys on the path starting from their leaf node to the root.
 The member creates a fresh leaf key pair and then, starting from a random value, derives secrets upwards along the path.
 From each secret the respective node's key pair can be derived and the secret of the parent node~\cite{barnesMessagingLayerSecurity2023}.
 The new public keys can be broadcast in plaintext, while the secrets need to be encrypted such that only the descendant leaves can decrypt them.
 That only requires the member to encrypt the new secret of each node with the public key of its other child that is not part of the path.
 This works because members that can decrypt one of these secrets can on their own derive all others upwards until the root.
-As a result, only one encryption per layer is required; thus, the complexity is $\mathcal{O}(\log(n))$ for group size $n$~\cite{barnesMessagingLayerSecurity2023}.
+As a result, only one encryption per layer is required; thus, the complexity is $\mathcal{O}(\log(n))$ encryptions for group size $n$~\cite{barnesMessagingLayerSecurity2023}.
 
 In order to add a member, a new leaf node is created.
 To allow members to be added while they are not reachable, they must have previously published a KeyPackage containing their public key (like the prekey bundle in two-party messaging, see \Cref{sec:setup}), which is then used to create the leaf node.
-The new member is then sent the current group key, encrypted by its personal public key.
-Note that at this point the new member is considered unmerged as it does not know any other keys on its path.
-Until it has learned every key on its path, any update encrypted with the public key of an unmerged ancestor also needs to be separately encrypted for the new member.
+The new member is then sent the current group key, encrypted by their KeyPackage's key.
+Note that at this point the new member is considered unmerged as they do not know any other keys on their path.
+Until they have learned every key on their path, any update encrypted with the public key of an unmerged ancestor also needs to be separately encrypted for the new member.
 
 
     \begin{itemize}
