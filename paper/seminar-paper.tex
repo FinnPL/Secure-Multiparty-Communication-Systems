@@ -221,8 +221,8 @@ Until they have learned every key on their path, any update encrypted with the p
 
 Removing a member requires every secret known to the removed member to be rotated in order to adhere to our notion of Confidentiality.
 This is implemented in two steps. First, every node on the removed member's path is blanked, essentially invalidating the key pair without generating a new one.
-In TreeKEM, blanks cannot be avoided, because the remover cannot replace those keys, because he is not supposed to know them if he is not their descendant.
-Second, because the root node cannot remain blank, as every epoch needs a group key, the removee needs to issue an update as described above.
+In TreeKEM, blanks cannot be avoided, because the remover cannot replace those keys, since the remover is not supposed to know them if he is not their descendant.
+Second, because the root node cannot remain blank, as every epoch needs a group key, the remover needs to issue an update as described above.
 
 
     \begin{itemize}
