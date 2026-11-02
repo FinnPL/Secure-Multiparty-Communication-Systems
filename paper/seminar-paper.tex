@@ -215,13 +215,13 @@ Only one encryption per layer is required, resulting in $\mathcal{O}(\log(n))$ e
 
 In order to add a member, a new leaf node is created.
 To allow members to be added while they are not reachable, they must have previously published a KeyPackage containing their public key (like the prekey bundle in two-party messaging, see \Cref{sec:setup}), which is then used to create the leaf node.
-The new member is then sent the current group key, encrypted with their KeyPackage's key.
+The new member is then sent the group key of the new epoch, encrypted with their KeyPackage's key.
 Note that at this point the new member is considered unmerged, as they do not know any other keys on their path.
 Until they have learned every key on their path, any update encrypted with the public key of an unmerged ancestor also needs to be separately encrypted for the new member~\cite{barnesMessagingLayerSecurity2023}.
 
 Removing a member requires every secret known to the removed member to be rotated in order to adhere to our notion of Confidentiality.
 This is implemented in two steps. First, every node on the removed member's path is blanked, essentially invalidating the key pair without generating a new one.
-In TreeKEM, blanks cannot be avoided, because the remover cannot replace those keys, since the remover is not supposed to know them if he is not their descendant.
+In TreeKEM, blanks cannot be avoided, because the remover cannot replace those keys, since the remover is not supposed to know them if they are not their descendant.
 Second, because the root node cannot remain blank, as every epoch needs a group key, the remover needs to issue an update as described above.
 
 
