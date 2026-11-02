@@ -184,14 +184,12 @@ Continuous Group-Key Agreement (CGKA) protocols goal is to efficiently and secur
 Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring keys to be shared over pair wise channels with every group member \ldots
 \subsubsection{Definitions}
 
-\paragraph{Epochs}
-
 \begin{description}
-    \item[Group Key] Shared Secret key only known to all current members of the group.
-    \item[Epoch] Group state comprising current group membership and current group key, ordered linearly.
-    \item[Operations]
-    \item[Proposal]
-    \item[Commit]
+    \item[Group Key] is a shared Secret key only known to all current members of the group.
+    \item[Epoch] is the group state comprising current group membership and current group key, ordered linearly.
+    \item[Operations] like adding or, removing a Member and updating your own key. We do not discuss other operations such as ones required to create a group.
+    \item[Proposal] is a message containing a suggested operation.
+    \item[Commit] applies ordered proposals thus changing the group state and starting a new Epoch.
 \end{description}
 
 \subsubsection{Tree Based}
