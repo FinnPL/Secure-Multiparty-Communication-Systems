@@ -165,16 +165,16 @@ This improves complexity compared to client-side fanout by only requiring one en
 
 After sending and receiving, each party performs one ratchet step on the corresponding chain key $\mathsf{ck}_i$ using a KDF.
 This ratchet step on the symmetric chain key $\mathsf{ck}_i$ provides FS as in the Double Ratchet Algorithm, but unlike it, Sender Keys are missing a second ratchet (\Cref{sec:dh-ratchet}) that introduces new randomness.
-This means PCS can only be achieved by each member creating new sender keys and redistributing them to every other member.
+This means PCS can only be achieved by each member creating new sender keys and redistributing them to every other member~\cite{balbasWhatsUppSenderKeys2023}.
 
-Adding a new member requires every member to share their sender keys with the new member, requiring one message per member to be exchanged for $\mathcal{O}(n)$ messages in total.
+Adding a new member requires every member to share their sender keys with the new member, requiring one message per member to be exchanged for $\mathcal{O}(n)$ messages in total~\cite{balbasWhatsUppSenderKeys2023,albrechtFormalAnalysisMultidevice2025}.
 This complies with our notion of Confidentiality: because of the described FS, the new member cannot decrypt old messages.
-Removing, on the other hand, requires a complete rekey, meaning every member needs to create new sender keys and distribute them to every other member.
-This takes $\mathcal{O}(n)$ messages per member, which is $\mathcal{O}(n^2)$ in total.
+Removing, on the other hand, requires a complete rekey, meaning every member needs to create new sender keys and distribute them to every other member~\cite{albrechtFormalAnalysisMultidevice2025}.
+This takes $\mathcal{O}(n)$ messages per member, which is $\mathcal{O}(n^2)$ in total~\cite{balbasWhatsUppSenderKeys2023}.
 
 Sender Keys' weakest guarantee, PCS, can therefore only be fixed by a complete rekey, its most expensive operation.
 Because this is implementation-dependent and often only done after a group member leaves, only a very weak form of PCS is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
-Another weakness of relying on pairwise channels is that they also require multiple messages to be exchanged to fully heal.
+Another weakness of relying on pairwise channels is that they also require multiple messages to be exchanged to fully heal~\cite{balbasWhatsUppSenderKeys2023}.
 Because we assume that a state compromise also includes keys of these two-party channels, fresh keys could also leak when exchanged over pairwise channels before they have healed.
 
 Sender Keys also do not uphold Consistency as the DS can forge membership changes~\cite{albrechtFormalAnalysisMultidevice2025} and only deliver them to part of the group, effectively splitting the group~\cite{balbasWhatsUppSenderKeys2023}.
