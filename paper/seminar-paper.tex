@@ -196,7 +196,9 @@ To describe CGKA, we use definitions closely following the MLS specification~\ci
 
 \paragraph{TreeKEM / MLS}
 TreeKEM is the most popular deployed tree-based CGKA protocol~\cite{solerAnalysisEfficiencyMessaging2025}, being implemented by MLS which in turn is used by both Discord's voice and video chats~\cite{discord2024dave_spec} and the SMS successor RCS~\cite{gsma2025rcs_e2ee}.
-As the name implies
+As the name implies TreeKEM employs a tree structure derive the group key.
+
+The Ratchet Tree is comprised of keys with the group key being the root node and group members individual keys as the leaf nodes. Each intermediate node is a key shared by all leaves descending from it.
 
 
 \begin{itemize}
