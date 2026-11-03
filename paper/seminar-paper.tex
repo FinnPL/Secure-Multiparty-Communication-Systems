@@ -213,7 +213,7 @@ That only requires the member to encrypt the new secret of each node with the pu
 This works because members that can decrypt one of these secrets can, on their own, derive all others up to the root.
 Only one encryption per layer is required, resulting in $\mathcal{O}(\log(n))$ encryptions for group size $n$~\cite{barnesMessagingLayerSecurity2023}.
 
-FS between epochs rests on deleting old private keys and a ratchet (same principle as the symmetric ratchet in \Cref{sec:sym-ratchet}).
+FS between epochs rests on deleting old private keys and a ratchet (same principle as the symmetric ratchet in \Cref{sec:sym-ratchet})~\cite{barnesMessagingLayerSecurity2023,alwenInsiderSecurityMLS2022}.
 It takes in a secret derived from the previous group key and current root secret to derive the next group key for each epoch~\cite{barnesMessagingLayerSecurity2023}.
 
 In order to add a member, a new leaf node is created.
@@ -248,13 +248,13 @@ For large groups, these trade-offs bring down total cost on average, because a b
 
 Besides its efficiency, TreeKEM also falls short of optimal FS.
 As shown by Alwen et al.~\cite{alwenSecurityAnalysisImprovements2020}, members keep the private keys of inner nodes until they get updated.
-Thus, if a member is compromised, all path secrets from the compromised member's last update onward can be decrypted retroactively, including the root secret.
-It is important to note that this does not immediately grant an attacker the group key, because of the aforementioned ratchet, but if a previous compromise has leaked the group key, an attacker can potentially derive group keys in that time frame.
-
+Thus, if a member is compromised, all path secrets from the compromised member's last update onward can be decrypted retroactively, including the root secret~\cite{alwenSecurityAnalysisImprovements2020}.
+It is important to note that this does not immediately grant an attacker the group key, because of the aforementioned ratchet, but if a previous compromise has leaked the group key, an attacker can potentially derive group keys in that time frame~\cite{alwenInsiderSecurityMLS2022}.
 
 Alwen et al. proposed a modified version of TreeKEM~\cite{alwenSecurityAnalysisImprovements2020} later called rTreeKEM~\cite{kleinKeepDirtTainted2021} that addresses this weakness.
-They employ Updatable Public-Key Encryption (UPKE) that allows for private keys to be updated every time they are used.
-This provides optimal FS, as a key is replaced the moment it is used.
+They employ Updatable Public-Key Encryption (UPKE) that allows for private keys to be updated every time they are used~\cite{alwenSecurityAnalysisImprovements2020}.
+This provides optimal FS, as a key is replaced the moment it is used~\cite{alwenSecurityAnalysisImprovements2020}.
+However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cite{alwenSecurityAnalysisImprovements2020}.
 
 \begin{table*}[htbp]
     \centering
