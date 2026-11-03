@@ -234,9 +234,9 @@ In the worst case, every inner node is blanked, and the updater needs to step do
 This costs $\mathcal{O}(n)$ ciphertexts.
 
 This degradation can be mitigated by avoiding creating blank nodes without compromising security.
-Klein et al. proposed Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}, which solves this problem by allowing the remover to create tainted nodes with fresh key pairs instead of just blanking them.
+Klein et al. proposed Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}, which no longer require blanked nodes by allowing the remover to create tainted nodes with fresh key pairs instead.
 These tainted nodes can be used normally but need to be updated the moment the tainter updates or is removed.
-This still provides comparable security, because if the tainter is compromised, the group key is compromised as well until the tainter updates, which at the same time would then also update the tainted nodes.
+This still provides comparable security, because if the tainter is compromised, the group key is compromised as well until the tainter updates, which at the same time would also update the tainted nodes.
 
 
 Weak FS
@@ -271,8 +271,8 @@ thats why RTreeKEM: updates private keys (UPKE) \cite{alwenSecurityAnalysisImpro
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Tree-based CGKA}} \\
         TreeKEM (MLS) & \LEFTcircle & \CIRCLE & & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        Tainted TreeKEM & \LEFTcircle & \CIRCLE & & Group changes & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         RTreeKEM & & & & & & & & & \\
-        Tainted TreeKEM & \CIRCLE & \CIRCLE & & & & & & & \\
         P-Pas & & & & & & & & & \\
         P-Act & & & & & & & & & \\
         P-Act-Rob & & & & & & & & & \\
