@@ -227,16 +227,16 @@ This is implemented in two steps. First, every node on the removed member's path
 In TreeKEM, blanks cannot be avoided, because the remover cannot replace those keys, since the remover is not supposed to know them if they are not their descendant.
 Second, because the root node cannot remain blank, as every epoch needs a group key, the remover needs to issue an update as described above~\cite{barnesMessagingLayerSecurity2023}.
 
-Crucially, other inner nodes may remain blank until they get updated later on by another member.
+Crucially, inner nodes may remain blank until they get updated later on by another member.
 If an update as described above occurs but one of the copath nodes is blanked, the new secret cannot be encrypted using its key.
 Thus, the updater needs to step down the copath to find the highest set of non-blanked nodes that cover all descendants and encrypt using their keys.
-In the worst case, the complete tree is blanked, and the updater needs to step down to every leaf.
+In the worst case, every inner node is blanked, and the updater needs to step down to every leaf.
 This costs $\mathcal{O}(n)$ ciphertexts.
 
-This degradation can be avoided by avoiding creating blank nodes without compromising security.
-Klein et al. proposed Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}, which solves this problem by allowing the updater to create tainted nodes with fresh keypairs instead of just blanking them.
-These tainted nodes can be used regularly but need to be updated the moment the tainter updates or is removed.
-This still provides adequate security, because if the tainter is compromised, the group key is compromised as well until the tainter updates which at the same time would then also remove the tainted nodes.
+This degradation can be mitigated by avoiding creating blank nodes without compromising security.
+Klein et al. proposed Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}, which solves this problem by allowing the remover to create tainted nodes with fresh key pairs instead of just blanking them.
+These tainted nodes can be used normally but need to be updated the moment the tainter updates or is removed.
+This still provides comparable security, because if the tainter is compromised, the group key is compromised as well until the tainter updates, which at the same time would then also update the tainted nodes.
 
 
 Weak FS
