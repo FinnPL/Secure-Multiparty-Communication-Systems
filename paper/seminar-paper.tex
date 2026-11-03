@@ -246,14 +246,15 @@ Adding a member also avoids unmerged leaves by requiring the creation of tainted
 But this avoids cost on later updates that would have required extra encryptions for unmerged members~\cite{barnesMessagingLayerSecurity2023}.
 For large groups, these trade-offs bring down total cost on average, because a blank node increases cost for many members while a tainted node only for the tainter~\cite{kleinKeepDirtTainted2021}.
 
-Besides its efficiency, TreeKEM also falls short of strong FS.
+Besides its efficiency, TreeKEM also falls short of optimal FS.
 As shown by Alwen et al.~\cite{alwenSecurityAnalysisImprovements2020}, members keep the private keys of inner nodes until they get updated.
 Thus, if a member is compromised, all path secrets from the compromised member's last update onward can be decrypted retroactively, including the root secret.
 It is important to note that this does not immediately grant an attacker the group key, because of the aforementioned ratchet, but if a previous compromise has leaked the group key, an attacker can potentially derive group keys in that time frame.
 
 
 Alwen et al. proposed a modified version of TreeKEM~\cite{alwenSecurityAnalysisImprovements2020} later called rTreeKEM~\cite{kleinKeepDirtTainted2021} that addresses this weakness.
-They employ Updatable Public-Key Encryption (UPKE) that allow for private keys to change
+They employ Updatable Public-Key Encryption (UPKE) that allows for private keys to be updated every time they are used.
+This provides optimal FS, as a key is replaced the moment it is used.
 
 \begin{table*}[htbp]
     \centering
@@ -270,9 +271,9 @@ They employ Updatable Public-Key Encryption (UPKE) that allow for private keys t
         Sender Keys & \CIRCLE & \LEFTcircle & \Circle & Group changes & $\mathcal{O}(n)$ & $\mathcal{O}(n^2)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Tree-based CGKA}} \\
-        TreeKEM (MLS) & \LEFTcircle & \CIRCLE & & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
-        Tainted TreeKEM & \LEFTcircle & \CIRCLE & & Group changes & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
-        RTreeKEM & & & & & & & & & \\
+        TreeKEM (MLS) & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        Tainted TreeKEM & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        rTreeKEM & \CIRCLE & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         P-Pas & & & & & & & & & \\
         P-Act & & & & & & & & & \\
         P-Act-Rob & & & & & & & & & \\
