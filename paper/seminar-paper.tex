@@ -245,7 +245,11 @@ Adding a member also avoids unmerged leaves by requiring the creation of tainted
 But this avoids cost on later updates that would have required extra encryptions for unmerged members~\cite{barnesMessagingLayerSecurity2023}.
 For large groups, these trade-offs bring down total cost on average, because a blank node increases cost for many members while a tainted node only for the tainter~\cite{kleinKeepDirtTainted2021}.
 
-Weak FS
+Besides its efficiency, TreeKEM also falls short of strong FS.
+As shown by Alwen et al.~\cite{alwenSecurityAnalysisImprovements2020}, members keep the private keys of inner nodes until they get updated.
+Thus, if a member is compromised, all path secrets from the compromised members last update onward can be decrypted retroactively, including the root secret.
+It is important to note that this does not immediately grant an attacker the group key, because of the aforementioned ratchet, but if a previous compromise has leaked the group key, an attacker can potentially derive group keys in that time frame.
+
 thats why RTreeKEM: updates private keys (UPKE) \cite{alwenSecurityAnalysisImprovements2020}
 
     \begin{itemize}
