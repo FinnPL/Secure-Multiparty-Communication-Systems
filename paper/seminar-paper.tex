@@ -235,7 +235,8 @@ This costs $\mathcal{O}(n)$ ciphertexts.
 
 This degradation can be avoided by avoiding creating blank nodes without compromising security.
 Klein et al. proposed Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}, which solves this problem by allowing the updater to create tainted nodes with fresh keypairs instead of just blanking them.
-
+These tainted nodes can be used regularly but need to be updated the moment the tainter updates or is removed.
+This still provides adequate security, because if the tainter is compromised, the group key is compromised as well until the tainter updates which at the same time would then also remove the tainted nodes.
 
 
 Weak FS
