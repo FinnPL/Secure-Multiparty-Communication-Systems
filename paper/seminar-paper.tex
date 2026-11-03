@@ -243,6 +243,7 @@ These members now not only need to update their own path but also all their tain
 The same holds when such a member gets removed.
 Adding a member also avoids unmerged leaves by requiring the creation of tainted nodes along the path of the new member, costing $\mathcal{O}(\log(n))$ ciphertexts upfront~\cite{kleinKeepDirtTainted2021}.
 But this avoids cost on later updates that would have required extra encryptions for unmerged members~\cite{barnesMessagingLayerSecurity2023}.
+For large groups, these trade-offs bring down total cost on average, because a blank node increases cost for many members while a tainted node only for the tainter~\cite{kleinKeepDirtTainted2021}.
 
 Weak FS
 thats why RTreeKEM: updates private keys (UPKE) \cite{alwenSecurityAnalysisImprovements2020}
