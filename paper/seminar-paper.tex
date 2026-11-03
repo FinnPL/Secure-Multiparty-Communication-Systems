@@ -238,11 +238,11 @@ Klein et al. proposed Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}, which no 
 These tainted nodes can be used normally but need to be updated the moment the tainter updates or is removed~\cite{kleinKeepDirtTainted2021}.
 This still provides comparable security, because if the tainter is compromised, the group key is compromised as well until the tainter updates, which at the same time would also update the tainted nodes~\cite{kleinKeepDirtTainted2021}.
 
-Tainted TreeKEM shifts the complexity from other members performing updates, who would have to send more messages because of blanked nodes, towards the members that have tainted nodes.
-These members now not only need to update their own path but also all their tainted nodes, which in the worst case is every node, thus costing $\mathcal{O}(n)$ ciphertexts.
+Tainted TreeKEM shifts the complexity from other members performing updates, who would have to send more ciphertexts because of blanked nodes, towards the members that have tainted nodes.
+These members now not only need to update their own path but also all their tainted nodes, which in the worst case is every inner node, thus costing $\mathcal{O}(n)$ ciphertexts.
 The same holds for when such a member gets removed.
-Adding a member also avoids unmerged nodes, thus now requiring creating tainted nodes along the path of the new member, costing $\mathcal{O}(\log(n))$ ciphertexts upfront.
-But avoid cost on later updates that would have required the new member to be merged in.
+Adding a member also avoids unmerged leaves by requiring the creation of tainted nodes along the path of the new member, costing $\mathcal{O}(\log(n))$ ciphertexts upfront.
+But this avoids cost on later updates that would have required extra encryptions for unmerged members.
 
 Weak FS
 thats why RTreeKEM: updates private keys (UPKE) \cite{alwenSecurityAnalysisImprovements2020}
