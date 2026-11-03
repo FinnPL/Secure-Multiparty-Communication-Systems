@@ -234,7 +234,8 @@ In the worst case, the complete tree is blanked, and the updater needs to step d
 This costs $\mathcal{O}(n)$ ciphertexts.
 
 This degradation can be avoided by avoiding creating blank nodes without compromising security.
-Klein et al. proposed a solution to this problem in Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}.
+Klein et al. proposed Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}, which solves this problem by allowing the updater to create tainted nodes with fresh keypairs instead of just blanking them.
+
 
 
 Weak FS
