@@ -125,7 +125,7 @@ For simplicity, we omit key authentication and the recently added post-quantum r
 We assume Alice wants to initiate a conversation with Bob while Bob is offline.
 Bob has previously published a prekey bundle to a server, which contains Bob's public key. Alice fetches it and uses the PQXDH key agreement protocol~\cite{kretPQXDHKeyAgreement} to derive a root key.
 In the first message, Alice includes the values Bob needs to derive the same root key.
-\subsubsection{Symmetric-Key Ratchet}
+\subsubsection{Symmetric-Key Ratchet}\label{sec:sym-ratchet}
 Alice and Bob use a KDF to further derive sending and receiving chain keys. For each message they send or receive, they derive a one-time message key, used to encrypt or decrypt the message, and a new sending or receiving chain key, respectively.
 Because the KDF is one-way and all old keys are deleted after use, an attacker that compromises the state of either or both parties cannot compute previous chain keys and thus cannot derive the keys used to encrypt old messages.
 This provides FS. PCS, on the other hand, is not provided because an attacker can advance the chain exactly as the legitimate parties do and thus derive all future keys~\cite{perrinDoubleRatchetAlgorithm,cohn-gordonPostcompromiseSecurity2016}.
@@ -213,24 +213,30 @@ That only requires the member to encrypt the new secret of each node with the pu
 This works because members that can decrypt one of these secrets can, on their own, derive all others up to the root.
 Only one encryption per layer is required, resulting in $\mathcal{O}(\log(n))$ encryptions for group size $n$~\cite{barnesMessagingLayerSecurity2023}.
 
+FS is driven by a ratchet (same principle as the symmetric ratchet in \Cref{sec:sym-ratchet}) taking in the previous group key and current root secret to derive the next group key for each epoch~\cite{barnesMessagingLayerSecurity2023}.
+
 In order to add a member, a new leaf node is created.
-To allow members to be added while they are not reachable, they must have previously published a KeyPackage containing their public key (like the prekey bundle in two-party messaging, see \Cref{sec:setup}), which is then used to create the leaf node.
-The new member is then sent the group key of the new epoch, encrypted with their KeyPackage's key.
-Thus joining the group, after this operation has been committed, in just $\mathcal{O}(1)$ exchanged messages.
+To allow members to be added while they are not reachable, they must have previously published a KeyPackage containing their public key (like the prekey bundle in two-party messaging, see \Cref{sec:setup}), which is then used to create the leaf node~\cite{barnesMessagingLayerSecurity2023}.
+The new member is then sent the group key of the new epoch, encrypted with their KeyPackage's key~\cite{barnesMessagingLayerSecurity2023}.
+Thus joining the group, after this operation has been committed, in just $\mathcal{O}(1)$ exchanged messages~\cite{barnesMessagingLayerSecurity2023}.
 Note that at this point the new member is considered unmerged, as they do not know any other keys on their path.
 Until they have learned every key on their path, any update encrypted with the public key of an unmerged ancestor also needs to be separately encrypted for the new member~\cite{barnesMessagingLayerSecurity2023}.
 
 Removing a member requires every secret known to the removed member to be rotated in order to adhere to our notion of Confidentiality.
-This is implemented in two steps. First, every node on the removed member's path is blanked, essentially invalidating the key pair without generating a new one.
+This is implemented in two steps. First, every node on the removed member's path is blanked, essentially invalidating the key pair without generating a new one~\cite{barnesMessagingLayerSecurity2023}.
 In TreeKEM, blanks cannot be avoided, because the remover cannot replace those keys, since the remover is not supposed to know them if they are not their descendant.
-Second, because the root node cannot remain blank, as every epoch needs a group key, the remover needs to issue an update as described above.
+Second, because the root node cannot remain blank, as every epoch needs a group key, the remover needs to issue an update as described above~\cite{barnesMessagingLayerSecurity2023}.
 
+Worst case complexity
+thats why Tainted TreeKEM: avoids blanks \cite{kleinKeepDirtTainted2021}
+
+
+Weak FS
+thats why RTreeKEM: updates private keys (UPKE) \cite{alwenSecurityAnalysisImprovements2020}
 
     \begin{itemize}
         \item Improved variants:
         \begin{itemize}
-            \item RTreeKEM: updates private keys (UPKE) \cite{alwenSecurityAnalysisImprovements2020}
-            \item Tainted TreeKEM: avoids blanks \cite{kleinKeepDirtTainted2021}
             \item DeCAF \cite{alwenDeCAFDecentralizableCGKA2024}
         \end{itemize}
     \end{itemize}
