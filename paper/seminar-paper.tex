@@ -233,16 +233,16 @@ Thus, the updater needs to step down the copath to find the highest set of non-b
 In the worst case, every inner node is blanked, and the updater needs to step down to every leaf.
 This costs $\mathcal{O}(n)$ ciphertexts~\cite{solerAnalysisEfficiencyMessaging2025}.
 
-This degradation can be mitigated by avoiding creating blank nodes without compromising security~\cite{kleinKeepDirtTainted2021}.
+This degradation can be mitigated by avoiding creating blank nodes without compromising security.
 Klein et al. proposed Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}, which no longer requires blanked nodes by allowing the remover to create tainted nodes with fresh key pairs instead.
-These tainted nodes can be used normally but need to be updated the moment the tainter updates or is removed~\cite{kleinKeepDirtTainted2021}.
+These tainted nodes can be used normally but need to be updated the moment the tainter updates or is removed.
 This still provides comparable security, because if the tainter is compromised, the group key is compromised as well until the tainter updates, which at the same time would also update the tainted nodes~\cite{kleinKeepDirtTainted2021}.
 
-Tainted TreeKEM shifts the complexity from other members performing updates, who would have to send more ciphertexts because of blanked nodes, towards the members that have tainted nodes.
+Tainted TreeKEM shifts the complexity from other members performing updates, who would have to send more ciphertexts because of blanked nodes, towards the members that have tainted nodes~\cite{kleinKeepDirtTainted2021}.
 These members now not only need to update their own path but also all their tainted nodes, which in the worst case is every inner node, thus costing $\mathcal{O}(n)$ ciphertexts.
-The same holds for when such a member gets removed.
-Adding a member also avoids unmerged leaves by requiring the creation of tainted nodes along the path of the new member, costing $\mathcal{O}(\log(n))$ ciphertexts upfront.
-But this avoids cost on later updates that would have required extra encryptions for unmerged members.
+The same holds when such a member gets removed.
+Adding a member also avoids unmerged leaves by requiring the creation of tainted nodes along the path of the new member, costing $\mathcal{O}(\log(n))$ ciphertexts upfront~\cite{kleinKeepDirtTainted2021}.
+But this avoids cost on later updates that would have required extra encryptions for unmerged members~\cite{barnesMessagingLayerSecurity2023}.
 
 Weak FS
 thats why RTreeKEM: updates private keys (UPKE) \cite{alwenSecurityAnalysisImprovements2020}
