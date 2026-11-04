@@ -303,8 +303,8 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
 
 \section{Protecting Against Misbehaving Peers}\label{sec:misbehavior}
 So far, we have primarily considered external adversaries.
-Modern Group Communication protocols also need to consider misbehaving peers and active attackers after a state compromise of a group member.
-Under this threat model, confidentiality is no longer considered, as group members are allowed, and it is impossible to avoid impersonation of an active attacker possessing with stolen state.
+Modern group communication protocols also need to consider misbehaving peers and active attackers after a state compromise of a group member.
+Under this threat model, confidentiality is no longer considered, as group members are allowed, and it is impossible to avoid impersonation of an active attacker possessing stolen state.
 We instead focus on maintaining consistency and availability.
 
 \subsection{Insider-Secure TreeKEM}
@@ -313,6 +313,10 @@ A possible attack is impersonating another group member.
 In TreeKEM, signatures are used on messages to prevent this.
 But because signature keys are not rotated regularly, an active attacker could impersonate a member after a state compromise and, e.g., remove other members in their name.
 This was fixed by requiring use of a MAC using a key derived from the root secret on unencrypted messages.
+
+A malicious member could also split the group by creating two commits that only differ in their signature and sending them to different members.
+All members accept their received commit and derive the same group key and can communicate as usual, but because the signatures no longer align, they cannot agree on the next commit as they no longer agree on past commits' hash value~\cite{alwenInsiderSecurityMLS2022}.
+This was fixed by making the group key also depend on the commits' hash value~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}, thus members would no longer derive the same group key and notice that a split has occurred, but this notably does not prevent the possibility of an insider creating such a split.
 
 \subsection{Limits of Insider Security}
 
