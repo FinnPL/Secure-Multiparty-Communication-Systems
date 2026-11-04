@@ -321,7 +321,7 @@ This was fixed by making the group key also depend on the commits' signatures~\c
 \subsection{Inconsistent Commits}
 The issue of insiders being able to split the group by creating malicious commits runs deeper, even without a colluding DS.
 A group member performing an update can encrypt unrelated secrets to different copath nodes.
-This is not detectable by the DS or any individual member but results
+This is not detectable by the DS, and any individual member can only check the validity of their own secret
 $\rightarrow$ split group. (prevent with Zero-Knowledge Proofs \cite{alwenContinuousGroupKey2020})
 
 \subsection{Limits of Insider Security}
