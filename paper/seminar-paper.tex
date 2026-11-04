@@ -300,10 +300,10 @@ In this section \ldots
 
 \subsection{Complexity}
 As \Cref{tab:comparison} shows, sending and receiving are cheap in all protocols except client-side fanout.
-Protocols mainly differ in group operations, which often comes down to the update complexity, as updates are often required for other group operations to maintain FS and PCS.
+Protocols mainly differ in group operations, which often comes down to the update complexity, as updates are often required for other group operations to maintain FS and PCS~\cite{barnesMessagingLayerSecurity2023}.
 The table only measures the count of ciphertexts and operations' best and worst cases.
 Neither paints the full picture, as it does not include non-cryptographic costs and how often worst-case scenarios actually occur.
-For instance, Tainted TreeKEM has been shown to outperform TreeKEM on average in large-group simulations, while its worst case remains the same as that of the unmodified TreeKEM.
+For instance, Tainted TreeKEM has been shown to outperform TreeKEM on average in large-group simulations~\cite{kleinKeepDirtTainted2021}, while its worst case remains the same as that of the unmodified TreeKEM.
 
 \paragraph{Best vs.\ worst case}
 
@@ -316,8 +316,6 @@ For instance, Tainted TreeKEM has been shown to outperform TreeKEM on average in
 
 
 \begin{itemize}
-    \item see \Cref{tab:comparison}
-    \item Best vs.\ worst case
     \item Bandwidth asymmetry $\rightarrow$ Chained CmPKE~\cite{hashimotoConcreteTreatmentEfficient2021}
 \end{itemize}
 
