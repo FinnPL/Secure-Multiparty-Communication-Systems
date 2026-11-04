@@ -258,7 +258,7 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
 
 \begin{table*}[htbp]
     \centering
-    \caption{Comparison of group messaging protocols. Costs are given as the total number of ciphertexts required to perform an operation. Where two costs are given, they denote the best and worst case. Consistency assumes the ordering requirement is met.  {\upshape\Circle}: the DS can split the group, {\upshape\LEFTcircle}: only a malicious member can, {\upshape\CIRCLE}: neither can. For FS and PCS: {\upshape\CIRCLE}: provided, {\upshape\LEFTcircle}: only weakly provided, {\upshape\Circle}: not provided, --: not applicable.}
+    \caption{Comparison of Group Messaging Protocols}
     \label{tab:comparison}
     \begin{tabular}{lccccccccc}
         \toprule
@@ -274,7 +274,7 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
         TreeKEM (MLS) & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         Tainted TreeKEM & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         rTreeKEM & \CIRCLE & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
-        P-Act-Rob & \CIRCLE & \CIRCLE & \CIRCLE & Group changes & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        P-Act-Rob & \CIRCLE & \CIRCLE & \CIRCLE & Group changes & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         DeCAF & & \CIRCLE & & & & & & & \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Other CGKA}} \\
@@ -282,6 +282,15 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
         DCGKA & \CIRCLE & \CIRCLE & & None & & & & & \\
         \bottomrule
     \end{tabular}
+
+    \vspace{1ex}
+    \parbox{0.97\textwidth}{\footnotesize
+        Costs are the total number of ciphertexts required to perform an operation, given as best / worst case where they differ.
+        \begin{tabular}{@{}llll@{}}
+            FS and PCS: & \Circle: not provided & \LEFTcircle: only weakly provided & \CIRCLE: provided \\
+            Consistency (assuming the ordering requirement is met): & \Circle: the DS can split the group & \LEFTcircle: only a malicious member can & \CIRCLE: neither can \\
+        \end{tabular}
+    }
 \end{table*}
 
 \section{Practicality of Deployment}\label{sec:practicality}
