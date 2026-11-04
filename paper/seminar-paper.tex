@@ -306,7 +306,8 @@ Neither paints the full picture, as it does not include non-cryptographic costs 
 For instance, Tainted TreeKEM has been shown to outperform TreeKEM on average in large-group simulations~\cite{kleinKeepDirtTainted2021}, while its worst case remains the same as that of the unmodified TreeKEM.
 
 \paragraph{Best vs.\ worst case}
-
+TreeKEM's worst case might seem unlikely as it requires all inner nodes to be blanked, but blanks are also caused by update proposals.
+In detail, if a member only updates their leaf, the committer cannot replace their path, thus, to keep the guarantee that a member heals after updating, the nodes on the path need to be blanked.
 
 \subsection{Post-Quantum Security}
 
