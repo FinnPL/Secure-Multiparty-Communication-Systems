@@ -308,7 +308,7 @@ For instance, Tainted TreeKEM has been shown to outperform TreeKEM on average in
 \paragraph{Best vs.\ worst case}
 TreeKEM's worst case might seem unlikely as it requires all inner nodes to be blanked, but blanks are also caused by update proposals.
 In detail, if a member only updates their leaf, the committer cannot replace their path, thus, to keep the guarantee that a member heals after updating, the nodes on the path need to be blanked.
-In mathematical models assuming random proposers and committers and one proposal per commit give an expected commit size of about $\Omega(n^{0.58})$.
+In a mathematical model assuming random proposers and committers, one proposal per commit gives an expected commit size of about $\Omega(n^{0.58})$.
 At 50 proposals per commit the expected commit size grows to $\Omega(n^{0.99})$, which already is almost the worst case.
 
 \subsection{Post-Quantum Security}
