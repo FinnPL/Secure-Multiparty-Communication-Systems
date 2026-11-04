@@ -318,10 +318,14 @@ A malicious member controlling the network or colluding with the DS could also s
 All members accept their received commit and derive the same group key and can communicate as usual, but because the signatures no longer align, they cannot agree on the next commit as they no longer agree on past commits' hash value~\cite{alwenInsiderSecurityMLS2022}.
 This was fixed by making the group key also depend on the commits' signatures~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}, thus members would no longer derive the same group key and notice that a split has occurred, but this notably does not prevent the possibility of an insider creating such a split.
 
+\subsection{Inconsistent Commits}
+The issue of insiders being able to split the group by creating malicious commits runs deeper, even without a colluding DS.
+A group member performing an update can encrypt unrelated secrets to different copath nodes.
+This is not detectable by the DS or any individual member but results
+$\rightarrow$ split group. (prevent with Zero-Knowledge Proofs \cite{alwenContinuousGroupKey2020})
+
 \subsection{Limits of Insider Security}
 
-\subsection{Inconsistent Commits}
-$\rightarrow$ split group. (prevent with Zero-Knowledge Proofs \cite{alwenContinuousGroupKey2020})
 
 \section{Conclusion}
 
