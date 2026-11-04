@@ -342,7 +342,8 @@ The proposed protocol P-Act-Rob~\cite{alwenContinuousGroupKey2020}, based on Tai
 Each commit needs to include such a proof, validating that all operations have been applied correctly and that the path update is consistent.
 This proof needs to be checked by every member before accepting the commit and moving to the next epoch.
 Alternatively, just the DS could validate the commit before distributing it to reduce computation cost for the members, at the cost of trusting the DS.
-Cost
+Like rTreeKEM, P-Act-Rob also provides optimal FS, but by evolving every key on a commit.
+In P-Act-Rob, a committer always needs to update their path and their tainted nodes; thus, adding a member also suffers from the worst case cost of an update in Tainted TreeKEM with $\mathcal{O}(n)$ ciphertexts.
 When achieving this level of insider security is necessary but higher costs are not acceptable, a protocol could require at least one member below each copath node to acknowledge a commit, at the cost of asynchrony.
 \subsection{Limits of Insider Security}
 
