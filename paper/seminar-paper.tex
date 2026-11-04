@@ -348,8 +348,9 @@ When achieving this level of insider security is necessary but higher costs are 
 
 \subsection{Limits of Insider Security}
 MLS lets any member add or remove others to the group, thus a malicious member can arbitrarily add other members or, e.g., remove every other member from the group.
-In order to enforce a set of policies, MLS requires it execution by either the DS which then needs to be trusted to do so, or each client which could leave to inconsistent state if they disagree.
-Administrated CGKA (A-CGKA) extend MLS in a way that allows for
+Therefore, a set of policies is required that restricts these actions.
+In order to enforce such policies, MLS requires their enforcement by either the DS which then needs to be trusted to do so, or each client which could lead to an inconsistent state if they disagree.
+Administrated CGKA (A-CGKA) extends CGKA in a way that only allows admins to control membership.
 
 
 \section{Conclusion}
