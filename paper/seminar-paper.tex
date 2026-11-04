@@ -327,7 +327,8 @@ This effect is made worse if the targeted members on the copath are currently of
 Because no other entity can realize the split, the rest of the group just continues with the next epochs~\cite{barnesMessagingLayerSecurity2023}, making recovery (which is left to the application layer~\cite{barnesMessagingLayerSecurity2023,beurdoucheMessagingLayerSecurity2025}) even more complicated.
 
 MLS currently has no way to prevent these attacks.
-But the proposed protocol P-Act-Rob~\cite{alwenContinuousGroupKey2020} addresses this by employing Non-Interactive Zero-Knowledge (NIZK) proofs.
+The proposed protocol P-Act-Rob~\cite{alwenContinuousGroupKey2020} addresses this by employing Non-Interactive Zero-Knowledge (NIZK) proofs.
+Each commit needs to include such a proof, validating that all operations have been applied correctly and that the path update is consistent.
 
 $\rightarrow$ split group. (prevent with Zero-Knowledge Proofs~\cite{alwenContinuousGroupKey2020})
 \subsection{Limits of Insider Security}
