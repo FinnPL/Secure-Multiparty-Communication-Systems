@@ -274,7 +274,7 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
         TreeKEM (MLS) & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         Tainted TreeKEM & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         rTreeKEM & \CIRCLE & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
-        P-Act-Rob & & & & & & & & & \\
+        P-Act-Rob & \CIRCLE & \CIRCLE & \CIRCLE & Group changes & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         DeCAF & & \CIRCLE & & & & & & & \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Other CGKA}} \\
@@ -327,10 +327,12 @@ This effect is made worse if the targeted members on the copath are currently of
 Because no other entity can realize the split, the rest of the group just continues with the next epochs~\cite{barnesMessagingLayerSecurity2023}, making recovery (which is left to the application layer~\cite{barnesMessagingLayerSecurity2023,beurdoucheMessagingLayerSecurity2025}) even more complicated.
 
 MLS currently has no way to prevent these attacks.
-The proposed protocol P-Act-Rob~\cite{alwenContinuousGroupKey2020} addresses this by employing Non-Interactive Zero-Knowledge (NIZK) proofs.
+The proposed protocol P-Act-Rob~\cite{alwenContinuousGroupKey2020}, based on Tainted TreeKEM, addresses this by employing Non-Interactive Zero-Knowledge proofs.
 Each commit needs to include such a proof, validating that all operations have been applied correctly and that the path update is consistent.
-
-$\rightarrow$ split group. (prevent with Zero-Knowledge Proofs~\cite{alwenContinuousGroupKey2020})
+This proof needs to be checked by every member before accepting the commit and moving to the next epoch.
+Alternatively, just the DS could validate the commit before distributing it to reduce computation cost for the members, at the cost of trusting the DS.
+Cost
+When achieving this level of insider security is necessary but higher costs are not acceptable, a protocol could require at least one member below each copath node to acknowledge a commit, at the cost of asynchrony.
 \subsection{Limits of Insider Security}
 
 
