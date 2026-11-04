@@ -345,7 +345,11 @@ Alternatively, just the DS could validate the commit before distributing it to r
 Like rTreeKEM, P-Act-Rob also provides optimal FS, but by evolving every key on a commit~\cite{alwenContinuousGroupKey2020}.
 In P-Act-Rob, a committer always needs to update their path and their tainted nodes~\cite{alwenContinuousGroupKey2020}; thus, adding a member also suffers from the worst-case cost of an update in Tainted TreeKEM with $\mathcal{O}(n)$ ciphertexts.
 When achieving this level of insider security is necessary but higher costs are not acceptable, a protocol could require at least one member below each copath node to acknowledge a commit, at the cost of asynchrony.
+
 \subsection{Limits of Insider Security}
+MLS lets any member add or remove others to the group, thus a malicious member can arbitrarily add other members or, e.g., remove every other member from the group.
+In order to enforce a set of policies, MLS requires it execution by either the DS which then needs to be trusted to do so, or each client which could leave to inconsistent state if they disagree.
+Administrated CGKA (A-CGKA) extend MLS in a way that allows for
 
 
 \section{Conclusion}
