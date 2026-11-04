@@ -319,15 +319,16 @@ All members accept their received commit and derive the same group key and can c
 This was fixed by making the group key also depend on the commits' signatures~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}, thus members would no longer derive the same group key and notice that a split has occurred, but this notably does not prevent the possibility of an insider creating such a split.
 
 \subsection{Inconsistent Commits}
-The issue of insiders being able to split the group by creating malicious commits runs deeper, even without a colluding DS.
-A group member performing an update can encrypt unrelated secrets to different copath nodes.
-This is not detectable by the DS, and any individual member can only check the validity of their own secret.
-As a result, some members simply move forward to the next epoch while others reject the commit, thus splitting the group.
+The issue of insiders being able to split the group by creating malicious commits runs deeper, even without a colluding DS~\cite{alwenInsiderSecurityMLS2022}.
+A group member performing an update can encrypt unrelated secrets to different copath nodes~\cite{barnesMessagingLayerSecurity2023}.
+This is not detectable by the DS~\cite{beurdoucheMessagingLayerSecurity2025}, and any individual member can only check the validity of their own secret~\cite{alwenContinuousGroupKey2020,barnesMessagingLayerSecurity2023}.
+As a result, some members simply move forward to the next epoch while others reject the commit, thus splitting the group~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}.
 This effect is made worse if the targeted members on the copath are currently offline.
-Because no other entity can realize the split, the rest of the group just continues with the next epochs, making recovery (which is left to the application layer) even more complicated.
+Because no other entity can realize the split, the rest of the group just continues with the next epochs~\cite{barnesMessagingLayerSecurity2023}, making recovery (which is left to the application layer~\cite{barnesMessagingLayerSecurity2023,beurdoucheMessagingLayerSecurity2025}) even more complicated.
 
-$\rightarrow$ split group. (prevent with Zero-Knowledge Proofs \cite{alwenContinuousGroupKey2020})
+MLS currently has no way to prevent these attacks.
 
+$\rightarrow$ split group. (prevent with Zero-Knowledge Proofs~\cite{alwenContinuousGroupKey2020})
 \subsection{Limits of Insider Security}
 
 
