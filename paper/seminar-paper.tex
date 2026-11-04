@@ -314,9 +314,9 @@ In TreeKEM, signatures are used on messages to prevent this.
 But because signature keys are not rotated regularly, an active attacker could impersonate a member after a state compromise and, e.g., remove other members in their name.
 This was fixed by requiring use of a MAC using a key derived from the root secret on unencrypted messages.
 
-A malicious member could also split the group by creating two commits that only differ in their signature and sending them to different members.
+A malicious member controlling the network or colluding with the DS could also split the group by creating two commits that only differ in their signature and sending them to different members.
 All members accept their received commit and derive the same group key and can communicate as usual, but because the signatures no longer align, they cannot agree on the next commit as they no longer agree on past commits' hash value~\cite{alwenInsiderSecurityMLS2022}.
-This was fixed by making the group key also depend on the commits' hash value~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}, thus members would no longer derive the same group key and notice that a split has occurred, but this notably does not prevent the possibility of an insider creating such a split.
+This was fixed by making the group key also depend on the commits' signatures value~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}, thus members would no longer derive the same group key and notice that a split has occurred, but this notably does not prevent the possibility of an insider creating such a split.
 
 \subsection{Limits of Insider Security}
 
