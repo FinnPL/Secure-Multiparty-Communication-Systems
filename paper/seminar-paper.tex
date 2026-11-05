@@ -296,7 +296,9 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
 \end{table*}
 
 \section{Practicality of Deployment}\label{sec:practicality}
-In this section \ldots
+Good security guarantees alone do not make a protocol deployable.
+In the following, we discuss their complexity, post-quantum readiness, and how they depend on the DS.
+We also shortly discuss legislative requirements when it comes to interoperability and its challenges.
 
 \subsection{Complexity}
 As \Cref{tab:comparison} shows, sending and receiving are cheap in all protocols except client-side fanout.
@@ -331,15 +333,19 @@ Additionally, Chained CmPKE no longer builds a Ratchet Tree but instead just a f
 This also removes blanks, but updates now cost $\mathcal{O}(n)$ ciphertexts to upload~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
 \subsection{Post-Quantum Security}
+The transition to quantum-resistant primitives in two-party channels is already well underway.
+The MLS standardization currently does not include any post-quantum (PQ) cipher suites, but an IETF draft adds ML-KEM suites, with many of them providing PQ confidentiality.
+Authentication remains weak against quantum attacks; this is a deliberate trade-off, as the current threat model only assumes harvest-now-decrypt-later attacks.
+
+One major drawback of PQ-secure cipher suites is that they require far greater ciphertexts.
 
 \subsection{Interoperability}
 
 \subsection{Dependence on the Delivery Service}
 
 
-\subsection{Other Challenges}
+\subsection{TODO}
 \begin{itemize}
-    \item Post-Quantum
     \item Forks and state loss
     \item Interoperability (EU DMA)
     \item Dependence on the ordering server $\rightarrow$ DeCAF~\cite{alwenDeCAFDecentralizableCGKA2024} and DCGKA: decentralized (no ordering server)~\cite{weidnerKeyAgreementDecentralized2021}
