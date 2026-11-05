@@ -312,8 +312,9 @@ The proposer also cannot update the entire path because there might be multiple 
 In a mathematical model assuming random proposers and committers, one proposal per commit gives an expected commit size of about $\Omega(n^{0.58})$~\cite{auerbachContinuousGroupKeyAgreement2025}.
 At 50 proposals per commit, the expected commit size grows to $\Omega(n^{0.99})$, which already is almost the worst case~\cite{auerbachContinuousGroupKeyAgreement2025}.
 
-MLS-Cutoff improves this significantly by making proposers also update their path up to a threshold below the root.
+MLS-Cutoff improves this by making proposers also update their path up to a threshold below the root.
 The remaining path gets blanked, and if in one commit two proposers' paths overlap, they also get blanked there.
+This leads to a expected complexity of $\mathcal{O}(\log n)$ for few proposals per commit, but keeps the $\Omega(n)$ worst-case complexity.
 
 The linear worst-case complexity is structural to TreeKEM-like CGKA protocols and cannot be avoided.
 The intuition behind this is: if Alice creates a group while all members are offline and then immediately leaves, none of the members share a key that was unknown to Alice.
