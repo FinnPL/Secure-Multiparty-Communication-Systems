@@ -342,18 +342,17 @@ While MLS uploads scale better, Chained CmPKE increases its lead for downloads a
 However, its upload still grows linearly for larger groups~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
 \subsection{Dependence on the Delivery Service}
-MLS requires a linear history for its epochs.
-Thus, the DS needs to order all commits and break ties if they occur.
+MLS requires a linear history for its epochs~\cite{beurdoucheMessagingLayerSecurity2025}.
+Thus, the DS usually orders all commits and breaks ties if they occur~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
 
-This reliance on ordering gives the DS a lot of power as it can singlehandedly deny service to all or some members or split the group.
+This reliance on ordering gives the DS a lot of power as it can single-handedly deny service to all or some members or split the group~\cite{beurdoucheMessagingLayerSecurity2025,alwenDeCAFDecentralizableCGKA2024}.
 
-Other protocols try to avoid this by relying less on the DS.
-For instance, DeCAF employs a blockchain to achieve consensus without a centralized service, while still allowing for concurrent updates.
-Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates.
-This slightly weakens FS.
+Other protocols try to avoid this by relying less on the DS~\cite{alwenDeCAFDecentralizableCGKA2024,weidnerKeyAgreementDecentralized2021}.
+For instance, DeCAF~\cite{alwenDeCAFDecentralizableCGKA2024} employs a blockchain to achieve consensus without a centralized service, while still allowing for concurrent updates.
+Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates~\cite{alwenDeCAFDecentralizableCGKA2024}.
+This slightly weakens FS~\cite{alwenDeCAFDecentralizableCGKA2024}.
 
-
-DCGKA
+DeCAF still requires a total ordering  DCGKA
 
 
 \subsection{Interoperability}
