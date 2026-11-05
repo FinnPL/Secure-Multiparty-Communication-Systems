@@ -333,13 +333,13 @@ Additionally, Chained CmPKE no longer builds a Ratchet Tree but instead just a f
 This also removes blanks, but updates now cost $\mathcal{O}(n)$ ciphertexts to upload~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
 \subsection{Post-Quantum Security}
-The transition to quantum-resistant primitives in two-party channels is already well underway.
-The MLS standardization currently does not include any post-quantum (PQ) cipher suites, but an IETF draft adds ML-KEM suites, with all of them providing PQ confidentiality.
-For most, authentication remains weak against quantum attacks; this is a deliberate trade-off, as the current threat model only assumes harvest-now-decrypt-later attacks.
+The transition to quantum-resistant primitives in two-party channels is already well underway~\cite{kretPQXDHKeyAgreement,perrinDoubleRatchetAlgorithm}.
+The MLS standardization currently does not include any post-quantum (PQ) cipher suites~\cite{barnesMessagingLayerSecurity2023}, but an IETF draft adds ML-KEM suites, with all of them providing PQ confidentiality~\cite{mahyMLKEMHybridCipher2026}.
+For most, authentication remains weak against quantum attacks; this is a deliberate trade-off, as the current threat model only assumes harvest-now-decrypt-later attacks~\cite{mahyMLKEMHybridCipher2026}.
 
-One major drawback of PQ-secure cipher suites is that they require far larger ciphertexts.
-While MLS uploads scale better, Chained CmPKE increases its lead for downloads as it does not send every, now larger, ciphertext to every member.
-However, its upload still grows linearly for larger groups.
+One major drawback of PQ-secure cipher suites is that they require far larger ciphertexts~\cite{hashimotoConcreteTreatmentEfficient2021,perrinDoubleRatchetAlgorithm}.
+While MLS uploads scale better, Chained CmPKE increases its lead for downloads as it does not send every, now larger, ciphertext to every member~\cite{hashimotoConcreteTreatmentEfficient2021}.
+However, its upload still grows linearly for larger groups~\cite{hashimotoConcreteTreatmentEfficient2021}.
 \subsection{Interoperability}
 
 \subsection{Dependence on the Delivery Service}
