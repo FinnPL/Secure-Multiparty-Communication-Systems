@@ -348,7 +348,7 @@ Thus, the DS needs to order all commits and break ties if they occur.
 This reliance on ordering gives the DS a lot of power as it can singlehandedly deny service to all or some members or split the group.
 
 Other protocols try to avoid this by relying less on the DS.
-For instance, DeCAF employs a blockchain to achieve consensus without a centralized service.
+For instance, DeCAF employs a blockchain to achieve consensus without a centralized service, while still allowing for concurrent updates.
 Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates.
 This slightly weakens FS.
 
