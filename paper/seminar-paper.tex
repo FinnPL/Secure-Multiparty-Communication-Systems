@@ -297,8 +297,8 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
 
 \section{Practicality of Deployment}\label{sec:practicality}
 Good security guarantees alone do not make a protocol deployable.
-In the following, we discuss their complexity, post-quantum readiness, and how they depend on the DS.
-We also shortly discuss legislative requirements when it comes to interoperability and its challenges.
+In the following, we discuss its complexity, post-quantum readiness, and how it depends on the DS.
+We also briefly discuss legislative requirements when it comes to interoperability and its challenges.
 
 \subsection{Complexity}
 As \Cref{tab:comparison} shows, sending and receiving are cheap in all protocols except client-side fanout.
@@ -334,11 +334,12 @@ This also removes blanks, but updates now cost $\mathcal{O}(n)$ ciphertexts to u
 
 \subsection{Post-Quantum Security}
 The transition to quantum-resistant primitives in two-party channels is already well underway.
-The MLS standardization currently does not include any post-quantum (PQ) cipher suites, but an IETF draft adds ML-KEM suites, with many of them providing PQ confidentiality.
-Authentication remains weak against quantum attacks; this is a deliberate trade-off, as the current threat model only assumes harvest-now-decrypt-later attacks.
+The MLS standardization currently does not include any post-quantum (PQ) cipher suites, but an IETF draft adds ML-KEM suites, with all of them providing PQ confidentiality.
+For most, authentication remains weak against quantum attacks; this is a deliberate trade-off, as the current threat model only assumes harvest-now-decrypt-later attacks.
 
-One major drawback of PQ-secure cipher suites is that they require far greater ciphertexts.
-
+One major drawback of PQ-secure cipher suites is that they require far larger ciphertexts.
+While MLS uploads scale better, Chained CmPKE increases its lead for downloads as it does not send every, now larger, ciphertext to every member.
+However, its upload still grows linearly for larger groups.
 \subsection{Interoperability}
 
 \subsection{Dependence on the Delivery Service}
