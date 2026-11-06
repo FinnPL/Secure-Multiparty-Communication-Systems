@@ -48,11 +48,16 @@ finn.lippok@rwth-aachen.de}
 \maketitle
 
 \begin{abstract}
-Placeholder.
+Group messaging is used at a huge scale, but upholding strong security notions as in two-party communication is an ongoing effort.
+This paper compares deployed protocols such as Sender Keys (Signal and WhatsApp) and MLS (Discord VC, RCS) with current proposed improved protocols and variants on a shared threat model and security goals.
+We also consider how misbehaving peers can affect groups and the practicality of deployment of these protocols.
+
 \end{abstract}
 
 \begin{IEEEkeywords}
-Secure Multiparty Communication
+secure group messaging,
+continuous group key agreement,
+Messaging Layer Security
 \end{IEEEkeywords}
 
 \section{Introduction}
@@ -189,7 +194,7 @@ To describe CGKA, we use definitions closely following the MLS specification~\ci
     \item[Epoch] is the group state comprising current group membership and current group key. Notably, epochs are ordered linearly, but all members might not be in the same epoch at a given time.
     \item[Operations] change the group state, e.g., adding or removing a member and updating a member's own key to provide PCS. We do not discuss other operations such as ones required to create a group.
     \item[Proposal] is a message containing a suggested operation.
-    \item[Commit] applies ordered proposals thus changing the group state and starting a new epoch.
+    \item[Commit] applies ordered proposals, thus changing the group state and starting a new epoch.
 \end{description}
 
 \subsubsection{Tree Based}
@@ -218,8 +223,7 @@ It takes in a secret derived from the previous group key and current root secret
 
 In order to add a member, a new leaf node is created.
 To allow members to be added while they are not reachable, they must have previously published a KeyPackage containing their public key (like the prekey bundle in two-party messaging, see \Cref{sec:setup}), which is then used to create the leaf node~\cite{barnesMessagingLayerSecurity2023}.
-The new member is then sent the group key of the new epoch, encrypted with their KeyPackage's key~\cite{barnesMessagingLayerSecurity2023}.
-Thus joining the group, after this operation has been committed, in just $\mathcal{O}(1)$ exchanged messages~\cite{barnesMessagingLayerSecurity2023}.
+The new member is then sent the group key of the new epoch, encrypted with their KeyPackage's key~\cite{barnesMessagingLayerSecurity2023}, thus joining the group, after this operation has been committed, in just $\mathcal{O}(1)$ exchanged messages~\cite{barnesMessagingLayerSecurity2023}.
 Note that at this point the new member is considered unmerged, as they do not know any other keys on their path.
 Until they have learned every key on their path, any update encrypted with the public key of an unmerged ancestor also needs to be separately encrypted for the new member~\cite{barnesMessagingLayerSecurity2023}.
 
@@ -381,7 +385,7 @@ This was fixed by requiring use of a MAC using a key derived from the root secre
 
 A malicious member controlling the network or colluding with the DS could also split the group by creating two commits that only differ in their signature and sending them to different members~\cite{alwenInsiderSecurityMLS2022}.
 All members accept their received commit and derive the same group key and can communicate as usual, but because the signatures no longer align, they cannot agree on the next commit as they no longer agree on past commits' hash value~\cite{alwenInsiderSecurityMLS2022}.
-This was fixed by making the group key also depend on the commits' signatures~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}, thus members would no longer derive the same group key and notice that a split has occurred, but this notably does not prevent the possibility of an insider creating such a split.
+This was fixed by making the group key also depend on the commits' signatures~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}; thus, members would no longer derive the same group key and notice that a split has occurred, but this notably does not prevent the possibility of an insider creating such a split.
 
 \subsection{Inconsistent Commits}
 The issue of insiders being able to split the group by creating malicious commits runs deeper, even without a colluding DS~\cite{alwenInsiderSecurityMLS2022}.
@@ -402,7 +406,7 @@ In P-Act-Rob, a committer always needs to update their path and their tainted no
 When achieving this level of insider security is necessary but higher costs are not acceptable, a protocol could require at least one member below each copath node to acknowledge a commit~\cite{barnesMessagingLayerSecurity2023}, at the cost of asynchrony.
 
 \subsection{Group Administration}
-MLS lets any member add or remove others to the group~\cite{barnesMessagingLayerSecurity2023}, thus a malicious member can arbitrarily add other members or, e.g., remove every other member from the group.
+MLS lets any member add or remove others to the group~\cite{barnesMessagingLayerSecurity2023}; thus, a malicious member can arbitrarily add other members or, e.g., remove every other member from the group.
 Therefore, a set of policies is required that restricts these actions~\cite{beurdoucheMessagingLayerSecurity2025}.
 MLS requires such policies to be enforced by either the DS, which then needs to be trusted to do so, or each client, which could lead to an inconsistent state if they disagree~\cite{beurdoucheMessagingLayerSecurity2025}.
 
