@@ -422,11 +422,11 @@ However, this does not prevent non-admins from creating inconsistent commits, sp
 This paper compared Sender Keys with CGKA protocols such as MLS building on TreeKEM and various improved variants and alternatives.
 Sender Keys remain the most widely deployed but only offer a weak form of PCS, which needs a full rekey at high cost, and also suffer from other weaknesses.
 CGKAs require no full rekey to heal and are thus much cheaper, but for Ratchet Tree-based approaches, linear worst cases remain unavoidable.
-But the current versions like TreeKEM still suffer from inefficiencies and can be further improved, such as Tainted TreeKEM, which avoids blanks, lowering costs on average for large groups, and rTreeKEM, improving its notions of FS by employing Updatable Public-Key Encryption.
+But the current versions like TreeKEM still suffer from inefficiencies and can be further improved by variants such as Tainted TreeKEM, which avoids blanks, lowering costs on average for large groups, and rTreeKEM, improving its notions of FS by employing Updatable Public-Key Encryption.
 Because of cost decreases, relying on the DS remains a defensible approach, and preventing inconsistent commits is possible but also currently expensive.
 
 As the DMA raises the need for platform-independent standards, we think standards like MLS are becoming more relevant.
-But many problems remain open, such as preventing inconsistent commits at acceptable costs, safe recovery after splits, and relying less on an ordering server while maintaining logarithmic best-case update cost, warranting future research.
+But many problems remain open, such as preventing inconsistent commits at acceptable costs, safe recovery after splits, and fully decentralized operation without ordering servers while maintaining logarithmic best-case update cost, warranting future research.
 We conclude that no current protocol wins outright, and the correct choice depends on the threat model, such as the level of trust placed in the Delivery Service.
 
 % Balance columns on last page of the paper
