@@ -178,7 +178,7 @@ This means PCS can only be achieved by each member creating new sender keys and 
 Adding a new member requires every member to share their sender keys with the new member, requiring one message per member to be exchanged for $\mathcal{O}(n)$ messages in total~\cite{balbasWhatsUppSenderKeys2023,albrechtFormalAnalysisMultidevice2025}.
 This complies with our notion of Confidentiality: because of the described FS, the new member cannot decrypt old messages.
 Removing, on the other hand, requires a complete rekey, meaning every member needs to create new sender keys and distribute them to every other member~\cite{albrechtFormalAnalysisMultidevice2025}.
-This takes $\mathcal{O}(n)$ messages per member, which is $\mathcal{O}(n^2)$ in total~\cite{balbasWhatsUppSenderKeys2023}.
+This update takes $\mathcal{O}(n)$ messages per member, which is $\mathcal{O}(n^2)$ in total~\cite{balbasWhatsUppSenderKeys2023}.
 
 Sender Keys' weakest guarantee, PCS, can therefore only be fixed by a complete rekey, their most expensive operation.
 Because this is implementation-dependent and often only done after a group member leaves, only a very weak form of PCS is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
@@ -271,34 +271,33 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
         \toprule
         & \multicolumn{3}{c}{Security} & & \multicolumn{5}{c}{Cost} \\
         \cmidrule(lr){2-4} \cmidrule(lr){6-10}
-        Scheme & FS & PCS & Consistency & Ordering requirement & Add & Remove & Send & Receive & Update \\
+        Scheme & FS & PCS & Consistency & Ordering by & Add & Remove & Send & Receive & Update \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Pairwise channels}} \\
         Client-Side Fanout & \CIRCLE & \CIRCLE & \Circle & None & $\mathcal{O}(n)$ & $0$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & -- \\
-        Sender Keys & \CIRCLE & \LEFTcircle & \Circle & Group changes & $\mathcal{O}(n)$ & $\mathcal{O}(n^2)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
+        Sender Keys & \CIRCLE & \LEFTcircle & \Circle & DS & $\mathcal{O}(n)$ & $\mathcal{O}(n^2)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Tree-based CGKA}} \\
-        TreeKEM (MLS) & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
-        Tainted TreeKEM & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
-        rTreeKEM & \CIRCLE & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
-        P-Act-Rob & \CIRCLE & \CIRCLE & \CIRCLE & Group changes & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
-        DeCAF & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes$^*$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        TreeKEM (MLS) & \LEFTcircle & \CIRCLE & \LEFTcircle & DS & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        Tainted TreeKEM & \LEFTcircle & \CIRCLE & \LEFTcircle & DS & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        rTreeKEM & \CIRCLE & \CIRCLE & \LEFTcircle & DS & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        P-Act-Rob & \CIRCLE & \CIRCLE & \CIRCLE & DS & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        DeCAF & \LEFTcircle & \CIRCLE & \LEFTcircle & Consensus & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Other CGKA}} \\
-        Chained CmPKE & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
-        DCGKA & \CIRCLE & \CIRCLE & \LEFTcircle & None & $\mathcal{O}(n)$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
+        Chained CmPKE & \LEFTcircle & \CIRCLE & \LEFTcircle & DS & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
+        DCGKA & \CIRCLE & \CIRCLE & \LEFTcircle & Local & $\mathcal{O}(n)$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
         \bottomrule
     \end{tabular}
 
     \vspace{1ex}
     \parbox{0.97\textwidth}{\footnotesize
         Costs are the total number of ciphertexts required to perform an operation, given as best / worst case where they differ.
-        $^*$Ordering comes from decentralized consensus instead of the DS.
 
         \vspace{0.5ex}
         \begin{tabular}{@{}llll@{}}
             FS and PCS: & \Circle: not provided & \LEFTcircle: only weakly provided & \CIRCLE: provided \\
-            Consistency (assuming the ordering requirement is met): & \Circle: the DS can split the group & \LEFTcircle: only a malicious member can & \CIRCLE: neither can \\
+            Consistency (assuming group changes are ordered correctly): & \Circle: the DS can split the group & \LEFTcircle: only a malicious member can & \CIRCLE: neither can \\
         \end{tabular}
     }
 \end{table*}
@@ -377,7 +376,7 @@ Providers are now more limited and cannot choose protocols arbitrarily on their 
 \section{Protecting Against Misbehaving Peers}\label{sec:misbehavior}
 So far, we have primarily considered external adversaries.
 Modern group communication protocols also need to consider misbehaving peers and active attackers after a state compromise of a group member.
-Under this threat model, Confidentiality is no longer considered, as group members are allowed, and it is impossible to avoid impersonation by an active attacker possessing stolen state.
+Under this threat model, Confidentiality is no longer considered, as group members are allowed to decrypt all group messages, and it is impossible to avoid impersonation by an active attacker possessing stolen state.
 We instead focus on maintaining Consistency and Availability.
 
 \subsection{Insider-Secure TreeKEM}
