@@ -354,9 +354,11 @@ This slightly weakens FS~\cite{alwenDeCAFDecentralizableCGKA2024}.
 DeCAF still requires a total ordering; DCGKA removes this requirement.
 Like Sender Keys, it uses pairwise channels to distribute keying material for a per-member ratchet.
 It differs in the update process: one member distributes a new secret over pairwise channels, then every other member updates their own ratchet using it and then broadcasts an acknowledgment.
-This does not require ordering as a member's ratchet is only updated on their own broadcast.
-Therefore clients can just update each member's messages in order, thus members can heal with a single update in contrast to Sender Keys who require that every member updates first.
-As only one ciphertext is distributed to every member, this comes down to a cost of $\mathcal{O}(n)$ ciphertexts, but because they are all sent by one member and not cross-checked, that member could split the group by sending different secrets to different members.
+This does not require total ordering by any DS as a member's ratchet is only updated on their own broadcast.
+Therefore clients can just process each member's messages in order locally.
+Members can heal with a single update in contrast to Sender Keys which require that every member updates.
+As only one ciphertext is distributed to every member, this comes down to a cost of $\mathcal{O}(n)$ ciphertexts.
+Because they are all sent by one member and not cross-checked, that member could split the group by sending different secrets to different members.
 
 \subsection{Interoperability}
 
