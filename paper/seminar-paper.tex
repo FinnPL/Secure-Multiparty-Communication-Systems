@@ -361,9 +361,9 @@ Besides splitting the groups and denial of service attacks, a compromised DS can
 Thus, relying on an ordering server seems a defensible choice considering the performance gains, even though more efficient alternatives to Sender Keys can work without one.
 
 \subsection{Interoperability}
-The EU's DMA requires gatekeepers such as WhatsApp to enable interoperability with other group chat providers.
-It is also mandated that the interoperability may not lower security standards.
-MLS does not currently support such functionality directly, but the IETF has a MIMI draft that would enable a hub provider to order and distribute messages for multiple providers.
+The EU's DMA requires gatekeepers such as WhatsApp to enable interoperability with other group chat providers~\cite{RegulationEU20222022}.
+It is also mandated that the interoperability may not lower security standards~\cite{RegulationEU20222022}.
+MLS does not currently support such functionality directly~\cite{beurdoucheMessagingLayerSecurity2025}, but the IETF has a MIMI draft that would enable a hub provider to order and distribute messages for multiple providers~\cite{barnesMoreInstantMessaging2026}.
 Providers are now more limited and cannot choose protocols arbitrarily on their own; this favors standardized protocols like MLS compared to other alternatives.
 
 \section{Protecting Against Misbehaving Peers}\label{sec:misbehavior}
