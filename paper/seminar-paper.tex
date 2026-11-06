@@ -342,9 +342,9 @@ While MLS uploads scale better, Chained CmPKE increases its lead for downloads a
 However, its upload still grows linearly for larger groups~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
 \subsection{Dependence on the Delivery Service}
-MLS requires a linear history for its epochs~\cite{beurdoucheMessagingLayerSecurity2025}, thus the DS usually orders all commits and breaks ties if they occur~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
+MLS requires a linear history for its epochs~\cite{beurdoucheMessagingLayerSecurity2025}; thus, the DS usually orders all commits and breaks ties if they occur~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
 
-This reliance on ordering gives the DS a lot of power as it can single-handedly deny service to all or some members or split the group~\cite{beurdoucheMessagingLayerSecurity2025,alwenDeCAFDecentralizableCGKA2024}.
+This reliance on ordering gives the DS a lot of power, as it can single-handedly deny service to all or some members or split the group~\cite{beurdoucheMessagingLayerSecurity2025,alwenDeCAFDecentralizableCGKA2024}.
 
 Other protocols try to avoid this by relying less on the DS~\cite{alwenDeCAFDecentralizableCGKA2024,weidnerKeyAgreementDecentralized2021}.
 For instance, the tree-based protocol DeCAF~\cite{alwenDeCAFDecentralizableCGKA2024} employs a blockchain to achieve consensus without a centralized service, while still allowing for concurrent updates.
@@ -354,9 +354,9 @@ This slightly weakens FS~\cite{alwenDeCAFDecentralizableCGKA2024}.
 DeCAF still requires a total ordering; DCGKA removes this requirement.
 Like Sender Keys, it uses pairwise channels to distribute keying material for a per-member ratchet.
 It differs in the update process: one member distributes a new secret over pairwise channels, then every other member updates their own ratchet using it and then broadcasts an acknowledgment.
-This does not require total ordering by any DS as a member's ratchet is only updated on their own broadcast.
-Therefore clients can just process each member's messages in order locally.
-Members can heal with a single update in contrast to Sender Keys which require that every member updates.
+This does not require total ordering by any DS, as a member's ratchet is only updated on their own broadcast.
+Therefore, clients can just process each member's messages in order locally.
+Members can heal with a single update, in contrast to Sender Keys, which require that every member updates.
 As only one ciphertext is distributed to every member, this comes down to a cost of $\mathcal{O}(n)$ ciphertexts.
 Because they are all sent by one member and not cross-checked, that member could split the group by sending different secrets to different members.
 
