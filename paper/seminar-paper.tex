@@ -343,32 +343,21 @@ However, its upload still grows linearly for larger groups~\cite{hashimotoConcre
 
 \subsection{Dependence on the Delivery Service}
 MLS requires a linear history for its epochs~\cite{beurdoucheMessagingLayerSecurity2025}; thus, the DS usually orders all commits and breaks ties if they occur~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
-
 This reliance on ordering gives the DS a lot of power, as it can single-handedly deny service to all or some members or split the group~\cite{beurdoucheMessagingLayerSecurity2025,alwenDeCAFDecentralizableCGKA2024}.
 
 Other protocols try to avoid this by relying less on the DS~\cite{alwenDeCAFDecentralizableCGKA2024,weidnerKeyAgreementDecentralized2021}.
 For instance, the tree-based protocol DeCAF~\cite{alwenDeCAFDecentralizableCGKA2024} employs a blockchain to achieve consensus without a centralized service, while still allowing for concurrent updates.
-Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates~\cite{alwenDeCAFDecentralizableCGKA2024}.
-This slightly weakens FS~\cite{alwenDeCAFDecentralizableCGKA2024}.
+Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates~\cite{alwenDeCAFDecentralizableCGKA2024}, which slightly weakens FS~\cite{alwenDeCAFDecentralizableCGKA2024}.
 
-DeCAF still requires a total ordering; DCGKA removes this requirement.
-Like Sender Keys, it uses pairwise channels to distribute keying material for a per-member ratchet.
-It differs in the update process: one member distributes a new secret over pairwise channels, then every other member updates their own ratchet using it and then broadcasts an acknowledgment.
-This does not require total ordering by any DS, as a member's ratchet is only updated on their own broadcast.
-Therefore, clients can just process each member's messages in order locally.
-Members can heal with a single update, in contrast to Sender Keys, which require that every member updates.
-As only one ciphertext is distributed to every member, this comes down to a cost of $\mathcal{O}(n)$ ciphertexts.
-Because they are all sent by one member and not cross-checked, that member could split the group by sending different secrets to different members.
+DeCAF still requires a total ordering~\cite{alwenDeCAFDecentralizableCGKA2024}; DCGKA~\cite{weidnerKeyAgreementDecentralized2021} removes this requirement.
+Like Sender Keys, it uses pairwise channels to distribute keying material for a per-member ratchet~\cite{weidnerKeyAgreementDecentralized2021}.
+It differs in the update process: one member distributes a new secret over pairwise channels, then every other member updates their own ratchet using it and then broadcasts an acknowledgment~\cite{weidnerKeyAgreementDecentralized2021}.
+This does not require total ordering by any DS, as a member's ratchet is only updated on their own broadcast~\cite{weidnerKeyAgreementDecentralized2021}.
+Members can heal with a single update~\cite{weidnerKeyAgreementDecentralized2021}, in contrast to Sender Keys, which require that every member updates~\cite{balbasWhatsUppSenderKeys2023,weidnerKeyAgreementDecentralized2021}.
+As only one ciphertext is distributed to every member, this comes down to a cost of $\mathcal{O}(n)$ ciphertexts~\cite{weidnerKeyAgreementDecentralized2021}.
+Because they are all sent by one member and not cross-checked, that member could split the group by sending different secrets to different members~\cite{weidnerKeyAgreementDecentralized2021}.
 
 \subsection{Interoperability}
-
-\subsection{TODO}
-\begin{itemize}
-    \item Forks and state loss
-    \item Interoperability (EU DMA)
-    \item Dependence on the ordering server $\rightarrow$ DeCAF~\cite{alwenDeCAFDecentralizableCGKA2024} and DCGKA: decentralized (no ordering server)~\cite{weidnerKeyAgreementDecentralized2021}
-\end{itemize}
-
 
 \section{Protecting Against Misbehaving Peers}\label{sec:misbehavior}
 So far, we have primarily considered external adversaries.
