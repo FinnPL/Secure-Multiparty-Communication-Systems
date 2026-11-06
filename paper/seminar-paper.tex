@@ -49,10 +49,10 @@ finn.lippok@rwth-aachen.de}
 
 \begin{abstract}
 Group messaging is used at a huge scale, but upholding strong security notions as in two-party communication while accommodating offline members and group changes is an ongoing effort.
-This paper compares deployed protocols such as Sender Keys (Signal and WhatsApp) and MLS (Discord VC, RCS) with currently proposed improved protocols and variants against a shared threat model and security goals.
+This paper compares deployed protocols such as Sender Keys (Signal and WhatsApp) and MLS (Discord, RCS) with currently proposed improved protocols and variants against a shared threat model and security goals.
 We also consider the practicality of deployment of these protocols and how misbehaving peers can affect groups.
 Our analysis shows shortcomings in current protocols, such as Sender Keys' weak notion of PCS requiring a full rekey that costs $\mathcal{O}(n^2)$ ciphertexts, while Continuous Group-Key Agreement heals much more cheaply.
-Even though the worst-case linear cost of MLS-style protocols cannot be prevented, as research shows, cryptography only makes up a small part of the computational cost for large groups.
+Even though the worst-case linear cost of currently practical protocols cannot be prevented, cryptography only makes up a small part of the computational cost for large groups.
 Preventing misbehaving peers from splitting groups is possible, but only at higher cost using Zero-Knowledge proofs.
 No one improved protocol wins everywhere; cost can be reduced significantly when trusting the Delivery Service for ordering is acceptable for a deployment's threat model.
 \end{abstract}
@@ -295,6 +295,7 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
     \vspace{1ex}
     \parbox{0.97\textwidth}{\footnotesize
         Costs are the total number of ciphertexts required to perform an operation, given as best / worst case where they differ.
+        Update refers to a member updating their own keying material, not a full rekey.
 
         \vspace{0.5ex}
         \begin{tabular}{@{}llll@{}}
@@ -327,7 +328,7 @@ MLS-Cutoff~\cite{auerbachContinuousGroupKeyAgreement2025} improves this by makin
 The remaining path gets blanked, and if in one commit two proposers' paths overlap, they also get blanked there~\cite{auerbachContinuousGroupKeyAgreement2025}.
 This leads to an expected complexity of $\mathcal{O}(\log n)$ for few proposals per commit, but keeps the $\Omega(n)$ worst-case complexity~\cite{auerbachContinuousGroupKeyAgreement2025}.
 
-The linear worst-case complexity is structural to TreeKEM-like CGKA protocols and cannot be avoided~\cite{auerbachContinuousGroupKeyAgreement2025,bartusekFairWeatherNoMore2026}.
+The linear worst-case complexity is structural to TreeKEM-like CGKA protocols and cannot be avoided by currently practical protocols~\cite{auerbachContinuousGroupKeyAgreement2025,bartusekFairWeatherNoMore2026}.
 The intuition behind this is: if Alice creates a group while all members are offline and then immediately leaves, none of the members share a key that was unknown to Alice.
 Because Alice just left, these keys cannot be used; thus, the next commit needs one ciphertext per member~\cite{bartusekFairWeatherNoMore2026}.
 
