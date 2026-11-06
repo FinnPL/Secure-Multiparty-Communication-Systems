@@ -357,7 +357,14 @@ Members can heal with a single update~\cite{weidnerKeyAgreementDecentralized2021
 As only one ciphertext is distributed to every member, this comes down to a cost of $\mathcal{O}(n)$ ciphertexts~\cite{weidnerKeyAgreementDecentralized2021}.
 Because they are all sent by one member and not cross-checked, that member could split the group by sending different secrets to different members~\cite{weidnerKeyAgreementDecentralized2021}.
 
+Besides splitting the groups and denial of service attacks, a compromised DS can neither read nor forge messages.
+Thus, relying on an ordering server seems a defensible choice considering the performance gains, even though more efficient alternatives to Sender Keys can work without one.
+
 \subsection{Interoperability}
+The EU's DMA requires gatekeepers such as WhatsApp to enable interoperability with other group chat providers.
+It is also mandated that the interoperability may not lower security standards.
+MLS does not currently support such functionality directly, but the IETF has a MIMI draft that would enable a hub provider to order and distribute messages for multiple providers.
+Providers are now more limited and cannot choose protocols arbitrarily on their own; this favors standardized protocols like MLS compared to other alternatives.
 
 \section{Protecting Against Misbehaving Peers}\label{sec:misbehavior}
 So far, we have primarily considered external adversaries.
