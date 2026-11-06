@@ -282,7 +282,7 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
         Tainted TreeKEM & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(\log n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         rTreeKEM & \CIRCLE & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         P-Act-Rob & \CIRCLE & \CIRCLE & \CIRCLE & Group changes & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
-        DeCAF & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
+        DeCAF & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes$^*$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(\log n)$ / $\mathcal{O}(n)$ \\
         \midrule
         \rowcolor{gray!20} \multicolumn{10}{l}{\textbf{Other CGKA}} \\
         Chained CmPKE & \LEFTcircle & \CIRCLE & \LEFTcircle & Group changes & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ & $\mathcal{O}(1)$ & $\mathcal{O}(1)$ & $\mathcal{O}(n)$ \\
@@ -293,6 +293,7 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
     \vspace{1ex}
     \parbox{0.97\textwidth}{\footnotesize
         Costs are the total number of ciphertexts required to perform an operation, given as best / worst case where they differ.
+        $^*$Ordering comes from decentralized consensus instead of the DS.
 
         \vspace{0.5ex}
         \begin{tabular}{@{}llll@{}}
@@ -420,11 +421,13 @@ However, this does not prevent non-admins from creating inconsistent commits, sp
 \section{Conclusion}
 This paper compared Sender Keys with CGKA protocols such as MLS building on TreeKEM and various improved variants and alternatives.
 Sender Keys remain the most widely deployed but only offer a weak form of PCS, which needs a full rekey at high cost, and also suffer from other weaknesses.
-CGKAs require no full rekey to heal and are thus much cheaper.
-But the current versions like TreeKEM still suffer from inefficiencies and can be further improved, such as Tainted TreeKEM, which avoids blanks, speeding up groups (under specific circumstances), and rTreeKEM, improving its notions of FS by employing Updatable Public-Key Encryption.
-Many problems remain open, such as preventing inconsistent updates at acceptable costs, safe recovery after splits, and relying less on an ordering server while maintaining logarithmic best-case update cost.
-As these questions remain open and the DMA raises the need for platform-independent standards, we think standards like MLS are becoming more relevant, warranting further research.
+CGKAs require no full rekey to heal and are thus much cheaper, but for Ratchet Tree-based approaches, linear worst cases remain unavoidable.
+But the current versions like TreeKEM still suffer from inefficiencies and can be further improved, such as Tainted TreeKEM, which avoids blanks, lowering costs on average for large groups, and rTreeKEM, improving its notions of FS by employing Updatable Public-Key Encryption.
+Because of cost decreases, relying on the DS remains a defensible approach, and preventing inconsistent commits is possible but also currently expensive.
 
+As the DMA raises the need for platform-independent standards, we think standards like MLS are becoming more relevant.
+But many problems remain open, such as preventing inconsistent commits at acceptable costs, safe recovery after splits, and relying less on an ordering server while maintaining logarithmic best-case update cost, warranting future research.
+We conclude that no current protocol wins outright, and the correct choice depends on the threat model, such as the level of trust placed in the Delivery Service.
 
 % Balance columns on last page of the paper
 \balance
