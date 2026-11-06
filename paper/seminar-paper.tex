@@ -77,7 +77,7 @@ This paper focuses on the practicality of deploying them (\Cref{sec:practicality
 
 \section{Background}\label{sec:background}
 To accurately compare protocols, we require a well-defined threat model and shared security goals.
-Because many group messaging protocols are built on the foundation of two-party end-to-end encryption, we briefly introduce its fundamental functionality and the naive approach of applying it to groups.
+Because many group messaging protocols are built on the foundation of two-party end-to-end encryption, we briefly introduce its fundamental functionality.
 
 \subsection{Threat Model}
 We consider a group messaging setting consisting of group members, a Delivery Service, and an Authentication Service~\cite{beurdoucheMessagingLayerSecurity2025}.
@@ -143,7 +143,13 @@ From that and the current root key, a new shared root key and chain keys can be 
 The corresponding DH private key remains unknown to an attacker, thus providing the required freshness for PCS (see \Cref{sec:pcs}).
 The channel has healed after the compromised party has generated a new DH key pair and announced the new public key~\cite{perrinDoubleRatchetAlgorithm}.
 
-\subsection{Client-Side Fanout}
+\section{Techniques in Current Systems}\label{sec:techniques}
+In this section, we discuss protocols used in current systems, their current shortcomings, and proposed improved variants.
+We first introduce the naive approach of applying two-party end-to-end encryption to groups and then discuss the currently most widely adopted approach, Sender Keys.
+Finally, we go into more detail on the current research direction of Continuous Group-Key Agreement (CGKA), with a focus on tree-based approaches, while also briefly discussing other approaches.
+
+\subsection{Pairwise Channels}
+\subsubsection{Client-Side Fanout}
 The naive approach to scaling the existing Signal Protocol to group chats is client-side fanout.
 By creating pairwise channels between all group members, a de facto group chat is formed.
 For a group of size $n$, each individual is required to create $n-1$ channels, and every sent message needs to be encrypted $n-1$ times~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018}.
@@ -155,12 +161,7 @@ On the other hand, because every message is encrypted and sent independently, th
 Furthermore, malicious group members could send completely different messages to different members of the group without being caught~\cite{goldbergMultipartyOfftherecordMessaging2009}.
 Detecting such misbehaving peers would require additions to the protocol, like making all parties share the hash of their transcripts with each other to catch any discrepancies, as described by Goldberg et al.~\cite{goldbergMultipartyOfftherecordMessaging2009}.
 
-
-\section{Techniques in Current Systems}\label{sec:techniques}
-In this section, we discuss protocols used in current systems, their current shortcomings, and proposed improved variants.
-We first discuss the currently most widely adopted approach, Sender Keys, and then go into more detail on the current research direction of Continuous Group-Key Agreement (CGKA), with a focus on tree-based approaches, while also briefly discussing other approaches.
-
-\subsection{Sender Keys}
+\subsubsection{Sender Keys}
 Sender Keys are currently adopted by many group messaging platforms, most notably WhatsApp and Signal~\cite{balbasWhatsUppSenderKeys2023}.
 We first discuss their functionality as formally described by Balb\'as et al.~\cite{balbasWhatsUppSenderKeys2023} and then discuss their weaknesses.
 
@@ -200,9 +201,7 @@ To describe CGKA, we use definitions closely following the MLS specification~\ci
     \item[Commit] applies ordered proposals, thus changing the group state and starting a new epoch.
 \end{description}
 
-\subsubsection{Tree-Based}
-
-\paragraph{TreeKEM / MLS}
+\subsubsection{TreeKEM / MLS}
 Messaging Layer Security (MLS)~\cite{barnesMessagingLayerSecurity2023} is an IETF standard, which is deployed in Discord's voice and video chats~\cite{discord2024dave_spec} and the SMS successor RCS~\cite{gsma2025rcs_e2ee}.
 It uses a variant of TreeKEM~\cite{bhargavanTreeKEMAsynchronousDecentralizeda,solerAnalysisEfficiencyMessaging2025} as its CGKA protocol.
 In the following, TreeKEM refers to this variant.
@@ -241,7 +240,9 @@ Thus, the updater needs to step down the copath to find the highest set of non-b
 In the worst case, every inner node is blanked, and the updater needs to step down to every leaf.
 This costs $\mathcal{O}(n)$ ciphertexts~\cite{solerAnalysisEfficiencyMessaging2025}.
 
-This degradation can be mitigated by avoiding creating blank nodes without compromising security.
+\subsubsection{Tree-Based Variants}
+\paragraph{Tainted TreeKEM}
+The degradation caused by blank nodes can be mitigated by avoiding creating them without compromising security.
 Klein et al. proposed Tainted TreeKEM~\cite{kleinKeepDirtTainted2021}, which no longer requires blanked nodes by allowing the remover to create tainted nodes with fresh key pairs instead.
 These tainted nodes can be used normally but need to be updated the moment the tainter updates or is removed.
 This still provides comparable security, because if the tainter is compromised, the group key is compromised as well until the tainter updates, which at the same time would also update the tainted nodes~\cite{kleinKeepDirtTainted2021}.
@@ -253,6 +254,7 @@ Adding a member also avoids unmerged leaves by requiring the creation of tainted
 But this avoids cost on later updates that would have required extra encryptions for unmerged members~\cite{barnesMessagingLayerSecurity2023}.
 For large groups, these trade-offs bring down total cost on average, because a blank node increases cost for many members, while a tainted node only for the tainter~\cite{kleinKeepDirtTainted2021}.
 
+\paragraph{rTreeKEM}
 Besides its efficiency, TreeKEM also falls short of optimal FS.
 As shown by Alwen et al.~\cite{alwenSecurityAnalysisImprovements2020}, members keep the private keys of inner nodes until they get updated.
 Thus, if a member is compromised, all path secrets from the compromised member's last update onward can be decrypted retroactively, including the root secret~\cite{alwenSecurityAnalysisImprovements2020}.
