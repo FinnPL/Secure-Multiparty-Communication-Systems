@@ -18,6 +18,7 @@
 \usepackage[nointegrals]{wasysym}
 \usepackage[table]{xcolor}
 \usepackage{microtype}
+\usepackage[nolist]{acronym}
 
 
 
@@ -32,6 +33,25 @@
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Acronyms
+\acrodef{AS}{Authentication Service}
+\acrodef{ACGKA}[A-CGKA]{Administrated CGKA}
+\acrodef{CGKA}{Continuous Group-Key Agreement}
+\acrodef{DH}{Diffie--Hellman}
+\acrodef{DMA}{Digital Markets Act}
+\acrodef{DS}{Delivery Service}
+\acrodef{FS}{Forward Secrecy}
+\acrodef{IETF}{Internet Engineering Task Force}
+\acrodef{KDF}{Key Derivation Function}
+\acrodef{MAC}{Message Authentication Code}
+\acrodef{MIMI}{More Instant Messaging Interoperability}
+\acrodef{MLS}{Messaging Layer Security}
+\acrodef{PCS}{Post-Compromise Security}
+\acrodef{PQ}{post-quantum}
+\acrodef{RCS}{Rich Communication Services}
+\acrodef{SMS}{Short Message Service}
+\acrodef{UPKE}{Updatable Public-Key Encryption}
 
 \begin{document}
 
@@ -68,7 +88,7 @@ Group messaging apps such as WhatsApp and Signal are used by more than 2 billion
 While there already exist secure two-party communication protocols with strong security guarantees~\cite{perrinDoubleRatchetAlgorithm,kretPQXDHKeyAgreement}, achieving the same for groups remains challenging~\cite{barnesMessagingLayerSecurity2023}.
 Their requirements, such as changing membership and asynchronous key agreement with multiple parties, make meeting security goals more difficult~\cite{barnesMessagingLayerSecurity2023}.
 
-Besides the already established protocols like Sender Keys used by these apps~\cite{balbasWhatsUppSenderKeys2023}, newer standardized protocols like MLS~\cite{barnesMessagingLayerSecurity2023} aim to improve the security of group chats.
+Besides the already established protocols like Sender Keys used by these apps~\cite{balbasWhatsUppSenderKeys2023}, newer standardized protocols like \ac{MLS}~\cite{barnesMessagingLayerSecurity2023} aim to improve the security of group chats.
 However, even these standards still suffer from security gaps~\cite{barnesMessagingLayerSecurity2023}.
 To address these gaps, researchers have proposed improved protocols~\cite{alwenSecurityAnalysisImprovements2020,kleinKeepDirtTainted2021,weidnerKeyAgreementDecentralized2021}.
 
@@ -83,16 +103,16 @@ Because many group messaging protocols are built on the foundation of two-party 
 \subsection{Threat Model}
 We consider a group messaging setting consisting of group members, a Delivery Service, and an Authentication Service~\cite{beurdoucheMessagingLayerSecurity2025}.
 \subsubsection{Network Adversary and Delivery Service}
-Both active network adversaries and a compromised Delivery Service (DS) can read, modify, drop, or replay all messages passed through the network, whereas a passive adversary can only read exchanged messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021,alwenContinuousGroupKey2020}.
-The DS is only trusted for delivering messages, even though some protocols require it to accurately order messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
+Both active network adversaries and a compromised \ac{DS} can read, modify, drop, or replay all messages passed through the network, whereas a passive adversary can only read exchanged messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021,alwenContinuousGroupKey2020}.
+The \ac{DS} is only trusted for delivering messages, even though some protocols require it to accurately order messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
 \subsubsection{Compromised and Malicious Insiders}
 We differentiate between active and passive adversaries who have compromised a group member's state at one point in time.
 An active adversary can use the compromised secrets by participating in the protocol, e.g., impersonating the compromised member, while a passive adversary can only use the compromised state to try to decrypt messages or try to derive future keys~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
 We also consider legitimate group members who act maliciously and can deviate from the protocol~\cite{alwenInsiderSecurityMLS2022,weidnerKeyAgreementDecentralized2021} (see \Cref{sec:misbehavior}).
 
 \subsubsection{Authentication Service}
-We assume the presence of a trusted third-party Authentication Service (AS) that provides key authentication for all members~\cite{beurdoucheMessagingLayerSecurity2025}.
-A compromised AS is out of scope for this paper.
+We assume the presence of a trusted third-party \ac{AS} that provides key authentication for all members~\cite{beurdoucheMessagingLayerSecurity2025}.
+A compromised \ac{AS} is out of scope for this paper.
 
 \subsection{Security Goals}
 In this section, we provide definitions for the security notions used in this paper.
@@ -105,49 +125,49 @@ In the group key management literature, these two properties have been called Ba
 We instead use Forward Secrecy in the sense of the secure-messaging literature~\cite{barnesMessagingLayerSecurity2023,weidnerKeyAgreementDecentralized2021} (see \Cref{sec:fs}).
 
 \subsubsection{Forward Secrecy}\label{sec:fs}
-Forward Secrecy (FS) is met if, after a member's state is compromised, all old, already decrypted messages stay secure~\cite{barnesMessagingLayerSecurity2023,weidnerKeyAgreementDecentralized2021}.
+\ac{FS} is met if, after a member's state is compromised, all old, already decrypted messages stay secure~\cite{barnesMessagingLayerSecurity2023,weidnerKeyAgreementDecentralized2021}.
 
 \subsubsection{Post-Compromise Security}\label{sec:pcs}
-Post-Compromise Security (PCS) is met if, after a member's state is compromised by a passive attacker, all messages sent in the future are secure~\cite{weidnerKeyAgreementDecentralized2021,beurdoucheMessagingLayerSecurity2025}.
-In most protocols, PCS is only achieved after a specific protocol step or event (e.g., a DH ratchet step, see \Cref{sec:dh-ratchet}), as PCS needs fresh randomness introduced into the keying material that is unknown to such an attacker~\cite{cohn-gordonPostcompromiseSecurity2016}.
+\ac{PCS} is met if, after a member's state is compromised by a passive attacker, all messages sent in the future are secure~\cite{weidnerKeyAgreementDecentralized2021,beurdoucheMessagingLayerSecurity2025}.
+In most protocols, \ac{PCS} is only achieved after a specific protocol step or event (e.g., a \ac{DH} ratchet step, see \Cref{sec:dh-ratchet}), as \ac{PCS} needs fresh randomness introduced into the keying material that is unknown to such an attacker~\cite{cohn-gordonPostcompromiseSecurity2016}.
 Otherwise, an attacker could always follow the same calculation steps on the compromised state to derive the same future keys.
 We describe a member's state as healed after such a protocol step that guarantees a passive attacker can no longer derive the newly established keys.
 
 \subsubsection{Authentication}
-Group members should be able to verify the genuineness of a message and its sender~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}, meaning it should not be possible for other group members, the DS, or other identities to impersonate a group member~\cite{roslerMoreLessEndtoEnd2018,weidnerKeyAgreementDecentralized2021,alwenInsiderSecurityMLS2022}.
+Group members should be able to verify the genuineness of a message and its sender~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}, meaning it should not be possible for other group members, the \ac{DS}, or other identities to impersonate a group member~\cite{roslerMoreLessEndtoEnd2018,weidnerKeyAgreementDecentralized2021,alwenInsiderSecurityMLS2022}.
 It should also only be possible for current group members to send messages that are accepted by other group members~\cite{roslerMoreLessEndtoEnd2018,weidnerKeyAgreementDecentralized2021}.
-Ideally, the DS should also reject messages from non-group members.
+Ideally, the \ac{DS} should also reject messages from non-group members.
 \subsubsection{Consistency}
 Group members should eventually agree on the group membership and group key, regardless of the order in which messages arrive~\cite{weidnerKeyAgreementDecentralized2021}.
-Thus, it should not be possible for a single member or the DS to permanently split the group~\cite{barnesMessagingLayerSecurity2023,beurdoucheMessagingLayerSecurity2025}.
+Thus, it should not be possible for a single member or the \ac{DS} to permanently split the group~\cite{barnesMessagingLayerSecurity2023,beurdoucheMessagingLayerSecurity2025}.
 
 \subsubsection{Availability}
-We assume that all messages are eventually delivered, because an active network adversary or a DS can always drop them~\cite{beurdoucheMessagingLayerSecurity2025}.
-Neither a misbehaving insider nor the DS should be able to disrupt honest group members' message processing or key agreement~\cite{alwenContinuousGroupKey2020,devigneMLSGroupMessaging2021}.
+We assume that all messages are eventually delivered, because an active network adversary or a \ac{DS} can always drop them~\cite{beurdoucheMessagingLayerSecurity2025}.
+Neither a misbehaving insider nor the \ac{DS} should be able to disrupt honest group members' message processing or key agreement~\cite{alwenContinuousGroupKey2020,devigneMLSGroupMessaging2021}.
 
 
 \subsection{Two-Party End-to-End Encryption}
 The most widely deployed protocol for two-party messaging is the Signal Protocol~\cite{balbasWhatsUppSenderKeys2023}, which uses PQXDH~\cite{kretPQXDHKeyAgreement} for initial key agreement and the Double Ratchet Algorithm~\cite{perrinDoubleRatchetAlgorithm} for message encryption.
-In the following, we outline how the protocol works and how it provides FS and PCS (called break-in recovery in the specification~\cite{perrinDoubleRatchetAlgorithm}).
+In the following, we outline how the protocol works and how it provides \ac{FS} and \ac{PCS} (called break-in recovery in the specification~\cite{perrinDoubleRatchetAlgorithm}).
 For simplicity, we omit key authentication and the recently added post-quantum ratchet~\cite{perrinDoubleRatchetAlgorithm}.
 \subsubsection{Setup}\label{sec:setup}
 We assume Alice wants to initiate a conversation with Bob while Bob is offline.
 Bob has previously published a prekey bundle to a server, which contains Bob's public key. Alice fetches it and uses the PQXDH key agreement protocol~\cite{kretPQXDHKeyAgreement} to derive a root key.
 In the first message, Alice includes the values Bob needs to derive the same root key.
 \subsubsection{Symmetric-Key Ratchet}\label{sec:sym-ratchet}
-Alice and Bob use a KDF to further derive sending and receiving chain keys. For each message they send or receive, they derive a one-time message key, used to encrypt or decrypt the message, and a new sending or receiving chain key, respectively.
-Because the KDF is one-way and all old keys are deleted after use, an attacker that compromises the state of either or both parties cannot compute previous chain keys and thus cannot derive the keys used to encrypt old messages.
-This provides FS. PCS, on the other hand, is not provided because an attacker can advance the chain exactly as the legitimate parties do and thus derive all future keys~\cite{perrinDoubleRatchetAlgorithm,cohn-gordonPostcompromiseSecurity2016}.
+Alice and Bob use a \ac{KDF} to further derive sending and receiving chain keys. For each message they send or receive, they derive a one-time message key, used to encrypt or decrypt the message, and a new sending or receiving chain key, respectively.
+Because the \ac{KDF} is one-way and all old keys are deleted after use, an attacker that compromises the state of either or both parties cannot compute previous chain keys and thus cannot derive the keys used to encrypt old messages.
+This provides \ac{FS}. \ac{PCS}, on the other hand, is not provided because an attacker can advance the chain exactly as the legitimate parties do and thus derive all future keys~\cite{perrinDoubleRatchetAlgorithm,cohn-gordonPostcompromiseSecurity2016}.
 \subsubsection{Diffie--Hellman Ratchet}\label{sec:dh-ratchet}
 Whenever the sending direction changes, the new sender includes a new ratchet public key in their message.
 From that and the current root key, a new shared root key and chain keys can be derived for the following messages~\cite{perrinDoubleRatchetAlgorithm}.
-The corresponding DH private key remains unknown to an attacker, thus providing the required freshness for PCS (see \Cref{sec:pcs}).
-The channel has healed after the compromised party has generated a new DH key pair and announced the new public key~\cite{perrinDoubleRatchetAlgorithm}.
+The corresponding \ac{DH} private key remains unknown to an attacker, thus providing the required freshness for \ac{PCS} (see \Cref{sec:pcs}).
+The channel has healed after the compromised party has generated a new \ac{DH} key pair and announced the new public key~\cite{perrinDoubleRatchetAlgorithm}.
 
 \section{Techniques in Current Systems}\label{sec:techniques}
 In this section, we discuss protocols used in current systems, their current shortcomings, and proposed improved variants.
 We first introduce the naive approach of applying two-party end-to-end encryption to groups and then discuss the currently most widely adopted approach, Sender Keys.
-Finally, we go into more detail on the current research direction of Continuous Group-Key Agreement (CGKA), with a focus on tree-based approaches, while also briefly discussing other approaches.
+Finally, we go into more detail on the current research direction of \ac{CGKA}, with a focus on tree-based approaches, while also briefly discussing other approaches.
 
 \subsection{Pairwise Channels}
 \subsubsection{Client-Side Fanout}
@@ -157,7 +177,7 @@ For a group of size $n$, each individual is required to create $n-1$ channels, a
 Adding a member just requires every member to establish such a channel with the new member, which costs the new member $\mathcal{O}(n)$ and every existing member $\mathcal{O}(1)$ channel creations.
 Because all pairwise channels are independent, removing, on the other hand, requires no extra cryptographic steps, as just no longer sending messages over the corresponding pairwise channels suffices.
 
-Because every message is sent over such pairwise channels, client-side fanout inherits their FS and PCS properties~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018,roslerMoreLessEndtoEnd2018}, including the healing requirement of the compromised party sending a message to distribute a new public key, which is a notably stronger requirement in a group chat where some party might not send messages for a long time~\cite{weidnerKeyAgreementDecentralized2021}.
+Because every message is sent over such pairwise channels, client-side fanout inherits their \ac{FS} and \ac{PCS} properties~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018,roslerMoreLessEndtoEnd2018}, including the healing requirement of the compromised party sending a message to distribute a new public key, which is a notably stronger requirement in a group chat where some party might not send messages for a long time~\cite{weidnerKeyAgreementDecentralized2021}.
 On the other hand, because every message is encrypted and sent independently, there is no shared group state and members can disagree on who is currently in the group, violating our notion of Consistency.
 Furthermore, malicious group members could send completely different messages to different members of the group without being caught~\cite{goldbergMultipartyOfftherecordMessaging2009}.
 Detecting such misbehaving peers would require additions to the protocol, like making all parties share the hash of their transcripts with each other to catch any discrepancies, as described by Goldberg et al.~\cite{goldbergMultipartyOfftherecordMessaging2009}.
@@ -173,38 +193,38 @@ When sending a message, it is encrypted with a message key derived from the curr
 All group members receive the same ciphertext, verify its signature using $\mathsf{pk}_i$, and decrypt it by also deriving the same current message key using their copy of $\mathsf{ck}_i$.
 This improves complexity compared to client-side fanout by only requiring one encryption per message.
 
-After sending and receiving, each party performs one ratchet step on the corresponding chain key $\mathsf{ck}_i$ using a KDF.
-This ratchet step on the symmetric chain key $\mathsf{ck}_i$ provides FS as in the Double Ratchet Algorithm, but unlike it, Sender Keys are missing a second ratchet (\Cref{sec:dh-ratchet}) that introduces new randomness.
-This means PCS can only be achieved by each member creating new sender keys and redistributing them to every other member~\cite{balbasWhatsUppSenderKeys2023}.
+After sending and receiving, each party performs one ratchet step on the corresponding chain key $\mathsf{ck}_i$ using a \ac{KDF}.
+This ratchet step on the symmetric chain key $\mathsf{ck}_i$ provides \ac{FS} as in the Double Ratchet Algorithm, but unlike it, Sender Keys are missing a second ratchet (\Cref{sec:dh-ratchet}) that introduces new randomness.
+This means \ac{PCS} can only be achieved by each member creating new sender keys and redistributing them to every other member~\cite{balbasWhatsUppSenderKeys2023}.
 
 Adding a new member requires every member to share their sender keys with the new member, requiring one message per member to be exchanged for $\mathcal{O}(n)$ messages in total~\cite{balbasWhatsUppSenderKeys2023,albrechtFormalAnalysisMultidevice2025}.
-This complies with our notion of Confidentiality: because of the described FS, the new member cannot decrypt old messages.
+This complies with our notion of Confidentiality: because of the described \ac{FS}, the new member cannot decrypt old messages.
 Removing, on the other hand, requires a complete rekey, meaning every member needs to create new sender keys and distribute them to every other member~\cite{albrechtFormalAnalysisMultidevice2025}.
 This update takes $\mathcal{O}(n)$ messages per member, which is $\mathcal{O}(n^2)$ in total~\cite{balbasWhatsUppSenderKeys2023}.
 
-Sender Keys' weakest guarantee, PCS, can therefore only be fixed by a complete rekey, their most expensive operation.
-Because this is implementation-dependent and often only done after a group member leaves, only a very weak form of PCS is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
+Sender Keys' weakest guarantee, \ac{PCS}, can therefore only be fixed by a complete rekey, their most expensive operation.
+Because this is implementation-dependent and often only done after a group member leaves, only a very weak form of \ac{PCS} is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
 Another weakness of relying on pairwise channels is that they also require multiple messages to be exchanged to fully heal~\cite{balbasWhatsUppSenderKeys2023}.
 Because we assume that a state compromise also includes keys of these two-party channels, fresh keys could also leak when exchanged over pairwise channels before they have healed.
 
-Sender Keys also do not uphold Consistency, as the DS can forge membership changes~\cite{albrechtFormalAnalysisMultidevice2025} and only deliver them to part of the group, effectively splitting the group~\cite{balbasWhatsUppSenderKeys2023}.
+Sender Keys also do not uphold Consistency, as the \ac{DS} can forge membership changes~\cite{albrechtFormalAnalysisMultidevice2025} and only deliver them to part of the group, effectively splitting the group~\cite{balbasWhatsUppSenderKeys2023}.
 
 \subsection{Continuous Group-Key Agreement}
-Continuous Group-Key Agreement (CGKA) protocols' goal is to efficiently and securely derive a shared group key continuously through group changes.
-Well-designed CGKAs improve upon the weakness of Sender Keys by no longer requiring a full rekey to achieve PCS, allowing for cheaper healing.
+\acf{CGKA} protocols' goal is to efficiently and securely derive a shared group key continuously through group changes.
+Well-designed \acp{CGKA} improve upon the weakness of Sender Keys by no longer requiring a full rekey to achieve \ac{PCS}, allowing for cheaper healing.
 \subsubsection{Definitions}
-To describe CGKA, we use definitions closely following the MLS specification~\cite{barnesMessagingLayerSecurity2023} and the CGKA syntax of Alwen et al.~\cite{alwenContinuousGroupKey2020}.
+To describe \ac{CGKA}, we use definitions closely following the \ac{MLS} specification~\cite{barnesMessagingLayerSecurity2023} and the \ac{CGKA} syntax of Alwen et al.~\cite{alwenContinuousGroupKey2020}.
 \begin{description}
     \item[Group Key] is a shared secret key only known to all current members of the group.
     \item[Epoch] is the group state comprising current group membership and current group key. Notably, epochs are ordered linearly, but all members might not be in the same epoch at a given time.
-    \item[Operations] change the group state, e.g., adding or removing a member and updating a member's own key to provide PCS. We do not discuss other operations, such as ones required to create a group.
+    \item[Operations] change the group state, e.g., adding or removing a member and updating a member's own key to provide \ac{PCS}. We do not discuss other operations, such as ones required to create a group.
     \item[Proposal] is a message containing a suggested operation.
     \item[Commit] applies ordered proposals, thus changing the group state and starting a new epoch.
 \end{description}
 
 \subsubsection{TreeKEM / MLS}
-Messaging Layer Security (MLS)~\cite{barnesMessagingLayerSecurity2023} is an IETF standard, which is deployed in Discord's voice and video chats~\cite{discord2024dave_spec} and the SMS successor RCS~\cite{gsma2025rcs_e2ee}.
-It uses a variant of TreeKEM~\cite{bhargavanTreeKEMAsynchronousDecentralizeda,solerAnalysisEfficiencyMessaging2025} as its CGKA protocol.
+\acf{MLS}~\cite{barnesMessagingLayerSecurity2023} is an \ac{IETF} standard, which is deployed in Discord's voice and video chats~\cite{discord2024dave_spec} and the \ac{SMS} successor \ac{RCS}~\cite{gsma2025rcs_e2ee}.
+It uses a variant of TreeKEM~\cite{bhargavanTreeKEMAsynchronousDecentralizeda,solerAnalysisEfficiencyMessaging2025} as its \ac{CGKA} protocol.
 In the following, TreeKEM refers to this variant.
 
 As the name implies, TreeKEM employs a tree structure called the Ratchet Tree to derive the group key.
@@ -212,7 +232,7 @@ The Ratchet Tree is comprised of key pairs, with the group key being derived fro
 All public keys are known by all members.
 Private keys, on the other hand, can only be known by members descending from their respective intermediate node~\cite{barnesMessagingLayerSecurity2023}.
 
-To achieve PCS, members need to rotate their key as part of a commit~\cite{barnesMessagingLayerSecurity2023}.
+To achieve \ac{PCS}, members need to rotate their key as part of a commit~\cite{barnesMessagingLayerSecurity2023}.
 In order to do so, a member replaces all keys on the path starting at their leaf node up to the root.
 The member creates a fresh leaf key pair and then, starting from a random value, derives secrets upwards along the path.
 From each secret, the respective node's key pair and the secret of the parent node can be derived~\cite{barnesMessagingLayerSecurity2023}.
@@ -221,7 +241,7 @@ That only requires the member to encrypt the new secret of each node with the pu
 This works because members that can decrypt one of these secrets can, on their own, derive all others up to the root.
 Only one encryption per layer is required, resulting in $\mathcal{O}(\log(n))$ encryptions for group size $n$~\cite{barnesMessagingLayerSecurity2023}.
 
-FS between epochs rests on deleting old private keys and a ratchet (same principle as the symmetric ratchet in \Cref{sec:sym-ratchet})~\cite{barnesMessagingLayerSecurity2023,alwenInsiderSecurityMLS2022}.
+\ac{FS} between epochs rests on deleting old private keys and a ratchet (same principle as the symmetric ratchet in \Cref{sec:sym-ratchet})~\cite{barnesMessagingLayerSecurity2023,alwenInsiderSecurityMLS2022}.
 It takes in a secret derived from the previous group key and current root secret to derive the next group key for each epoch~\cite{barnesMessagingLayerSecurity2023}.
 
 In order to add a member, a new leaf node is created.
@@ -256,15 +276,15 @@ But this avoids cost on later updates that would have required extra encryptions
 For large groups, these trade-offs bring down total cost on average, because a blank node increases cost for many members, while a tainted node only for the tainter~\cite{kleinKeepDirtTainted2021}.
 
 \paragraph{rTreeKEM}
-Besides its efficiency, TreeKEM also falls short of optimal FS.
+Besides its efficiency, TreeKEM also falls short of optimal \ac{FS}.
 As shown by Alwen et al.~\cite{alwenSecurityAnalysisImprovements2020}, members keep the private keys of inner nodes until they get updated.
 Thus, if a member is compromised, all path secrets from the compromised member's last update onward can be decrypted retroactively, including the root secret~\cite{alwenSecurityAnalysisImprovements2020}.
 It is important to note that this does not immediately grant an attacker the group key, because of the aforementioned ratchet, but if a previous compromise has leaked the group key, an attacker can potentially derive group keys in that time frame~\cite{alwenInsiderSecurityMLS2022}.
 
 Alwen et al. proposed a modified version of TreeKEM~\cite{alwenSecurityAnalysisImprovements2020}, later called rTreeKEM~\cite{kleinKeepDirtTainted2021}, that addresses this weakness.
-They employ Updatable Public-Key Encryption (UPKE) that allows for private keys to be updated every time they are used~\cite{alwenSecurityAnalysisImprovements2020}.
-This provides optimal FS, as a key is replaced the moment it is used~\cite{alwenSecurityAnalysisImprovements2020}.
-However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cite{alwenSecurityAnalysisImprovements2020}.
+They employ \ac{UPKE} that allows for private keys to be updated every time they are used~\cite{alwenSecurityAnalysisImprovements2020}.
+This provides optimal \ac{FS}, as a key is replaced the moment it is used~\cite{alwenSecurityAnalysisImprovements2020}.
+However, like TreeKEM, rTreeKEM still requires the \ac{DS} to order all messages~\cite{alwenSecurityAnalysisImprovements2020}.
 
 \begin{table*}[htbp]
     \centering
@@ -308,12 +328,12 @@ However, like TreeKEM, rTreeKEM still requires the DS to order all messages~\cit
 
 \section{Practicality of Deployment}\label{sec:practicality}
 Good security guarantees alone do not make a protocol deployable.
-In the following, we discuss its complexity, post-quantum readiness, and how it depends on the DS.
+In the following, we discuss its complexity, post-quantum readiness, and how it depends on the \ac{DS}.
 We also briefly discuss legislative requirements when it comes to interoperability and its challenges.
 
 \subsection{Complexity}
 As \Cref{tab:comparison} shows, sending and receiving are cheap in all protocols except client-side fanout.
-Protocols mainly differ in group operations, which often comes down to the update complexity, as updates are often required for other group operations to maintain FS and PCS~\cite{barnesMessagingLayerSecurity2023}.
+Protocols mainly differ in group operations, which often comes down to the update complexity, as updates are often required for other group operations to maintain \ac{FS} and \ac{PCS}~\cite{barnesMessagingLayerSecurity2023}.
 The table only measures the count of ciphertexts and operations' best and worst cases.
 Neither paints the full picture, as it does not include non-cryptographic costs~\cite{solerAnalysisEfficiencyMessaging2025} and how often worst-case scenarios actually occur.
 For instance, Tainted TreeKEM has been shown to outperform TreeKEM on average in large-group simulations~\cite{kleinKeepDirtTainted2021}, while its worst case remains the same as that of the unmodified TreeKEM.
@@ -329,7 +349,7 @@ MLS-Cutoff~\cite{auerbachContinuousGroupKeyAgreement2025} improves this by makin
 The remaining path gets blanked, and if in one commit two proposers' paths overlap, they also get blanked there~\cite{auerbachContinuousGroupKeyAgreement2025}.
 This leads to an expected complexity of $\mathcal{O}(\log n)$ for few proposals per commit, but keeps the $\Omega(n)$ worst-case complexity~\cite{auerbachContinuousGroupKeyAgreement2025}.
 
-The linear worst-case complexity is structural to TreeKEM-like CGKA protocols and cannot be avoided by currently practical protocols~\cite{auerbachContinuousGroupKeyAgreement2025,bartusekFairWeatherNoMore2026}.
+The linear worst-case complexity is structural to TreeKEM-like \ac{CGKA} protocols and cannot be avoided by currently practical protocols~\cite{auerbachContinuousGroupKeyAgreement2025,bartusekFairWeatherNoMore2026}.
 The intuition behind this is: if Alice creates a group while all members are offline and then immediately leaves, none of the members share a key that was unknown to Alice.
 Because Alice just left, these keys cannot be used; thus, the next commit needs one ciphertext per member~\cite{bartusekFairWeatherNoMore2026}.
 
@@ -339,43 +359,43 @@ Notably, experiments have shown that cryptographic overhead for a group with 10,
 In TreeKEM, every member needs to download the entire commit, even though most ciphertexts included in it are not decryptable by them, because TreeKEM only signs the entire commit as a whole~\cite{hashimotoConcreteTreatmentEfficient2021}.
 This costs $\Omega(n \log n)$ per commit in total over all group members~\cite{hashimotoConcreteTreatmentEfficient2021}.
 Chained CmPKE~\cite{hashimotoConcreteTreatmentEfficient2021} is a protocol that allows members to only download the parts of the commit they actually are required to get, by only signing a short commitment to the key instead of the ciphertexts, so every member receives the same signature.
-Thus, the DS can forward only the required ciphertext and commitment to a member, reducing the download size to $\mathcal{O}(1)$ for each member~\cite{hashimotoConcreteTreatmentEfficient2021}.
+Thus, the \ac{DS} can forward only the required ciphertext and commitment to a member, reducing the download size to $\mathcal{O}(1)$ for each member~\cite{hashimotoConcreteTreatmentEfficient2021}.
 Additionally, Chained CmPKE no longer builds a Ratchet Tree but instead just a flat set of members; this can also be considered an $n$-ary tree of depth 1~\cite{hashimotoConcreteTreatmentEfficient2021}.
 This also removes blanks, but updates now cost $\mathcal{O}(n)$ ciphertexts to upload~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
 \subsection{Post-Quantum Security}
 The transition to quantum-resistant primitives in two-party channels is already well underway~\cite{kretPQXDHKeyAgreement,perrinDoubleRatchetAlgorithm}.
-The MLS standardization currently does not include any post-quantum (PQ) cipher suites~\cite{barnesMessagingLayerSecurity2023}, but an IETF draft adds ML-KEM suites, with all of them providing PQ confidentiality~\cite{mahyMLKEMHybridCipher2026}.
+The \ac{MLS} standardization currently does not include any \ac{PQ} cipher suites~\cite{barnesMessagingLayerSecurity2023}, but an \ac{IETF} draft adds ML-KEM suites, with all of them providing \ac{PQ} confidentiality~\cite{mahyMLKEMHybridCipher2026}.
 For most, authentication remains weak against quantum attacks; this is a deliberate trade-off, as the current threat model only assumes harvest-now-decrypt-later attacks~\cite{mahyMLKEMHybridCipher2026}.
 
 One major drawback of PQ-secure cipher suites is that they require far larger ciphertexts~\cite{hashimotoConcreteTreatmentEfficient2021,perrinDoubleRatchetAlgorithm}.
-While MLS uploads scale better, Chained CmPKE increases its lead for downloads, as it does not send every, now larger, ciphertext to every member~\cite{hashimotoConcreteTreatmentEfficient2021}.
+While \ac{MLS} uploads scale better, Chained CmPKE increases its lead for downloads, as it does not send every, now larger, ciphertext to every member~\cite{hashimotoConcreteTreatmentEfficient2021}.
 However, its upload still grows linearly for larger groups~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
 \subsection{Dependence on the Delivery Service}
-MLS requires a linear history for its epochs~\cite{beurdoucheMessagingLayerSecurity2025}; thus, the DS usually orders all commits and breaks ties if they occur~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
-This reliance on ordering gives the DS a lot of power, as it can single-handedly deny service to all or some members or split the group~\cite{beurdoucheMessagingLayerSecurity2025,alwenDeCAFDecentralizableCGKA2024}.
+\ac{MLS} requires a linear history for its epochs~\cite{beurdoucheMessagingLayerSecurity2025}; thus, the \ac{DS} usually orders all commits and breaks ties if they occur~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
+This reliance on ordering gives the \ac{DS} a lot of power, as it can single-handedly deny service to all or some members or split the group~\cite{beurdoucheMessagingLayerSecurity2025,alwenDeCAFDecentralizableCGKA2024}.
 
-Other protocols try to avoid this by relying less on the DS~\cite{alwenDeCAFDecentralizableCGKA2024,weidnerKeyAgreementDecentralized2021}.
+Other protocols try to avoid this by relying less on the \ac{DS}~\cite{alwenDeCAFDecentralizableCGKA2024,weidnerKeyAgreementDecentralized2021}.
 For instance, the tree-based protocol DeCAF~\cite{alwenDeCAFDecentralizableCGKA2024} employs a blockchain to achieve consensus without a centralized service, while still allowing for concurrent updates.
-Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates~\cite{alwenDeCAFDecentralizableCGKA2024}, which slightly weakens FS~\cite{alwenDeCAFDecentralizableCGKA2024}.
+Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates~\cite{alwenDeCAFDecentralizableCGKA2024}, which slightly weakens \ac{FS}~\cite{alwenDeCAFDecentralizableCGKA2024}.
 
 DeCAF still requires a total ordering~\cite{alwenDeCAFDecentralizableCGKA2024}; DCGKA~\cite{weidnerKeyAgreementDecentralized2021} removes this requirement.
 Like Sender Keys, it uses pairwise channels to distribute keying material for a per-member ratchet~\cite{weidnerKeyAgreementDecentralized2021}.
 It differs in the update process: one member distributes a new secret over pairwise channels; then every other member updates their own ratchet using it and then broadcasts an acknowledgment~\cite{weidnerKeyAgreementDecentralized2021}.
-This does not require total ordering by any DS, as a member's ratchet is only updated on their own broadcast~\cite{weidnerKeyAgreementDecentralized2021}.
+This does not require total ordering by any \ac{DS}, as a member's ratchet is only updated on their own broadcast~\cite{weidnerKeyAgreementDecentralized2021}.
 Members can heal with a single update~\cite{weidnerKeyAgreementDecentralized2021}, in contrast to Sender Keys, which require that every member updates~\cite{balbasWhatsUppSenderKeys2023,weidnerKeyAgreementDecentralized2021}.
 As only one ciphertext is distributed to every member, this comes down to a cost of $\mathcal{O}(n)$ ciphertexts~\cite{weidnerKeyAgreementDecentralized2021}.
 Because they are all sent by one member and not cross-checked, that member could split the group by sending different secrets to different members~\cite{weidnerKeyAgreementDecentralized2021}.
 
-Besides splitting the group and denial-of-service attacks, a compromised DS can neither read nor forge messages~\cite{beurdoucheMessagingLayerSecurity2025}.
+Besides splitting the group and denial-of-service attacks, a compromised \ac{DS} can neither read nor forge messages~\cite{beurdoucheMessagingLayerSecurity2025}.
 Thus, relying on an ordering server seems a defensible choice considering the performance gains, even though more efficient alternatives to Sender Keys can work without one.
 
 \subsection{Interoperability}
-The EU's DMA requires gatekeepers such as WhatsApp to enable interoperability with other group chat providers~\cite{RegulationEU20222022}.
+The EU's \ac{DMA} requires gatekeepers such as WhatsApp to enable interoperability with other group chat providers~\cite{RegulationEU20222022}.
 It is also mandated that the interoperability may not lower security standards~\cite{RegulationEU20222022}.
-MLS does not currently support such functionality directly~\cite{beurdoucheMessagingLayerSecurity2025}, but the IETF has a MIMI draft that would enable a hub provider to order and distribute messages for multiple providers~\cite{barnesMoreInstantMessaging2026}.
-Providers are now more limited and cannot choose protocols arbitrarily on their own; this favors standardized protocols like MLS compared to other alternatives.
+\ac{MLS} does not currently support such functionality directly~\cite{beurdoucheMessagingLayerSecurity2025}, but the \ac{IETF} has a \ac{MIMI} draft that would enable a hub provider to order and distribute messages for multiple providers~\cite{barnesMoreInstantMessaging2026}.
+Providers are now more limited and cannot choose protocols arbitrarily on their own; this favors standardized protocols like \ac{MLS} compared to other alternatives.
 
 \section{Protecting Against Misbehaving Peers}\label{sec:misbehavior}
 So far, we have primarily considered external adversaries.
@@ -384,51 +404,51 @@ Under this threat model, Confidentiality is no longer considered, as group membe
 We instead focus on maintaining Consistency and Availability.
 
 \subsection{Insider-Secure TreeKEM}
-MLS implements safeguards against misbehaving peers; many of them were highlighted by Alwen et al.~\cite{alwenInsiderSecurityMLS2022}.
+\ac{MLS} implements safeguards against misbehaving peers; many of them were highlighted by Alwen et al.~\cite{alwenInsiderSecurityMLS2022}.
 A possible attack is impersonating another group member.
 In TreeKEM, signatures are used on messages to prevent this~\cite{alwenInsiderSecurityMLS2022}.
 But because signature keys are not rotated regularly, an active attacker could impersonate a member after a state compromise and, e.g., remove other members in their name~\cite{alwenInsiderSecurityMLS2022}.
-This was fixed by requiring the use of a MAC using a key derived from the root secret on unencrypted messages~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}.
+This was fixed by requiring the use of a \ac{MAC} using a key derived from the root secret on unencrypted messages~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}.
 
-A malicious member controlling the network or colluding with the DS could also split the group by creating two commits that only differ in their signature and sending them to different members~\cite{alwenInsiderSecurityMLS2022}.
+A malicious member controlling the network or colluding with the \ac{DS} could also split the group by creating two commits that only differ in their signature and sending them to different members~\cite{alwenInsiderSecurityMLS2022}.
 All members accept their received commit and derive the same group key and can communicate as usual, but because the signatures no longer align, they cannot agree on the next commit, as they no longer agree on past commits' hash value~\cite{alwenInsiderSecurityMLS2022}.
 This was fixed by making the group key also depend on the commits' signatures~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}; thus, members would no longer derive the same group key and notice that a split has occurred, but this notably does not prevent the possibility of an insider creating such a split.
 
 \subsection{Inconsistent Commits}
-The issue of insiders being able to split the group by creating malicious commits runs deeper, even without a colluding DS~\cite{alwenInsiderSecurityMLS2022}.
+The issue of insiders being able to split the group by creating malicious commits runs deeper, even without a colluding \ac{DS}~\cite{alwenInsiderSecurityMLS2022}.
 A group member performing an update can encrypt unrelated secrets to different copath nodes~\cite{barnesMessagingLayerSecurity2023}.
-This is not detectable by the DS~\cite{beurdoucheMessagingLayerSecurity2025}, and any individual member can only check the validity of their own secret~\cite{alwenContinuousGroupKey2020,barnesMessagingLayerSecurity2023}.
+This is not detectable by the \ac{DS}~\cite{beurdoucheMessagingLayerSecurity2025}, and any individual member can only check the validity of their own secret~\cite{alwenContinuousGroupKey2020,barnesMessagingLayerSecurity2023}.
 As a result, some members simply move forward to the next epoch while others reject the commit, thus splitting the group~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}.
 This effect is made worse if the targeted members on the copath are currently offline~\cite{barnesMessagingLayerSecurity2023}.
 Because no other entity can realize the split, the rest of the group just continues with the next epochs~\cite{barnesMessagingLayerSecurity2023}, making recovery (which is left to the application layer~\cite{barnesMessagingLayerSecurity2023,beurdoucheMessagingLayerSecurity2025}) even more complicated.
 Recovering from a split is also not safe, as it requires trusting the new group state sent by another member, who could have modified it~\cite{beurdoucheMessagingLayerSecurity2025}.
 
-MLS currently has no way to prevent these attacks~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}.
+\ac{MLS} currently has no way to prevent these attacks~\cite{alwenInsiderSecurityMLS2022,barnesMessagingLayerSecurity2023}.
 The proposed protocol P-Act-Rob~\cite{alwenContinuousGroupKey2020}, based on Tainted TreeKEM, addresses this by employing Non-Interactive Zero-Knowledge proofs.
 Each commit needs to include such a proof, validating that all operations have been applied correctly and that the path update is consistent~\cite{alwenContinuousGroupKey2020}.
 This proof needs to be checked by every member before accepting the commit and moving to the next epoch~\cite{alwenContinuousGroupKey2020}.
-Alternatively, just the DS could validate the commit before distributing it~\cite{devigneMLSGroupMessaging2021} to reduce computation cost for the members, at the cost of trusting the DS~\cite{alwenInsiderSecurityMLS2022}.
-Like rTreeKEM, P-Act-Rob also provides optimal FS, but by evolving every key on a commit~\cite{alwenContinuousGroupKey2020}.
+Alternatively, just the \ac{DS} could validate the commit before distributing it~\cite{devigneMLSGroupMessaging2021} to reduce computation cost for the members, at the cost of trusting the \ac{DS}~\cite{alwenInsiderSecurityMLS2022}.
+Like rTreeKEM, P-Act-Rob also provides optimal \ac{FS}, but by evolving every key on a commit~\cite{alwenContinuousGroupKey2020}.
 In P-Act-Rob, a committer always needs to update their path and their tainted nodes~\cite{alwenContinuousGroupKey2020}; thus, adding a member also suffers from the worst-case cost of an update in Tainted TreeKEM with $\mathcal{O}(n)$ ciphertexts.
 When achieving this level of insider security is necessary but higher costs are not acceptable, a protocol could require at least one member below each copath node to acknowledge a commit~\cite{barnesMessagingLayerSecurity2023}, at the cost of asynchrony.
 
 \subsection{Group Administration}
-MLS lets any member add others to or remove others from the group~\cite{barnesMessagingLayerSecurity2023}; thus, a malicious member can arbitrarily add other members or, e.g., remove every other member from the group.
+\ac{MLS} lets any member add others to or remove others from the group~\cite{barnesMessagingLayerSecurity2023}; thus, a malicious member can arbitrarily add other members or, e.g., remove every other member from the group.
 Therefore, a set of policies is required that restricts these actions~\cite{beurdoucheMessagingLayerSecurity2025}.
-MLS requires such policies to be enforced by either the DS, which then needs to be trusted to do so, or each client, which could lead to an inconsistent state if they disagree~\cite{beurdoucheMessagingLayerSecurity2025}.
+\ac{MLS} requires such policies to be enforced by either the \ac{DS}, which then needs to be trusted to do so, or each client, which could lead to an inconsistent state if they disagree~\cite{beurdoucheMessagingLayerSecurity2025}.
 
-Administrated CGKA (A-CGKA) extends CGKA in a way that only allows admins to control membership~\cite{balbasCryptographicAdministrationSecure}.
+\ac{ACGKA} extends \ac{CGKA} in a way that only allows admins to control membership~\cite{balbasCryptographicAdministrationSecure}.
 All members verify whether group changes include a valid admin signature before accepting them~\cite{balbasCryptographicAdministrationSecure}.
 However, this does not prevent non-admins from creating inconsistent commits, splitting the group~\cite{balbasCryptographicAdministrationSecure}.
 
 \section{Conclusion}
-This paper compared Sender Keys with CGKA protocols such as MLS building on TreeKEM and various improved variants and alternatives.
-Sender Keys remain the most widely deployed but only offer a weak form of PCS, which needs a full rekey at high cost, and also suffer from other weaknesses.
-CGKAs require no full rekey to heal and are thus much cheaper, but for Ratchet Tree-based approaches, linear worst cases remain unavoidable.
-But the current versions like TreeKEM still suffer from inefficiencies and can be further improved by variants such as Tainted TreeKEM, which avoids blanks, lowering costs on average for large groups, and rTreeKEM, improving its notion of FS by employing Updatable Public-Key Encryption.
-Because of cost decreases, relying on the DS remains a defensible approach, and preventing inconsistent commits is possible but also currently expensive.
+This paper compared Sender Keys with \ac{CGKA} protocols such as \ac{MLS} building on TreeKEM and various improved variants and alternatives.
+Sender Keys remain the most widely deployed but only offer a weak form of \ac{PCS}, which needs a full rekey at high cost, and also suffer from other weaknesses.
+\acp{CGKA} require no full rekey to heal and are thus much cheaper, but for Ratchet Tree-based approaches, linear worst cases remain unavoidable.
+But the current versions like TreeKEM still suffer from inefficiencies and can be further improved by variants such as Tainted TreeKEM, which avoids blanks, lowering costs on average for large groups, and rTreeKEM, improving its notion of \ac{FS} by employing Updatable Public-Key Encryption.
+Because of cost decreases, relying on the \ac{DS} remains a defensible approach, and preventing inconsistent commits is possible but also currently expensive.
 
-As the DMA raises the need for platform-independent standards, we think standards like MLS are becoming more relevant.
+As the \ac{DMA} raises the need for platform-independent standards, we think standards like \ac{MLS} are becoming more relevant.
 But many problems remain open, such as preventing inconsistent commits at acceptable costs, safe recovery after splits, and fully decentralized operation without ordering servers while maintaining logarithmic best-case update cost, warranting future research.
 We conclude that no current protocol wins outright, and the correct choice depends on the threat model, such as the level of trust placed in the Delivery Service.
 
