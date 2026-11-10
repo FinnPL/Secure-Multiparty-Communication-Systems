@@ -16,16 +16,16 @@
         up/.style={->, pathc, thick},
         lbl/.style={font=\scriptsize, inner sep=1pt},
     }
-    \begin{subfigure}[b]{0.55\textwidth}
+    \begin{minipage}[b]{\columnwidth}
         \centering
-        \begin{tikzpicture}[node distance=4mm]
+        \begin{tikzpicture}[node distance=2mm]
             % A's sender chain
             \node[gone] (c0) at (0,32mm) {$\mathsf{ck}_A^{(0)}$};
             \node[kdf, draw=oldc, text=oldc, right=of c0] (k1) {KDF};
             \node[gone, right=of k1] (c1) {$\mathsf{ck}_A^{(1)}$};
-            \node[right=2.5mm of c1, text=oldc] (cd) {$\cdots$};
-            \node[gone, right=2.5mm of cd] (ct) {$\mathsf{ck}_A^{(t)}$};
-            \node[now, right=9mm of ct] (n0) {$\mathsf{ck}_A'^{(0)}$};
+            \node[right=1.5mm of c1, text=oldc] (cd) {$\cdots$};
+            \node[gone, right=1.5mm of cd] (ct) {$\mathsf{ck}_A^{(t)}$};
+            \node[now, right=5mm of ct] (n0) {$\mathsf{ck}_A'^{(0)}$};
             \node[kdf, right=of n0] (k2) {KDF};
             \node[future, right=of k2] (n1) {$\mathsf{ck}_A'^{(1)}$};
             \draw[->, oldc] (c0) -- (k1);
@@ -40,17 +40,15 @@
             \node[lbl, text=pathc, below=1mm of n1] {future};
             % members
             \node[pathn] (A) at (n0 |- 0,0) {A};
-            \node[copn, right=4mm of A] (B) {B};
-            \node[copn, right=4mm of B] (C) {C};
-            \node[copn, right=4mm of C] (D) {D};
+            \node[copn, right=2.5mm of A] (B) {B};
+            \node[copn, right=2.5mm of B] (C) {C};
+            \node[copn, right=2.5mm of C] (D) {D};
             \draw[up] (A) -- node[lbl, left, align=right] {fresh\\random} (n0);
             \foreach \m in {B,C,D} \draw[enc] (n0) -- (\m);
             \node[lbl, text=copc, anchor=west, align=left] at ($(n0)!.32!(D)+(2.5mm,0)$) {pairwise,\\$n-1$ ciphertexts};
         \end{tikzpicture}
-        \caption{Sender Keys: A's sender chain.}
-        \label{fig:update-sk}
-    \end{subfigure}\hfill
-    \begin{subfigure}[b]{0.44\textwidth}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{\columnwidth}
         \centering
         \begin{tikzpicture}[x=10mm, y=9mm]
             % ratchet tree with A's new path
@@ -79,15 +77,4 @@
             \node[lbl, below=1mm of g0, text=oldc, align=center] {epoch $t$\\deleted (FS)};
             \node[lbl, below=1mm of g1, text=pathc, align=center] {epoch $t{+}1$\\fresh $s_2$ (PCS)};
         \end{tikzpicture}
-        \caption{TreeKEM: A's path and the epoch ratchet.}
-        \label{fig:update-treekem}
-    \end{subfigure}
-
-    \vspace{1ex}
-    \begin{tikzpicture}[lbl/.append style={font=\footnotesize}]
-        \node[gone, minimum width=4mm, minimum height=3mm] (l1) at (0,0) {};
-        \node[lbl, right=1mm of l1] (t1) {deleted after use (FS)};
-        \node[now, minimum width=4mm, minimum height=3mm, right=4mm of t1] (l2) {};
-        \node[lbl, right=1mm of l2] (t2) {fresh keys from A's update (PCS)};
-        \draw[enc] ([xshift=4mm]t2.east) -- ++(6mm,0) node[lbl, right, text=black] {ciphertext to a member or node};
-    \end{tikzpicture}
+    \end{minipage}
