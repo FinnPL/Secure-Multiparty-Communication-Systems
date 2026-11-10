@@ -254,9 +254,10 @@ It takes in a secret derived from the previous group key and current root secret
         \caption{%
             \emph{Sender Keys update.}
             A updates their key in a group of size $n=4$, shown directly after the update.
-            A's chain key is ratcheted on every message; deleting the old keys after use.
-            On an update A replaces the current chain key by distributing a fresh chain key over the pairwise channels.
-            Notably this only heals As key.
+            A's chain key is ratcheted on every message.
+            The old keys are deleted after use.
+            On an update, A replaces the current chain key by distributing a fresh chain key over the pairwise channels.
+            Notably, this only heals A's key.
             Adapted from~\cite{perrinDoubleRatchetAlgorithm}.
         }
         \label{fig:update-sk}
@@ -265,10 +266,10 @@ It takes in a secret derived from the previous group key and current root secret
         \caption{%
             \emph{TreeKEM update.}
             A updates their key in a group of size $n=4$, shown directly after the update.
-            The group key is ratcheted on every epoch; deleting the previous epoch's keys after.
-            When A updates, they replace their leaf key pair and choose a new random secret, from which new secrets are derived upwards through the tree.
-            This replaces the root secret, which then provides freshness for the new group key.
-            Requiring only $\mathcal{O}(\log n)$ ciphertexts, this update heals the group from a compromise of A~\cite{barnesMessagingLayerSecurity2023}.
+            The group key is ratcheted on every epoch.
+            The previous epoch's keys are deleted after use.
+            A replaces their leaf key pair and chooses a new random secret, from which new secrets are derived upwards.
+            Requiring only $\mathcal{O}(\log n)$ ciphertexts, this update heals the group from a compromise of A.
             Adapted from~\cite{barnesMessagingLayerSecurity2023}.
         }
         \label{fig:update-treekem}
