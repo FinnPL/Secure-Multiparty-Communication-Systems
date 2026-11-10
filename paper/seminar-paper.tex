@@ -19,6 +19,8 @@
 \usepackage[table]{xcolor}
 \usepackage{microtype}
 \usepackage[nolist]{acronym}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
 
 
 
@@ -243,6 +245,26 @@ Only one encryption per layer is required, resulting in $\mathcal{O}(\log(n))$ e
 
 \ac{FS} between epochs rests on deleting old private keys and a ratchet (same principle as the symmetric ratchet in \Cref{sec:sym-ratchet})~\cite{barnesMessagingLayerSecurity2023,alwenInsiderSecurityMLS2022}.
 It takes in a secret derived from the previous group key and current root secret to derive the next group key for each epoch~\cite{barnesMessagingLayerSecurity2023}.
+
+\begin{figure*}[!t]
+    \centering
+    \input{figures/update-comparison}
+    \caption{%
+        A updates their key in a group of size $n=4$, shown directly after the update.
+        (a)~\emph{Sender Keys:} A's chain key is ratcheted on every message.
+        Deleting the old keys directly after use provides \ac{FS}.
+        This does not provide \ac{PCS}, as an attacker who knows the chain key can ratchet it with the \ac{KDF} just as well.
+        To heal their key, A replaces the current chain key entirely by distributing a fresh chain key over the pairwise channels.
+        Notably, this only heals A's own sender key; healing the entire group would require every other member to perform such an update as well.
+        (b)~\emph{TreeKEM:} The group key is ratcheted on every epoch.
+        By deleting the previous epoch's keys after use, \ac{FS} is provided between epochs.
+        When A updates, they replace their leaf key pair and choose a new random secret, from which new secrets are derived upwards through the tree.
+        This replaces the root secret, which then provides freshness for the new group key.
+        This only requires $\mathcal{O}(\log n)$ ciphertexts, as each new secret is encrypted to the public key of the corresponding copath node.
+        In contrast to Sender Keys, this update alone heals the group from a compromise of A.
+    }
+    \label{fig:update}
+\end{figure*}
 
 In order to add a member, a new leaf node is created.
 To allow members to be added while they are not reachable, they must have previously published a KeyPackage containing their public key (like the prekey bundle in two-party messaging, see \Cref{sec:setup}), which is then used to create the leaf node~\cite{barnesMessagingLayerSecurity2023}.

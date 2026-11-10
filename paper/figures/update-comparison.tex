@@ -1,0 +1,93 @@
+% Sender Keys update vs. TreeKEM update
+    \colorlet{pathc}{blue!65!black}
+    \colorlet{copc}{orange!85!black}
+    \colorlet{oldc}{black!35}
+    \tikzset{
+        >={Stealth[length=1.6mm]},
+        key/.style={draw, rounded corners=1.5pt, inner sep=1.5pt, minimum height=4.5mm, font=\footnotesize},
+        gone/.style={key, draw=oldc, text=oldc},
+        now/.style={key, draw=pathc, very thick, text=pathc, fill=pathc!10},
+        future/.style={key, draw=pathc, dashed, text=pathc},
+        kdf/.style={ellipse, draw=black!60, thin, inner sep=0.8pt, font=\scriptsize},
+        tn/.style={circle, draw, minimum size=6.5mm, inner sep=0pt, font=\scriptsize},
+        pathn/.style={tn, draw=pathc, fill=pathc!15, very thick},
+        copn/.style={tn, draw=copc, very thick},
+        enc/.style={->, dashed, copc, thick},
+        up/.style={->, pathc, thick},
+        lbl/.style={font=\scriptsize, inner sep=1pt},
+    }
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \begin{tikzpicture}[node distance=4mm]
+            % A's sender chain
+            \node[gone] (c0) at (0,32mm) {$\mathsf{ck}_A^{(0)}$};
+            \node[kdf, draw=oldc, text=oldc, right=of c0] (k1) {KDF};
+            \node[gone, right=of k1] (c1) {$\mathsf{ck}_A^{(1)}$};
+            \node[right=2.5mm of c1, text=oldc] (cd) {$\cdots$};
+            \node[gone, right=2.5mm of cd] (ct) {$\mathsf{ck}_A^{(t)}$};
+            \node[now, right=9mm of ct] (n0) {$\mathsf{ck}_A'^{(0)}$};
+            \node[kdf, right=of n0] (k2) {KDF};
+            \node[future, right=of k2] (n1) {$\mathsf{ck}_A'^{(1)}$};
+            \draw[->, oldc] (c0) -- (k1);
+            \draw[->, oldc] (k1) -- (c1);
+            \draw[->, oldc] (c1) -- (cd);
+            \draw[->, oldc] (cd) -- (ct);
+            \draw[->, pathc] (n0) -- (k2);
+            \draw[->, pathc, dashed] (k2) -- (n1);
+            \coordinate (u) at ($(ct.east)!.5!(n0.west)$);
+            \draw[pathc, thick, densely dotted] ([yshift=5mm]u) -- ([yshift=-5mm]u);
+            \node[lbl, text=oldc, below=1mm of c0] {deleted (FS)};
+            \node[lbl, text=pathc, below=1mm of n1] {future};
+            % members
+            \node[pathn] (A) at (n0 |- 0,0) {A};
+            \node[copn, right=4mm of A] (B) {B};
+            \node[copn, right=4mm of B] (C) {C};
+            \node[copn, right=4mm of C] (D) {D};
+            \draw[up] (A) -- node[lbl, left, align=right] {fresh\\random} (n0);
+            \foreach \m in {B,C,D} \draw[enc] (n0) -- (\m);
+            \node[lbl, text=copc, anchor=west, align=left] at ($(n0)!.32!(D)+(2.5mm,0)$) {pairwise,\\$n-1$ ciphertexts};
+        \end{tikzpicture}
+        \caption{Sender Keys: A's sender chain.}
+        \label{fig:update-sk}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.44\textwidth}
+        \centering
+        \begin{tikzpicture}[x=10mm, y=9mm]
+            % ratchet tree with A's new path
+            \node[pathn] (A) at (0,0) {A};
+            \node[copn] (B) at (1,0) {B};
+            \node[tn] (C) at (2,0) {C};
+            \node[tn] (D) at (3,0) {D};
+            \node[pathn] (AB) at (0.5,1) {};
+            \node[copn] (CD) at (2.5,1) {};
+            \node[pathn] (R) at (1.5,2) {};
+            \draw (A) -- (AB) -- (B) (C) -- (CD) -- (D) (AB) -- (R) -- (CD);
+            \node[lbl, text=pathc, left=1mm of A, align=right] {fresh leaf\\key pair};
+            \node[lbl, text=pathc, left=1mm of AB] {$s_1$ random};
+            \node[lbl, text=pathc, left=1mm of R] {$s_2 = \mathrm{KDF}(s_1)$};
+            \draw[up] (AB) -- (R);
+            \draw[enc] (AB) to[bend left=20] node[lbl, right, pos=.25, xshift=1mm, yshift=1mm] {$\mathrm{Enc}_{\mathsf{pk}_B}(s_1)$} (B);
+            \draw[enc] (R) to[bend left=20] node[lbl, right, pos=.75, xshift=1mm] {$\mathrm{Enc}_{\mathsf{pk}_{CD}}(s_2)$} (CD);
+            \node[lbl, text=copc, right=1mm of D, align=left] {$\log_2 n$\\ciphertexts};
+            % epoch ratchet above the root
+            \node[kdf] (K) at (1.5,3.6) {KDF};
+            \node[gone] (g0) at (-0.3,3.6) {$\mathsf{gk}_t$};
+            \node[now] (g1) at (3.3,3.6) {$\mathsf{gk}_{t+1}$};
+            \draw[->, oldc] (g0) -- (K);
+            \draw[->, pathc] (K) -- (g1);
+            \draw[up] (R) -- node[lbl, right] {$s_2$} (K);
+            \node[lbl, below=1mm of g0, text=oldc, align=center] {epoch $t$\\deleted (FS)};
+            \node[lbl, below=1mm of g1, text=pathc, align=center] {epoch $t{+}1$\\fresh $s_2$ (PCS)};
+        \end{tikzpicture}
+        \caption{TreeKEM: A's path and the epoch ratchet.}
+        \label{fig:update-treekem}
+    \end{subfigure}
+
+    \vspace{1ex}
+    \begin{tikzpicture}[lbl/.append style={font=\footnotesize}]
+        \node[gone, minimum width=4mm, minimum height=3mm] (l1) at (0,0) {};
+        \node[lbl, right=1mm of l1] (t1) {deleted after use (FS)};
+        \node[now, minimum width=4mm, minimum height=3mm, right=4mm of t1] (l2) {};
+        \node[lbl, right=1mm of l2] (t2) {fresh keys from A's update (PCS)};
+        \draw[enc] ([xshift=4mm]t2.east) -- ++(6mm,0) node[lbl, right, text=black] {ciphertext to a member or node};
+    \end{tikzpicture}
