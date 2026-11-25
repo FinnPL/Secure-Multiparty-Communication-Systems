@@ -249,7 +249,7 @@ It takes in a secret derived from the previous group key and current root secret
 \begin{figure*}[!t]
     \centering
     \input{figures/update-comparison}
-    \par\vspace{1ex}
+    \par
     \begin{minipage}[t]{\columnwidth}
         \caption{%
             \emph{Sender Keys update.}
@@ -351,7 +351,7 @@ However, like TreeKEM, rTreeKEM still requires the \ac{DS} to order all messages
     \parbox{0.97\textwidth}{\footnotesize
         Costs are the total number of ciphertexts required to perform an operation in $\mathcal{O}(\cdot)$.
         A single centred value applies to both best and worst case.
-        
+
         Update refers to a member updating their own keying material, not a full rekey.
 
         \vspace{0.5ex}

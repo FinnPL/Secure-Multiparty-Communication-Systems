@@ -20,12 +20,12 @@
         \centering
         \begin{tikzpicture}[node distance=2mm]
             % A's sender chain
-            \node[gone] (c0) at (0,32mm) {$\mathsf{ck}_A^{(0)}$};
+            \node[gone] (c0) at (0,24mm) {$\mathsf{ck}_A^{(0)}$};
             \node[kdf, draw=oldc, text=oldc, right=of c0] (k1) {KDF};
             \node[gone, right=of k1] (c1) {$\mathsf{ck}_A^{(1)}$};
             \node[right=1.5mm of c1, text=oldc] (cd) {$\cdots$};
             \node[gone, right=1.5mm of cd] (ct) {$\mathsf{ck}_A^{(t)}$};
-            \node[now, right=5mm of ct] (n0) {$\mathsf{ck}_A'^{(0)}$};
+            \node[now, right=3.5mm of ct] (n0) {$\mathsf{ck}_A'^{(0)}$};
             \node[kdf, right=of n0] (k2) {KDF};
             \node[future, right=of k2] (n1) {$\mathsf{ck}_A'^{(1)}$};
             \draw[->, oldc] (c0) -- (k1);
@@ -40,17 +40,17 @@
             \node[lbl, text=pathc, below=1mm of n1] {future};
             % members
             \node[pathn] (A) at (n0 |- 0,0) {A};
-            \node[copn, right=2.5mm of A] (B) {B};
-            \node[copn, right=2.5mm of B] (C) {C};
-            \node[copn, right=2.5mm of C] (D) {D};
+            \node[copn, right=2mm of A] (B) {B};
+            \node[copn, right=2mm of B] (C) {C};
+            \node[copn, right=2mm of C] (D) {D};
             \draw[up] (A) -- node[lbl, left, align=right] {fresh\\random} (n0);
             \foreach \m in {B,C,D} \draw[enc] (n0) -- (\m);
-            \node[lbl, text=copc, anchor=west, align=left] at ($(n0)!.32!(D)+(2.5mm,0)$) {pairwise,\\$n-1$ ciphertexts};
+            \node[lbl, text=copc, anchor=west, align=left] at ($(n0)!.48!(D)+(2mm,0)$) {pairwise,\\$n-1$ ciphertexts};
         \end{tikzpicture}
     \end{minipage}\hfill
     \begin{minipage}[b]{\columnwidth}
         \centering
-        \begin{tikzpicture}[x=10mm, y=9mm]
+        \begin{tikzpicture}[x=13mm, y=7mm]
             % ratchet tree with A's new path
             \node[pathn] (A) at (0,0) {A};
             \node[copn] (B) at (1,0) {B};
@@ -68,9 +68,9 @@
             \draw[enc] (R) to[bend left=20] node[lbl, right, pos=.75, xshift=1mm] {$\mathrm{Enc}_{\mathsf{pk}_{CD}}(s_2)$} (CD);
             \node[lbl, text=copc, right=1mm of D, align=left] {$\log_2 n$\\ciphertexts};
             % epoch ratchet above the root
-            \node[kdf] (K) at (1.5,3.6) {KDF};
-            \node[gone] (g0) at (-0.3,3.6) {$\mathsf{gk}_t$};
-            \node[now] (g1) at (3.3,3.6) {$\mathsf{gk}_{t+1}$};
+            \node[kdf] (K) at (1.5,3.5) {KDF};
+            \node[gone] (g0) at (-0.9,3.5) {$\mathsf{gk}_t$};
+            \node[now] (g1) at (3.5,3.5) {$\mathsf{gk}_{t+1}$};
             \draw[->, oldc] (g0) -- (K);
             \draw[->, pathc] (K) -- (g1);
             \draw[up] (R) -- node[lbl, right] {$s_2$} (K);
