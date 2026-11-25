@@ -22,6 +22,7 @@
 \usepackage[nolist]{acronym}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\DeclareRobustCommand{\compromisedicon}{\tikz[baseline={([yshift=0.25ex]c.south)}]\node[circle, fill=red!70!black, text=white, font=\fontsize{3.5}{3.5}\selectfont, inner sep=0pt, minimum size=0.85em] (c) {\faUnlock};}
 
 
 
@@ -108,7 +109,10 @@ We consider a group messaging setting consisting of group members, a Delivery Se
 \begin{figure}[!t]
     \centering
     \input{figures/system-model}
-    \caption{}
+    \caption{
+        \emph{Group Messaging Model.}
+        The DS and any group member (e.g., Carol) may be compromised or act maliciously (\compromisedicon{}).
+        }
     \label{fig:system-model}
 \end{figure}
 \subsubsection{Network Adversary and Delivery Service}
