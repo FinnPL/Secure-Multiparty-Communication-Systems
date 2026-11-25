@@ -111,7 +111,9 @@ We consider a group messaging setting consisting of group members, a Delivery Se
     \input{figures/system-model}
     \caption{
         \emph{Group Messaging Model.}
-        The DS and any group member (e.g., Carol) may be compromised or act maliciously (\compromisedicon{}).
+        Every message goes through the \acs{DS}.
+        It and any group member (e.g., Carol) may be compromised or act maliciously (\compromisedicon{}).
+        The \acs{AS} is assumed to be trusted and provides key authentication for the group members.
         }
     \label{fig:system-model}
 \end{figure}
