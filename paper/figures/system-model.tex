@@ -1,0 +1,26 @@
+\colorlet{pathc}{blue!65!black}
+\colorlet{copc}{orange!85!black}
+\colorlet{oldc}{black!35}
+\colorlet{advc}{red!70!black}
+\tikzset{
+    >={Stealth[length=1.6mm]},
+    mem/.style={draw, rounded corners=1.5pt, minimum width=10mm, minimum height=5mm, inner sep=1.5pt, font=\footnotesize},
+    srv/.style={draw, thick, rounded corners=1.5pt, minimum width=10mm, minimum height=6mm, inner sep=2pt, font=\footnotesize},
+    icon/.style={circle, fill=advc, text=white, font=\scriptsize, inner sep=0pt, minimum size=4mm},
+    msg/.style={<->, pathc, thick},
+    auth/.style={->, dashed, copc, thick},
+    lbl/.style={font=\scriptsize, inner sep=1pt},
+}
+\begin{tikzpicture}
+    \draw[rounded corners=4pt, dashed, oldc] (-2.85,-0.8) rectangle (2.85,0.15);
+    \node[lbl, text=oldc, fill=white, inner sep=2pt] at (0,-0.8) {group members};
+    \foreach \n/\x in {Alice/-1.95, Bob/-0.65, Carol/0.65, Dave/1.95}
+        \node[mem] (\n) at (\x,-0.3) {\n};
+    \node[srv, minimum width=1.6cm] (DS) at (0,1.1) {DS};
+    \foreach \n/\d in {Alice/-0.6, Bob/-0.2, Carol/0.2, Dave/0.6}
+        \draw[msg] (\n.north) -- ($(DS.south)+(\d,0)$);
+    \node[icon] at (Carol.north east) {\faUnlock};
+    \node[icon] at (DS.north east) {\faUnlock};
+    \node[srv] (AS) at (2.15,1.1) {AS};
+    \draw[auth] (AS.south) -- (AS.south |- 0,0.15);
+\end{tikzpicture}

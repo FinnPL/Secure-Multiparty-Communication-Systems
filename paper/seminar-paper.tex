@@ -16,6 +16,7 @@
 \usepackage{textcomp}
 \usepackage{booktabs}
 \usepackage[nointegrals]{wasysym}
+\usepackage{fontawesome5}
 \usepackage[table]{xcolor}
 \usepackage{microtype}
 \usepackage[nolist]{acronym}
@@ -104,6 +105,12 @@ Because many group messaging protocols are built on the foundation of two-party 
 
 \subsection{Threat Model}
 We consider a group messaging setting consisting of group members, a Delivery Service, and an Authentication Service~\cite{beurdoucheMessagingLayerSecurity2025}.
+\begin{figure}[!t]
+    \centering
+    \input{figures/system-model}
+    \caption{}
+    \label{fig:system-model}
+\end{figure}
 \subsubsection{Network Adversary and Delivery Service}
 Both active network adversaries and a compromised \ac{DS} can read, modify, drop, or replay all messages passed through the network, whereas a passive adversary can only read exchanged messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021,alwenContinuousGroupKey2020}.
 The \ac{DS} is only trusted for delivering messages, even though some protocols require it to accurately order messages~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
@@ -216,13 +223,13 @@ Sender Keys also do not uphold Consistency, as the \ac{DS} can forge membership 
 Well-designed \acp{CGKA} improve upon the weakness of Sender Keys by no longer requiring a full rekey to achieve \ac{PCS}, allowing for cheaper healing.
 \subsubsection{Definitions}
 To describe \ac{CGKA}, we use definitions closely following the \ac{MLS} specification~\cite{barnesMessagingLayerSecurity2023} and the \ac{CGKA} syntax of Alwen et al.~\cite{alwenContinuousGroupKey2020}.
-\begin{description}
-    \item[Group Key] is a shared secret key only known to all current members of the group.
-    \item[Epoch] is the group state comprising current group membership and current group key. Notably, epochs are ordered linearly, but all members might not be in the same epoch at a given time.
-    \item[Operations] change the group state, e.g., adding or removing a member and updating a member's own key to provide \ac{PCS}. We do not discuss other operations, such as ones required to create a group.
-    \item[Proposal] is a message containing a suggested operation.
-    \item[Commit] applies ordered proposals, thus changing the group state and starting a new epoch.
-\end{description}
+The \emph{group key} is a shared secret key only known to all current members of the group.
+An \emph{epoch} is the group state comprising current group membership and current group key.
+Notably, epochs are ordered linearly, but all members might not be in the same epoch at a given time.
+\emph{Operations} change the group state, e.g., adding or removing a member and updating a member's own key to provide \ac{PCS}.
+We do not discuss other operations, such as ones required to create a group.
+A \emph{proposal} is a message containing a suggested operation.
+A \emph{commit} applies ordered proposals, thus changing the group state and starting a new epoch.
 
 \subsubsection{TreeKEM / MLS}
 \acf{MLS}~\cite{barnesMessagingLayerSecurity2023} is an \ac{IETF} standard, which is deployed in Discord's voice and video chats~\cite{discord2024dave_spec} and the \ac{SMS} successor \ac{RCS}~\cite{gsma2025rcs_e2ee}.
