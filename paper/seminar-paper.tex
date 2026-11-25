@@ -168,12 +168,12 @@ The channel has healed after the compromised party has generated a new \ac{DH} k
 
 \section{Techniques in Current Systems}\label{sec:techniques}
 In this section, we discuss protocols used in current systems, their current shortcomings, and proposed improved variants.
-We first introduce the naive approach of applying two-party end-to-end encryption to groups and then discuss the currently most widely adopted approach, Sender Keys.
+We first introduce the na\"{\i}ve approach of applying two-party end-to-end encryption to groups and then discuss the currently most widely adopted approach, Sender Keys.
 Finally, we go into more detail on the current research direction of \ac{CGKA}, with a focus on tree-based approaches, while also briefly discussing other approaches.
 
 \subsection{Pairwise Channels}
 \subsubsection{Client-Side Fanout}
-The naive approach to scaling the existing Signal Protocol to group chats is client-side fanout.
+The na\"{\i}ve approach to scaling the existing Signal Protocol to group chats is client-side fanout.
 By creating pairwise channels between all group members, a de facto group chat is formed.
 For a group of size $n$, each individual is required to create $n-1$ channels, and every sent message needs to be encrypted $n-1$ times~\cite{cohn-gordonEndstoEndsEncryptionAsynchronous2018}.
 Adding a member just requires every member to establish such a channel with the new member, which costs the new member $\mathcal{O}(n)$ and every existing member $\mathcal{O}(1)$ channel creations.
