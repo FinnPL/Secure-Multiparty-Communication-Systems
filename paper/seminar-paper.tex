@@ -199,13 +199,13 @@ After sending and receiving, each party performs one ratchet step on the corresp
 This ratchet step on the symmetric chain key $\mathsf{ck}_i$ provides \ac{FS} as in the Double Ratchet Algorithm, but unlike it, Sender Keys are missing a second ratchet (\Cref{sec:dh-ratchet}) that introduces new randomness.
 This means \ac{PCS} can only be achieved by each member creating new sender keys and redistributing them to every other member~\cite{balbasWhatsUppSenderKeys2023}.
 
-Adding a new member requires every member to share their sender keys with the new member, requiring one message per member to be exchanged for $\mathcal{O}(n)$ messages in total~\cite{balbasWhatsUppSenderKeys2023,albrechtFormalAnalysisMultidevice2025}.
-This complies with our notion of Confidentiality: because of the described \ac{FS}, the new member cannot decrypt old messages.
+Adding a new member requires everyone in the group to share their sender keys with the newcomer, requiring one message each to be exchanged for $\mathcal{O}(n)$ messages in total~\cite{balbasWhatsUppSenderKeys2023,albrechtFormalAnalysisMultidevice2025}.
+This complies with our notion of Confidentiality: because of the described \ac{FS}, the newcomer cannot decrypt old messages.
 Removing, on the other hand, requires a complete rekey, meaning every member needs to create new sender keys and distribute them to every other member~\cite{albrechtFormalAnalysisMultidevice2025}.
 This update takes $\mathcal{O}(n)$ messages per member, which is $\mathcal{O}(n^2)$ in total~\cite{balbasWhatsUppSenderKeys2023}.
 
 Sender Keys' weakest guarantee, \ac{PCS}, can therefore only be fixed by a complete rekey, their most expensive operation.
-Because this is implementation-dependent and often only done after a group member leaves, only a very weak form of \ac{PCS} is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
+Because a complete rekey is implementation-dependent and often only done after a group member leaves, only a very weak form of \ac{PCS} is guaranteed~\cite{balbasWhatsUppSenderKeys2023}.
 Another weakness of relying on pairwise channels is that they also require multiple messages to be exchanged to fully heal~\cite{balbasWhatsUppSenderKeys2023}.
 Because we assume that a state compromise also includes keys of these two-party channels, fresh keys could also leak when exchanged over pairwise channels before they have healed.
 
@@ -230,7 +230,7 @@ It uses a variant of TreeKEM~\cite{bhargavanTreeKEMAsynchronousDecentralizeda,so
 In the following, TreeKEM refers to this variant.
 
 As the name implies, TreeKEM employs a tree structure called the Ratchet Tree to derive the group key.
-The Ratchet Tree is comprised of key pairs, with the group key being derived from the root node and group members' individual key pairs as the leaf nodes.
+The Ratchet Tree comprises key pairs, with the group key being derived from the root node and group members' individual key pairs as the leaf nodes.
 All public keys are known by all members.
 Private keys, on the other hand, can only be known by members descending from their respective intermediate node~\cite{barnesMessagingLayerSecurity2023}.
 
@@ -283,7 +283,7 @@ Note that at this point the new member is considered unmerged, as they do not kn
 Until they have learned every key on their path, any update encrypted with the public key of an unmerged ancestor also needs to be separately encrypted for the new member~\cite{barnesMessagingLayerSecurity2023}.
 
 Removing a member requires every secret known to the removed member to be rotated in order to adhere to our notion of Confidentiality.
-This is implemented in two steps. First, every node on the removed member's path is blanked, essentially invalidating the key pair without generating a new one~\cite{barnesMessagingLayerSecurity2023}.
+The removal is implemented in two steps. First, every node on the removed member's path is blanked, essentially invalidating the key pair without generating a new one~\cite{barnesMessagingLayerSecurity2023}.
 In TreeKEM, blanks cannot be avoided, because the remover cannot replace those keys, since the remover is not supposed to know them if they are not their descendant.
 Second, because the root node cannot remain blank, as every epoch needs a group key, the remover needs to issue an update as described above~\cite{barnesMessagingLayerSecurity2023}.
 
@@ -381,19 +381,19 @@ The proposer also cannot update the entire path because there might be multiple 
 In a mathematical model assuming random proposers and committers, one proposal per commit gives an expected commit size of about $\Omega(n^{0.58})$~\cite{auerbachContinuousGroupKeyAgreement2025}.
 At 50 proposals per commit, the expected commit size grows to $\Omega(n^{0.99})$, which already is almost the worst case~\cite{auerbachContinuousGroupKeyAgreement2025}.
 
-MLS-Cutoff~\cite{auerbachContinuousGroupKeyAgreement2025} improves this by making proposers also update their path up to a threshold below the root.
+MLS-Cutoff~\cite{auerbachContinuousGroupKeyAgreement2025} improves the expected commit size by making proposers also update their path up to a threshold below the root.
 The remaining path gets blanked, and if in one commit two proposers' paths overlap, they also get blanked there~\cite{auerbachContinuousGroupKeyAgreement2025}.
-This leads to an expected complexity of $\mathcal{O}(\log n)$ for few proposals per commit, but keeps the $\Omega(n)$ worst-case complexity~\cite{auerbachContinuousGroupKeyAgreement2025}.
+This cutoff leads to an expected complexity of $\mathcal{O}(\log n)$ for few proposals per commit, but keeps the $\Omega(n)$ worst-case complexity~\cite{auerbachContinuousGroupKeyAgreement2025}.
 
 The linear worst-case complexity is structural to TreeKEM-like \ac{CGKA} protocols and cannot be avoided by currently practical protocols~\cite{auerbachContinuousGroupKeyAgreement2025,bartusekFairWeatherNoMore2026}.
-The intuition behind this is: if Alice creates a group while all members are offline and then immediately leaves, none of the members share a key that was unknown to Alice.
+The intuition behind this lower bound is: if Alice creates a group while all members are offline and then immediately leaves, none of the members share a key that was unknown to Alice.
 Because Alice just left, these keys cannot be used; thus, the next commit needs one ciphertext per member~\cite{bartusekFairWeatherNoMore2026}.
 
 Notably, experiments have shown that cryptographic overhead for a group with 10,000 members only makes up 1\% and 10\% of the total computational cost in the best and worst case, respectively, while storage takes the most time~\cite{solerAnalysisEfficiencyMessaging2025}.
 
 \paragraph{Bandwidth Asymmetry}
 In TreeKEM, every member needs to download the entire commit, even though most ciphertexts included in it are not decryptable by them, because TreeKEM only signs the entire commit as a whole~\cite{hashimotoConcreteTreatmentEfficient2021}.
-This costs $\Omega(n \log n)$ per commit in total over all group members~\cite{hashimotoConcreteTreatmentEfficient2021}.
+This costs $\Omega(n \log n)$ bandwidth per commit in total over all group members~\cite{hashimotoConcreteTreatmentEfficient2021}.
 Chained CmPKE~\cite{hashimotoConcreteTreatmentEfficient2021} is a protocol that allows members to only download the parts of the commit they actually are required to get, by only signing a short commitment to the key instead of the ciphertexts, so every member receives the same signature.
 Thus, the \ac{DS} can forward only the required ciphertext and commitment to a member, reducing the download size to $\mathcal{O}(1)$ for each member~\cite{hashimotoConcreteTreatmentEfficient2021}.
 Additionally, Chained CmPKE no longer builds a Ratchet Tree but instead just a flat set of members; this can also be considered an $n$-ary tree of depth 1~\cite{hashimotoConcreteTreatmentEfficient2021}.
@@ -416,7 +416,7 @@ Other protocols try to avoid this by relying less on the \ac{DS}~\cite{alwenDeCA
 For instance, the tree-based protocol DeCAF~\cite{alwenDeCAFDecentralizableCGKA2024} employs a blockchain to achieve consensus without a centralized service, while still allowing for concurrent updates.
 Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates~\cite{alwenDeCAFDecentralizableCGKA2024}, which slightly weakens \ac{FS}~\cite{alwenDeCAFDecentralizableCGKA2024}.
 
-DeCAF still requires a total ordering~\cite{alwenDeCAFDecentralizableCGKA2024}; DCGKA~\cite{weidnerKeyAgreementDecentralized2021} removes this requirement.
+DeCAF still requires a total ordering of protocol messages~\cite{alwenDeCAFDecentralizableCGKA2024}; DCGKA~\cite{weidnerKeyAgreementDecentralized2021} removes this requirement.
 Like Sender Keys, it uses pairwise channels to distribute keying material for a per-member ratchet~\cite{weidnerKeyAgreementDecentralized2021}.
 It differs in the update process: one member distributes a new secret over pairwise channels; then every other member updates their own ratchet using it and then broadcasts an acknowledgment~\cite{weidnerKeyAgreementDecentralized2021}.
 This does not require total ordering by any \ac{DS}, as a member's ratchet is only updated on their own broadcast~\cite{weidnerKeyAgreementDecentralized2021}.
