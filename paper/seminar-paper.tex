@@ -411,7 +411,7 @@ The transition to quantum-resistant primitives in two-party channels is already 
 The \ac{MLS} standardization currently does not include any \ac{PQ} cipher suites~\cite{barnesMessagingLayerSecurity2023}, but an \ac{IETF} draft adds ML-KEM suites, with all of them providing \ac{PQ} confidentiality~\cite{mahyMLKEMHybridCipher2026}.
 For most, authentication remains weak against quantum attacks; this is a deliberate trade-off, as the current threat model only assumes harvest-now-decrypt-later attacks~\cite{mahyMLKEMHybridCipher2026}.
 
-One major drawback of PQ-secure cipher suites is that they require far larger ciphertexts~\cite{hashimotoConcreteTreatmentEfficient2021,perrinDoubleRatchetAlgorithm}.
+One major drawback of PQ-secure cipher suites is that they produce far larger ciphertexts~\cite{hashimotoConcreteTreatmentEfficient2021,perrinDoubleRatchetAlgorithm}.
 While \ac{MLS} uploads scale better, Chained CmPKE increases its lead for downloads, as it does not send every, now larger, ciphertext to every member~\cite{hashimotoConcreteTreatmentEfficient2021}.
 However, its upload still grows linearly for larger groups~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
