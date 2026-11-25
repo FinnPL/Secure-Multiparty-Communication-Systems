@@ -369,77 +369,6 @@ However, like TreeKEM, rTreeKEM still requires the \ac{DS} to order all messages
     }
 \end{table*}
 
-\section{Practicality of Deployment}\label{sec:practicality}
-Good security guarantees alone do not make a protocol deployable.
-In the following, we discuss its complexity, post-quantum readiness, and how it depends on the \ac{DS}.
-We also briefly discuss legislative requirements when it comes to interoperability and its challenges.
-
-\subsection{Complexity}
-As \Cref{tab:comparison} shows, sending and receiving are cheap in all protocols except client-side fanout.
-Protocols mainly differ in group operations, which often comes down to the update complexity, as updates are often required for other group operations to maintain \ac{FS} and \ac{PCS}~\cite{barnesMessagingLayerSecurity2023}.
-The table only measures the count of ciphertexts and operations' best and worst cases.
-Neither paints the full picture, as it does not include non-cryptographic costs~\cite{solerAnalysisEfficiencyMessaging2025} and how often worst-case scenarios actually occur.
-For instance, Tainted TreeKEM has been shown to outperform TreeKEM on average in large-group simulations~\cite{kleinKeepDirtTainted2021}, while its worst case remains the same as that of the unmodified TreeKEM.
-
-\paragraph{Best vs.\ Worst Case}
-TreeKEM's worst case might seem unlikely, as it requires all inner nodes to be blanked~\cite{solerAnalysisEfficiencyMessaging2025,auerbachContinuousGroupKeyAgreement2025}, but blanks are also caused by update proposals~\cite{barnesMessagingLayerSecurity2023,auerbachContinuousGroupKeyAgreement2025}.
-In detail, if a member only updates their leaf, the committer cannot replace their path; thus, to keep the guarantee that a member heals after updating, the nodes on the path need to be blanked~\cite{barnesMessagingLayerSecurity2023,auerbachContinuousGroupKeyAgreement2025}.
-The proposer also cannot update the entire path because there might be multiple per commit, which would delay healing where their paths collide~\cite{auerbachContinuousGroupKeyAgreement2025}.
-In a mathematical model assuming random proposers and committers, one proposal per commit gives an expected commit size of about $\Omega(n^{0.58})$~\cite{auerbachContinuousGroupKeyAgreement2025}.
-At 50 proposals per commit, the expected commit size grows to $\Omega(n^{0.99})$, which already is almost the worst case~\cite{auerbachContinuousGroupKeyAgreement2025}.
-
-MLS-Cutoff~\cite{auerbachContinuousGroupKeyAgreement2025} improves the expected commit size by making proposers also update their path up to a threshold below the root.
-The remaining path gets blanked, and if in one commit two proposers' paths overlap, they also get blanked there~\cite{auerbachContinuousGroupKeyAgreement2025}.
-This cutoff leads to an expected complexity of $\mathcal{O}(\log n)$ for few proposals per commit, but keeps the $\Omega(n)$ worst-case complexity~\cite{auerbachContinuousGroupKeyAgreement2025}.
-
-The linear worst-case complexity is structural to TreeKEM-like \ac{CGKA} protocols and cannot be avoided by currently practical protocols~\cite{auerbachContinuousGroupKeyAgreement2025,bartusekFairWeatherNoMore2026}.
-The intuition behind this lower bound is: if Alice creates a group while all members are offline and then immediately leaves, none of the members share a key that was unknown to Alice.
-Because Alice just left, these keys cannot be used; thus, the next commit needs one ciphertext per member~\cite{bartusekFairWeatherNoMore2026}.
-
-Notably, experiments have shown that cryptographic overhead for a group with 10,000 members only makes up 1\% and 10\% of the total computational cost in the best and worst case, respectively, while storage takes the most time~\cite{solerAnalysisEfficiencyMessaging2025}.
-
-\paragraph{Bandwidth Asymmetry}
-In TreeKEM, every member needs to download the entire commit, even though most ciphertexts included in it are not decryptable by them, because TreeKEM only signs the entire commit as a whole~\cite{hashimotoConcreteTreatmentEfficient2021}.
-This costs $\Omega(n \log n)$ bandwidth per commit in total over all group members~\cite{hashimotoConcreteTreatmentEfficient2021}.
-Chained CmPKE~\cite{hashimotoConcreteTreatmentEfficient2021} is a protocol that allows members to only download the parts of the commit they actually are required to get, by only signing a short commitment to the key instead of the ciphertexts, so every member receives the same signature.
-Thus, the \ac{DS} can forward only the required ciphertext and commitment to a member, reducing the download size to $\mathcal{O}(1)$ for each member~\cite{hashimotoConcreteTreatmentEfficient2021}.
-Additionally, Chained CmPKE no longer builds a Ratchet Tree but instead just a flat set of members; this can also be considered an $n$-ary tree of depth 1~\cite{hashimotoConcreteTreatmentEfficient2021}.
-This also removes blanks, but updates now cost $\mathcal{O}(n)$ ciphertexts to upload~\cite{hashimotoConcreteTreatmentEfficient2021}.
-
-\subsection{Post-Quantum Security}
-The transition to quantum-resistant primitives in two-party channels is already well underway~\cite{kretPQXDHKeyAgreement,perrinDoubleRatchetAlgorithm}.
-The \ac{MLS} standardization currently does not include any \ac{PQ} cipher suites~\cite{barnesMessagingLayerSecurity2023}, but an \ac{IETF} draft adds ML-KEM suites, with all of them providing \ac{PQ} confidentiality~\cite{mahyMLKEMHybridCipher2026}.
-For most, authentication remains weak against quantum attacks; this is a deliberate trade-off, as the current threat model only assumes harvest-now-decrypt-later attacks~\cite{mahyMLKEMHybridCipher2026}.
-
-One major drawback of PQ-secure cipher suites is that they produce far larger ciphertexts~\cite{hashimotoConcreteTreatmentEfficient2021,perrinDoubleRatchetAlgorithm}.
-While \ac{MLS} uploads scale better, Chained CmPKE increases its lead for downloads, as it does not send every, now larger, ciphertext to every member~\cite{hashimotoConcreteTreatmentEfficient2021}.
-However, its upload still grows linearly for larger groups~\cite{hashimotoConcreteTreatmentEfficient2021}.
-
-\subsection{Dependence on the Delivery Service}
-\ac{MLS} requires a linear history for its epochs~\cite{beurdoucheMessagingLayerSecurity2025}; thus, the \ac{DS} usually orders all commits and breaks ties if they occur~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
-This reliance on ordering gives the \ac{DS} a lot of power, as it can single-handedly deny service to all or some members or split the group~\cite{beurdoucheMessagingLayerSecurity2025,alwenDeCAFDecentralizableCGKA2024}.
-
-Other protocols try to avoid this by relying less on the \ac{DS}~\cite{alwenDeCAFDecentralizableCGKA2024,weidnerKeyAgreementDecentralized2021}.
-For instance, the tree-based protocol DeCAF~\cite{alwenDeCAFDecentralizableCGKA2024} employs a blockchain to achieve consensus without a centralized service, while still allowing for concurrent updates.
-Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates~\cite{alwenDeCAFDecentralizableCGKA2024}, which slightly weakens \ac{FS}~\cite{alwenDeCAFDecentralizableCGKA2024}.
-
-DeCAF still requires a total ordering of protocol messages~\cite{alwenDeCAFDecentralizableCGKA2024}; DCGKA~\cite{weidnerKeyAgreementDecentralized2021} removes this requirement.
-Like Sender Keys, it uses pairwise channels to distribute keying material for a per-member ratchet~\cite{weidnerKeyAgreementDecentralized2021}.
-It differs in the update process: one member distributes a new secret over pairwise channels; then every other member updates their own ratchet using it and then broadcasts an acknowledgment~\cite{weidnerKeyAgreementDecentralized2021}.
-This does not require total ordering by any \ac{DS}, as a member's ratchet is only updated on their own broadcast~\cite{weidnerKeyAgreementDecentralized2021}.
-Members can heal with a single update~\cite{weidnerKeyAgreementDecentralized2021}, in contrast to Sender Keys, which require that every member updates~\cite{balbasWhatsUppSenderKeys2023,weidnerKeyAgreementDecentralized2021}.
-As only one ciphertext is distributed to every member, this comes down to a cost of $\mathcal{O}(n)$ ciphertexts~\cite{weidnerKeyAgreementDecentralized2021}.
-Because they are all sent by one member and not cross-checked, that member could split the group by sending different secrets to different members~\cite{weidnerKeyAgreementDecentralized2021}.
-
-Besides splitting the group and denial-of-service attacks, a compromised \ac{DS} can neither read nor forge messages~\cite{beurdoucheMessagingLayerSecurity2025}.
-Thus, relying on an ordering server seems a defensible choice considering the performance gains, even though more efficient alternatives to Sender Keys can work without one.
-
-\subsection{Interoperability}
-The EU's \ac{DMA} requires gatekeepers such as WhatsApp to enable interoperability with other group chat providers~\cite{RegulationEU20222022}.
-It is also mandated that the interoperability may not lower security standards~\cite{RegulationEU20222022}.
-\ac{MLS} does not currently support such functionality directly~\cite{beurdoucheMessagingLayerSecurity2025}, but the \ac{IETF} has a \ac{MIMI} draft that would enable a hub provider to order and distribute messages for multiple providers~\cite{barnesMoreInstantMessaging2026}.
-Providers are now more limited and cannot choose protocols arbitrarily on their own; this favors standardized protocols like \ac{MLS} compared to other alternatives.
-
 \section{Protecting Against Misbehaving Peers}\label{sec:misbehavior}
 So far, we have primarily considered external adversaries.
 Modern group communication protocols also need to consider misbehaving peers and active attackers after a state compromise of a group member.
@@ -483,6 +412,77 @@ Therefore, a set of policies is required that restricts these actions~\cite{beur
 \ac{ACGKA} extends \ac{CGKA} in a way that only allows admins to control membership~\cite{balbasCryptographicAdministrationSecure}.
 All members verify whether group changes include a valid admin signature before accepting them~\cite{balbasCryptographicAdministrationSecure}.
 However, this does not prevent non-admins from creating inconsistent commits, splitting the group~\cite{balbasCryptographicAdministrationSecure}.
+
+\section{Practicality of Deployment}\label{sec:practicality}
+Good security guarantees alone do not make a protocol deployable.
+In the following, we discuss its complexity, post-quantum readiness, and how it depends on the \ac{DS}.
+We also briefly discuss legislative requirements when it comes to interoperability and its challenges.
+
+\subsection{Complexity}
+As \Cref{tab:comparison} shows, sending and receiving are cheap in all protocols except client-side fanout.
+Protocols mainly differ in group operations, which often comes down to the update complexity, as updates are often required for other group operations to maintain \ac{FS} and \ac{PCS}~\cite{barnesMessagingLayerSecurity2023}.
+The table only measures the count of ciphertexts and operations' best and worst cases.
+Neither paints the full picture, as it does not include non-cryptographic costs~\cite{solerAnalysisEfficiencyMessaging2025} and how often worst-case scenarios actually occur.
+For instance, Tainted TreeKEM has been shown to outperform TreeKEM on average in large-group simulations~\cite{kleinKeepDirtTainted2021}, while its worst case remains the same as that of the unmodified TreeKEM.
+
+\paragraph{Best vs.\ Worst Case}
+TreeKEM's worst case might seem unlikely, as it requires all inner nodes to be blanked~\cite{solerAnalysisEfficiencyMessaging2025,auerbachContinuousGroupKeyAgreement2025}, but blanks are also caused by update proposals~\cite{barnesMessagingLayerSecurity2023,auerbachContinuousGroupKeyAgreement2025}.
+In detail, if a member only updates their leaf, the committer cannot replace their path; thus, to keep the guarantee that a member heals after updating, the nodes on the path need to be blanked~\cite{barnesMessagingLayerSecurity2023,auerbachContinuousGroupKeyAgreement2025}.
+The proposer also cannot update the entire path because there might be multiple per commit, which would delay healing where their paths collide~\cite{auerbachContinuousGroupKeyAgreement2025}.
+In a mathematical model assuming random proposers and committers, one proposal per commit gives an expected commit size of about $\Omega(n^{0.58})$~\cite{auerbachContinuousGroupKeyAgreement2025}.
+At 50 proposals per commit, the expected commit size grows to $\Omega(n^{0.99})$, which already is almost the worst case~\cite{auerbachContinuousGroupKeyAgreement2025}.
+
+MLS-Cutoff~\cite{auerbachContinuousGroupKeyAgreement2025} improves the expected commit size by making proposers also update their path up to a threshold below the root.
+The remaining path gets blanked, and if in one commit two proposers' paths overlap, they also get blanked there~\cite{auerbachContinuousGroupKeyAgreement2025}.
+This cutoff leads to an expected complexity of $\mathcal{O}(\log n)$ for few proposals per commit, but keeps the $\Omega(n)$ worst-case complexity~\cite{auerbachContinuousGroupKeyAgreement2025}.
+
+The linear worst-case complexity is structural to TreeKEM-like \ac{CGKA} protocols and cannot be avoided by protocols relying on standard public-key encryption~\cite{auerbachContinuousGroupKeyAgreement2025,bartusekFairWeatherNoMore2026}.
+The intuition behind this lower bound is: if Alice creates a group while all members are offline and then immediately leaves, none of the members share a key that was unknown to Alice.
+Because Alice just left, these keys cannot be used; thus, the next commit needs one ciphertext per member~\cite{bartusekFairWeatherNoMore2026}.
+
+Notably, experiments have shown that cryptographic overhead for a group with 10,000 members only makes up 1\% and 10\% of the total computational cost in the best and worst case, respectively, while storage takes the most time~\cite{solerAnalysisEfficiencyMessaging2025}.
+
+\paragraph{Bandwidth Asymmetry}
+In TreeKEM, every member needs to download the entire commit, even though most ciphertexts included in it are not decryptable by them, because TreeKEM only signs the entire commit as a whole~\cite{hashimotoConcreteTreatmentEfficient2021}.
+This costs $\Omega(n \log n)$ bandwidth per commit in total over all group members~\cite{hashimotoConcreteTreatmentEfficient2021}.
+Chained CmPKE~\cite{hashimotoConcreteTreatmentEfficient2021} is a protocol that allows members to only download the parts of the commit they actually are required to get, by only signing a short commitment to the key instead of the ciphertexts, so every member receives the same signature.
+Thus, the \ac{DS} can forward only the required ciphertext and commitment to a member, reducing the download size to $\mathcal{O}(1)$ for each member~\cite{hashimotoConcreteTreatmentEfficient2021}.
+Additionally, Chained CmPKE no longer builds a Ratchet Tree but instead just a flat set of members; this can also be considered an $n$-ary tree of depth 1~\cite{hashimotoConcreteTreatmentEfficient2021}.
+This also removes blanks, but updates now cost $\mathcal{O}(n)$ ciphertexts to upload~\cite{hashimotoConcreteTreatmentEfficient2021}.
+
+\subsection{Dependence on the Delivery Service}
+\ac{MLS} requires a linear history for its epochs~\cite{beurdoucheMessagingLayerSecurity2025}; thus, the \ac{DS} usually orders all commits and breaks ties if they occur~\cite{beurdoucheMessagingLayerSecurity2025,weidnerKeyAgreementDecentralized2021}.
+This reliance on ordering gives the \ac{DS} a lot of power, as it can single-handedly deny service to all or some members or split the group~\cite{beurdoucheMessagingLayerSecurity2025,alwenDeCAFDecentralizableCGKA2024}.
+
+Other protocols try to avoid this by relying less on the \ac{DS}~\cite{alwenDeCAFDecentralizableCGKA2024,weidnerKeyAgreementDecentralized2021}.
+For instance, the tree-based protocol DeCAF~\cite{alwenDeCAFDecentralizableCGKA2024} employs a blockchain to achieve consensus without a centralized service, while still allowing for concurrent updates.
+Because members update concurrently and thus use the same keys multiple times, they need to keep old group state to be able to decrypt all updates~\cite{alwenDeCAFDecentralizableCGKA2024}, which slightly weakens \ac{FS}~\cite{alwenDeCAFDecentralizableCGKA2024}.
+
+DeCAF still requires a total ordering of protocol messages~\cite{alwenDeCAFDecentralizableCGKA2024}; DCGKA~\cite{weidnerKeyAgreementDecentralized2021} removes this requirement.
+Like Sender Keys, it uses pairwise channels to distribute keying material for a per-member ratchet~\cite{weidnerKeyAgreementDecentralized2021}.
+It differs in the update process: one member distributes a new secret over pairwise channels; then every other member updates their own ratchet using it and then broadcasts an acknowledgment~\cite{weidnerKeyAgreementDecentralized2021}.
+This does not require total ordering by any \ac{DS}, as a member's ratchet is only updated on their own broadcast~\cite{weidnerKeyAgreementDecentralized2021}.
+Members can heal with a single update~\cite{weidnerKeyAgreementDecentralized2021}, in contrast to Sender Keys, which require that every member updates~\cite{balbasWhatsUppSenderKeys2023,weidnerKeyAgreementDecentralized2021}.
+As only one ciphertext is distributed to every member, this comes down to a cost of $\mathcal{O}(n)$ ciphertexts~\cite{weidnerKeyAgreementDecentralized2021}.
+Because they are all sent by one member and not cross-checked, that member could split the group by sending different secrets to different members~\cite{weidnerKeyAgreementDecentralized2021}.
+
+Besides splitting the group and denial-of-service attacks, a compromised \ac{DS} can neither read nor forge messages~\cite{beurdoucheMessagingLayerSecurity2025}.
+Thus, relying on an ordering server seems a defensible choice considering the performance gains, even though more efficient alternatives to Sender Keys can work without one.
+
+\subsection{Interoperability}
+The EU's \ac{DMA} requires gatekeepers such as WhatsApp to enable interoperability with other group chat providers~\cite{RegulationEU20222022}.
+It is also mandated that the interoperability may not lower security standards~\cite{RegulationEU20222022}.
+\ac{MLS} does not currently support such functionality directly~\cite{beurdoucheMessagingLayerSecurity2025}, but the \ac{IETF} has a \ac{MIMI} draft that would enable a hub provider to order and distribute messages for multiple providers~\cite{barnesMoreInstantMessaging2026}.
+Providers are now more limited and cannot choose protocols arbitrarily on their own; this favors standardized protocols like \ac{MLS} compared to other alternatives.
+
+\subsection{Post-Quantum Security}
+The transition to quantum-resistant primitives in two-party channels is already well underway~\cite{kretPQXDHKeyAgreement,perrinDoubleRatchetAlgorithm}.
+The \ac{MLS} standardization currently does not include any \ac{PQ} cipher suites~\cite{barnesMessagingLayerSecurity2023}, but an \ac{IETF} draft adds ML-KEM suites, with all of them providing \ac{PQ} confidentiality~\cite{mahyMLKEMHybridCipher2026}.
+For most, authentication remains weak against quantum attacks; this is a deliberate trade-off, as the current threat model only assumes harvest-now-decrypt-later attacks~\cite{mahyMLKEMHybridCipher2026}.
+
+One major drawback of PQ-secure cipher suites is that they produce far larger ciphertexts~\cite{hashimotoConcreteTreatmentEfficient2021,perrinDoubleRatchetAlgorithm}.
+While \ac{MLS} uploads scale better, Chained CmPKE increases its lead for downloads, as it does not send every, now larger, ciphertext to every member~\cite{hashimotoConcreteTreatmentEfficient2021}.
+However, its upload still grows linearly for larger groups~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
 \section{Conclusion}
 This paper compared Sender Keys with \ac{CGKA} protocols such as \ac{MLS} building on TreeKEM and various improved variants and alternatives.
