@@ -488,10 +488,10 @@ While \ac{MLS} uploads scale better, Chained CmPKE increases its lead for downlo
 However, its upload still grows linearly for larger groups~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
 \section{Excursus: Machine-to-Machine Communication}
-While \ac{M2M} communication, like group messaging, requires secure multiparty protocols, it warrants a different threat model and imposes stricter resource constraints on members.
-In group messaging, the security concern is for members to keep their messages private from third parties, including the provider of the \ac{DS}.
-The perspective of trust shifts in \ac{M2M} communication, as an operator inherently trusts their own systems.
-This justifies the reliance on a trusted Group Manager that controls group memberships and key distribution, in order to alleviate constraints members.
+While \ac{M2M} communication, like group messaging, requires secure multiparty protocols, it warrants a different threat model and imposes stricter resource constraints on members, e.g., battery-powered sensor nodes~\cite{prantlSurveySecureGroup2022}.
+In group messaging, the security concern is for members to keep their messages private from third parties, including the provider of the \ac{DS}~\cite{beurdoucheMessagingLayerSecurity2025}.
+The perspective of trust shifts in \ac{M2M} communication, as an operator inherently trusts their own systems to not act maliciously.
+This assumption justifies the reliance on a trusted central entity that controls group memberships and key distribution, in order to take workload off constraints on members~\cite{tilocaGroupObjectSecurity2026,prantlSurveySecureGroup2022}.
 
 \section{Conclusion}
 This paper compared Sender Keys with \ac{CGKA} protocols such as \ac{MLS} building on TreeKEM and various improved variants and alternatives.
