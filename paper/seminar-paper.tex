@@ -493,6 +493,10 @@ In group messaging, the security concern is for members to keep their messages p
 The perspective of trust shifts in \ac{M2M} communication, as an operator inherently trusts their own systems to not act maliciously.
 This assumption justifies the reliance on a trusted central entity that controls group memberships and key distribution, in order to take workload off constrained members~\cite{tilocaGroupObjectSecurity2026,prantlSurveySecureGroup2022}.
 
+Group OSCORE~\cite{tilocaGroupObjectSecurity2026} is an \ac{IETF} standard for this setting.
+It operates similarly to Sender Keys; each message is encrypted by the sender's individual symmetric key and signed separately.
+Unlike Sender Keys, though, these symmetric keys are derived from a shared group secret.
+
 \section{Conclusion}
 This paper compared Sender Keys with \ac{CGKA} protocols such as \ac{MLS} building on TreeKEM and various improved variants and alternatives.
 Sender Keys remain the most widely deployed but only offer a weak form of \ac{PCS}, which needs a full rekey at high cost, and also suffer from other weaknesses.
