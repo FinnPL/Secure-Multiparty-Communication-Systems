@@ -494,8 +494,13 @@ The perspective of trust shifts in \ac{M2M} communication, as an operator inhere
 This assumption justifies the reliance on a trusted central entity that controls group memberships and key distribution, in order to take workload off constrained members~\cite{tilocaGroupObjectSecurity2026,prantlSurveySecureGroup2022}.
 
 Group OSCORE~\cite{tilocaGroupObjectSecurity2026} is an \ac{IETF} standard for this setting.
-It operates similarly to Sender Keys; each message is encrypted by the sender's individual symmetric key and signed separately.
-Unlike Sender Keys, though, these symmetric keys are derived from a shared group secret.
+It operates similarly to Sender Keys; each message is encrypted by the sender's individual symmetric key and signed separately~\cite{tilocaGroupObjectSecurity2026}.
+Unlike Sender Keys, though, these symmetric keys are derived from a shared group secret~\cite{tilocaGroupObjectSecurity2026}.
+A trusted Group Manager handles members leaving by generating a new Master Secret~\cite{tilocaGroupObjectSecurity2026}.
+The key distribution scheme itself is left open in the standard~\cite{tilocaGroupObjectSecurity2026}.
+Because the keys are not ratcheted and only changed by such a rekey of the Group Manager~\cite{tilocaGroupObjectSecurity2026}, \ac{FS} is only provided per such rekey interval.
+When the Group Manager suspects that a member has been compromised, it may remove the member from the group, leading to a full rekey~\cite{tilocaGroupObjectSecurity2026}; this is a weak form of \ac{PCS} that depends on the Group Manager noticing rather than members healing themselves.
+
 
 \section{Conclusion}
 This paper compared Sender Keys with \ac{CGKA} protocols such as \ac{MLS} building on TreeKEM and various improved variants and alternatives.
