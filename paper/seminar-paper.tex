@@ -505,6 +505,11 @@ The standard does not fix a certain rekeying scheme but notes that for large gro
 One such considered option is \ac{LKH}, which arranges keys in a tree similar to Ratchet Trees (see \Cref{sec:treekem}), but each key is symmetric and chosen and thus known by the Group Manager~\cite{chungkeiwongSecureGroupCommunications2000,prantlSurveySecureGroup2022}.
 Because the Group Manager knows all the keys, \ac{LKH} needs no blanks and thus always achieves $\mathcal{O}(\log(n))$ ciphertexts for a rekey~\cite{chungkeiwongSecureGroupCommunications2000,prantlSurveySecureGroup2022}, which TreeKEM can only get in the best case~\cite{barnesMessagingLayerSecurity2023,solerAnalysisEfficiencyMessaging2025}.
 
+Protocols that rely on a trusted server for ordering lose their main drawback here, as \ac{M2M} already trusts the central entity.
+Furthermore, approaches like Chained CmPKE that reduce the required downloaded ciphertexts per member would suit constrained receivers, especially with larger ciphertexts of \ac{PQ} cipher suites.
+
+Overall, the \ac{M2M} setting favors trusting the central entity to keep the work of the members minimal, in contrast to group messaging, where the current research direction tries to minimize reliance on central systems.
+
 \section{Conclusion}
 This paper compared Sender Keys with \ac{CGKA} protocols such as \ac{MLS} building on TreeKEM and various improved variants and alternatives.
 Sender Keys remain the most widely deployed but only offer a weak form of \ac{PCS}, which needs a full rekey at high cost, and also suffer from other weaknesses.
