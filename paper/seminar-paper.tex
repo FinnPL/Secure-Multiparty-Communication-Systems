@@ -499,16 +499,17 @@ It operates similarly to Sender Keys; each message is encrypted with the sender'
 Unlike Sender Keys, though, these symmetric keys are derived from a shared group secret~\cite{tilocaGroupObjectSecurity2026}.
 A trusted Group Manager handles members leaving by generating a new Master Secret~\cite{tilocaGroupObjectSecurity2026}.
 Because the keys are not ratcheted and only changed when the Group Manager rekeys the group~\cite{tilocaGroupObjectSecurity2026}, \ac{FS} is only provided per rekey interval.
-When the Group Manager suspects that a member has been compromised, it may remove the member from the group, leading to a full rekey~\cite{tilocaGroupObjectSecurity2026}; eviction thus offers a weak form of \ac{PCS} that depends on the Group Manager noticing rather than members healing themselves.
+When the Group Manager suspects that a member has been compromised, it may remove the member from the group, leading to a full rekey~\cite{tilocaGroupObjectSecurity2026};
+eviction thus offers a weak form of \ac{PCS} that depends on the Group Manager noticing rather than members healing themselves, a deliberate trade-off, as stronger \ac{PCS} would be possible but only by shifting public-key operations onto constrained members.
 
 The standard does not fix a certain rekeying scheme but notes that for large groups with frequently changing membership, a more scalable rekeying scheme might be required~\cite{tilocaGroupObjectSecurity2026}.
 One such considered option is \ac{LKH}, which arranges keys in a tree similar to Ratchet Trees (see \Cref{sec:treekem}), but each key is symmetric and chosen and thus known by the Group Manager~\cite{chungkeiwongSecureGroupCommunications2000,prantlSurveySecureGroup2022}.
 Because the Group Manager knows all the keys, \ac{LKH} needs no blanks and thus always achieves $\mathcal{O}(\log(n))$ ciphertexts for a rekey~\cite{chungkeiwongSecureGroupCommunications2000,prantlSurveySecureGroup2022}, which TreeKEM can only get in the best case~\cite{barnesMessagingLayerSecurity2023,solerAnalysisEfficiencyMessaging2025}.
 
-Protocols that rely on a trusted server for ordering lose their main drawback here, as \ac{M2M} already trusts the central entity.
-Furthermore, approaches like Chained CmPKE that reduce the required downloaded ciphertexts per member would suit constrained receivers, especially with larger ciphertexts of \ac{PQ} cipher suites.
+Because \ac{M2M} already trusts the central entity, protocols that rely on a trusted server for ordering~\cite{beurdoucheMessagingLayerSecurity2025} lose their main drawback here.
+Furthermore, approaches like Chained CmPKE that reduce the required downloaded ciphertexts per member would suit constrained receivers, especially with larger ciphertexts of \ac{PQ} cipher suites~\cite{hashimotoConcreteTreatmentEfficient2021}.
 
-Overall, the \ac{M2M} setting favors trusting the central entity to keep the work of the members minimal, in contrast to group messaging, where the current research direction tries to minimize reliance on central systems.
+Overall, the \ac{M2M} setting favors trusting the central entity to keep the work of the members minimal, in contrast to group messaging, where the \ac{DS} is not trusted~\cite{beurdoucheMessagingLayerSecurity2025}.
 
 \section{Conclusion}
 This paper compared Sender Keys with \ac{CGKA} protocols such as \ac{MLS} building on TreeKEM and various improved variants and alternatives.
