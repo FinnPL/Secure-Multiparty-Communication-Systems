@@ -48,6 +48,7 @@
 \acrodef{FS}{Forward Secrecy}
 \acrodef{IETF}{Internet Engineering Task Force}
 \acrodef{KDF}{Key Derivation Function}
+\acrodef{LKH}{Logical Key Hierarchy}
 \acrodef{M2M}{Machine-to-Machine}
 \acrodef{MAC}{Message Authentication Code}
 \acrodef{MIMI}{More Instant Messaging Interoperability}
@@ -234,7 +235,7 @@ We do not discuss other operations, such as ones required to create a group.
 A \emph{proposal} is a message containing a suggested operation.
 A \emph{commit} applies ordered proposals, thus changing the group state and starting a new epoch.
 
-\subsubsection{TreeKEM / MLS}
+\subsubsection{TreeKEM / MLS}\label{sec:treekem}
 \acf{MLS}~\cite{barnesMessagingLayerSecurity2023} is an \ac{IETF} standard, which is deployed in Discord's voice and video chats~\cite{discord2024dave_spec} and the \ac{SMS} successor \ac{RCS}~\cite{gsma2025rcs_e2ee}.
 It uses a variant of TreeKEM~\cite{bhargavanTreeKEMAsynchronousDecentralizeda,solerAnalysisEfficiencyMessaging2025} as its \ac{CGKA} protocol.
 In the following, TreeKEM refers to this variant.
@@ -491,16 +492,18 @@ However, its upload still grows linearly for larger groups~\cite{hashimotoConcre
 While \ac{M2M} communication, like group messaging, requires secure multiparty protocols, it warrants a different threat model and imposes stricter resource constraints on members, e.g., battery-powered sensor nodes~\cite{prantlSurveySecureGroup2022}.
 In group messaging, the security concern is for members to keep their messages private from third parties, including the provider of the \ac{DS}~\cite{beurdoucheMessagingLayerSecurity2025}.
 The perspective of trust shifts in \ac{M2M} communication, as an operator inherently trusts their own systems to not act maliciously.
-This assumption justifies the reliance on a trusted central entity that controls group memberships and key distribution, in order to take workload off constrained members~\cite{tilocaGroupObjectSecurity2026,prantlSurveySecureGroup2022}.
+This assumption justifies the reliance on a trusted central entity that controls group membership and key distribution, in order to take workload off constrained members~\cite{tilocaGroupObjectSecurity2026,prantlSurveySecureGroup2022}.
 
 Group OSCORE~\cite{tilocaGroupObjectSecurity2026} is an \ac{IETF} standard for this setting.
-It operates similarly to Sender Keys; each message is encrypted by the sender's individual symmetric key and signed separately~\cite{tilocaGroupObjectSecurity2026}.
+It operates similarly to Sender Keys; each message is encrypted with the sender's individual symmetric key and signed separately~\cite{tilocaGroupObjectSecurity2026}.
 Unlike Sender Keys, though, these symmetric keys are derived from a shared group secret~\cite{tilocaGroupObjectSecurity2026}.
 A trusted Group Manager handles members leaving by generating a new Master Secret~\cite{tilocaGroupObjectSecurity2026}.
-The key distribution scheme itself is left open in the standard~\cite{tilocaGroupObjectSecurity2026}.
-Because the keys are not ratcheted and only changed by such a rekey of the Group Manager~\cite{tilocaGroupObjectSecurity2026}, \ac{FS} is only provided per such rekey interval.
-When the Group Manager suspects that a member has been compromised, it may remove the member from the group, leading to a full rekey~\cite{tilocaGroupObjectSecurity2026}; this is a weak form of \ac{PCS} that depends on the Group Manager noticing rather than members healing themselves.
+Because the keys are not ratcheted and only changed when the Group Manager rekeys the group~\cite{tilocaGroupObjectSecurity2026}, \ac{FS} is only provided per rekey interval.
+When the Group Manager suspects that a member has been compromised, it may remove the member from the group, leading to a full rekey~\cite{tilocaGroupObjectSecurity2026}; eviction thus offers a weak form of \ac{PCS} that depends on the Group Manager noticing rather than members healing themselves.
 
+The standard does not fix a certain rekeying scheme but notes that for large groups with frequently changing membership, a more scalable rekeying scheme might be required~\cite{tilocaGroupObjectSecurity2026}.
+One such considered option is \ac{LKH}, which arranges keys in a tree similar to Ratchet Trees (see \Cref{sec:treekem}), but each key is symmetric and chosen and thus known by the Group Manager~\cite{chungkeiwongSecureGroupCommunications2000,prantlSurveySecureGroup2022}.
+Because the Group Manager knows all the keys, \ac{LKH} needs no blanks and thus always achieves $\mathcal{O}(\log(n))$ ciphertexts for a rekey~\cite{chungkeiwongSecureGroupCommunications2000,prantlSurveySecureGroup2022}, which TreeKEM can only get in the best case~\cite{barnesMessagingLayerSecurity2023,solerAnalysisEfficiencyMessaging2025}.
 
 \section{Conclusion}
 This paper compared Sender Keys with \ac{CGKA} protocols such as \ac{MLS} building on TreeKEM and various improved variants and alternatives.
