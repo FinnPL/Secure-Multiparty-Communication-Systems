@@ -21,12 +21,12 @@
         \begin{tikzpicture}[node distance=2mm]
             % A's sender chain
             \node[gone] (c0) at (0,24mm) {$\mathsf{ck}_A^{(0)}$};
-            \node[kdf, draw=oldc, text=oldc, right=of c0] (k1) {KDF};
+            \node[kdf, draw=oldc, text=oldc, right=of c0] (k1) {KDF$_2$};
             \node[gone, right=of k1] (c1) {$\mathsf{ck}_A^{(1)}$};
             \node[right=1.5mm of c1, text=oldc] (cd) {$\cdots$};
-            \node[gone, right=1.5mm of cd] (ct) {$\mathsf{ck}_A^{(t)}$};
+            \node[gone, right=1.5mm of cd] (ct) {$\mathsf{ck}_A^{(j)}$};
             \node[now, right=3.5mm of ct] (n0) {$\mathsf{ck}_A'^{(0)}$};
-            \node[kdf, right=of n0] (k2) {KDF};
+            \node[kdf, right=of n0] (k2) {KDF$_2$};
             \node[future, right=of k2] (n1) {$\mathsf{ck}_A'^{(1)}$};
             \draw[->, oldc] (c0) -- (k1);
             \draw[->, oldc] (k1) -- (c1);
@@ -62,7 +62,7 @@
             \draw (A) -- (AB) -- (B) (C) -- (CD) -- (D) (AB) -- (R) -- (CD);
             \node[lbl, text=pathc, left=1mm of A, align=right] {fresh leaf\\key pair};
             \node[lbl, text=pathc, left=1mm of AB] {$s_1$ random};
-            \node[lbl, text=pathc, left=1mm of R] {$s_2 = \mathrm{KDF}(s_1)$};
+            \node[lbl, text=pathc, left=1mm of R] {$s_{\mathrm{root}} = s_2 = \mathrm{KDF}(s_1)$};
             \draw[up] (AB) -- (R);
             \draw[enc] (AB) to[bend left=20] node[lbl, right, pos=.25, xshift=1mm, yshift=1mm] {$\mathrm{Enc}_{\mathsf{pk}_B}(s_1)$} (B);
             \draw[enc] (R) to[bend left=20] node[lbl, right, pos=.75, xshift=1mm] {$\mathrm{Enc}_{\mathsf{pk}_{CD}}(s_2)$} (CD);
@@ -73,8 +73,8 @@
             \node[now] (g1) at (3.5,3.5) {$\mathsf{gk}_{t+1}$};
             \draw[->, oldc] (g0) -- (K);
             \draw[->, pathc] (K) -- (g1);
-            \draw[up] (R) -- node[lbl, right] {$s_2$} (K);
+            \draw[up] (R) -- node[lbl, right] {$s_{\mathrm{root}}$} (K);
             \node[lbl, below=1mm of g0, text=oldc, align=center] {epoch $t$\\deleted (FS)};
-            \node[lbl, below=1mm of g1, text=pathc, align=center] {epoch $t{+}1$\\fresh $s_2$ (PCS)};
+            \node[lbl, below=1mm of g1, text=pathc, align=center] {epoch $t{+}1$\\fresh $s_{\mathrm{root}}$ (PCS)};
         \end{tikzpicture}
     \end{minipage}
